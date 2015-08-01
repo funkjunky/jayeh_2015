@@ -1,0 +1,49 @@
+TODO www.jayeh.ca
+—
+ - Setup
+ 	*- copy and paste all necessary files from london fog over.
+	*- .gitignore /src folder and /dist folder
+	*- clean up files
+	- commit the rest
+	- clean up code
+	- commit again
+ 	- ensure a basic page loads and that routes work
+ 	- start a generic rest server with a unique port for blog
+
+ - Basics
+ 	- Build basic form for adding blog posts
+ 	- Build basic blog route page for showing all blog posts in their entirety
+	- Add github and linkedin info in the header
+
+ - Create features for blog posts
+	- create article should have a header text area and a body text area
+	- create a ParallaxHeader component that takes an image, and otherwise renders what’s inside it. it well create a parallex effect as the user scrolls down.
+		- fill in todo here…
+	- the default value of the header text area should be a BlogHeader component with an empty image attribute with a p tag inside the component with “Hello World” written in it
+	- add drag and drop to body text area that upload an image, then places an <img /> tag inside the body with the url of the uploaded image.
+	- add drag and drop to the header text area that uploads an image, then replaces BlogHeader image=“” with the image url
+
+	- add autosaving to local storage
+
+	- create Sidenote component like Ars’s Game Details on the right or left. You specify the left or right and the width [defaults: right, 200]. The inside is the html
+
+	- add preview for the body textarea
+	- add very nice default font sizes and formatting for article… now that I have preview I should be able to ensure everything looks incredible
+		- pre-wrap so new lines show
+		- find a nice type font
+		- ensure font size is appropriate
+		- ensure images and their captions look beautiful
+	- ensure the main article page looks incredibly nice with header.
+	- add a preview link above the header textarea to preview the whole article, so you can see the header effect in a testing environment.
+		- the url grabs the data from local storage to render
+
+	- create a Definition component that when hovered provides a definition for a term on the spot. Word attribute is displayed, while the inside is the html for the definition.
+
+ - Add responsive design setup, ensure it works on my ipad and iphone [doesn’t need to look that good, just be readable without scrolling left right or having to zoom]
+
+ - Prettify front page
+	- articles show header without parallax effect and with zoom out perhaps
+		- summary items pass a prop “isFullPage” that the header html can use to pass to it’s components.
+	- On mouseover the first bit of text is shown to give the user a preview with all tags stripped away.
+	- format everything very nicely and add a splash of colour where it seems necessary.
+	- add share button on top of main page article

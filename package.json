@@ -1,0 +1,36 @@
+{
+  "name": "london-fog",
+  "version": "0.0.1",
+  "author": "Jason McCarrell <jason.abz@gmail.com>",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/funkjunky/londonfog"
+  },
+  "dependencies": {
+    "express": "4.9.x",
+    "react": "0.13.x",
+    "react-async": "2.1.x",
+    "react-timeago": "2.0.x",
+    "react-router-component": "0.24.x",
+    "superagent": "latest",
+    "react-document-title": "1.0.x",
+    "fibers": "^1.0.2",
+    "underscore": "1.8.x",
+    "http-proxy": "1.0.x",
+    "feathers": "1.0.x",
+    "socket.io": "1.3.x",
+    "material-ui": "0.7.x",
+    "serve-favicon": "2.2.x"
+  },
+  "devDependencies": {
+    "browserify": "9.0.x",
+    "grunt": "0.4.x",
+    "grunt-browserify": "^3.5.0",
+    "grunt-concurrent": "^1.0.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-nodemon": "^0.4.0",
+    "grunt-react": "^0.10.0"
+  },
+  "license": "GPL"
+}
