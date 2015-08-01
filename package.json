@@ -1,27 +1,23 @@
 {
-  "name": "london-fog",
+  "name": "jayeh_2015",
   "version": "0.0.1",
   "author": "Jason McCarrell <jason.abz@gmail.com>",
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/funkjunky/londonfog"
+    "url": "https://github.com/funkjunky/jayeh_2015"
   },
   "dependencies": {
     "express": "4.9.x",
+    "fibers": "^1.0.6",
+    "http-proxy": "1.11.x",
+    "material-ui": "0.7.x",
     "react": "0.13.x",
     "react-async": "2.1.x",
-    "react-timeago": "2.0.x",
-    "react-router-component": "0.24.x",
-    "superagent": "latest",
     "react-document-title": "1.0.x",
-    "fibers": "^1.0.2",
-    "underscore": "1.8.x",
-    "http-proxy": "1.0.x",
-    "feathers": "1.0.x",
-    "socket.io": "1.3.x",
-    "material-ui": "0.7.x",
-    "serve-favicon": "2.2.x"
+    "react-router-component": "0.24.x",
+    "serve-favicon": "2.2.x",
+    "underscore": "1.8.x"
   },
   "devDependencies": {
     "browserify": "9.0.x",

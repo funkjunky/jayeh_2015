@@ -13,9 +13,8 @@ app.use(Favicon(__dirname + '/favicon.ico'));
 app.use('/dist', Express.static(__dirname + '/dist'));
 app.use('/node_modules', Express.static(__dirname + '/node_modules'));
 
-var proxy = httpProxy.createProxyServer({ ws: true, target: 'http://localhost:1212/' });
+var proxy = httpProxy.createProxyServer({ ws: true, target: 'http://localhost:1213/' });
 app.all('/api/*', function(req, res) { proxy.web(req, res); } );
-app.all('/socket.io/*', function(req, res) { proxy.web(req, res); } );
 proxy.on('error', function(e) {
     console.log('proxy error: ', e);
 });
@@ -36,7 +35,7 @@ app.get('*', function (req, res) {
     });
 });
 
-var server = app.listen(9001, function () {
+var server = app.listen(9002, function () {
     var host = server.address().address
     var port = server.address().port
     console.log('Example app listening at http://%s:%s', host, port)

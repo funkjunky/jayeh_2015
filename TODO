@@ -4,10 +4,10 @@ TODO www.jayeh.ca
  	*- copy and paste all necessary files from london fog over.
 	*- .gitignore /src folder and /dist folder
 	*- clean up files
-	- commit the rest
-	- clean up code
-	- commit again
- 	- ensure a basic page loads and that routes work
+	*- commit the rest
+	*- clean up code
+	*- commit again
+ 	*- ensure a basic page loads and that routes work
  	- start a generic rest server with a unique port for blog
 
  - Basics

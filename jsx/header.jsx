@@ -1,11 +1,11 @@
 var React = require('react');
 
-var Home = React.createClass({
+var Header = React.createClass({
     render: function() {
         return (
-            <h2>Home</h2>
+            <h2>Jayeh</h2>
         );
     },
 });
 
-module.exports = Home;
+module.exports = Header;
