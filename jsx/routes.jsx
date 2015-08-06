@@ -5,6 +5,7 @@ var Location = Router.Location;
 
 var Header = require('./header');
 var Blog = require('./blog');
+var EditArticle = require('./article/edit');
 
 var Routes = React.createClass({
     render: function() {
@@ -12,14 +13,15 @@ var Routes = React.createClass({
             <html>
                 <head>
                     <title>Jayeh - Jason's tech and opinions</title>
-                    <link rel="stylesheet" href="/dist/all.css" />
-                    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
+                    <link rel="stylesheet" href="/dist/reset.css" />
                 </head>
                 <body>
                     <Header />
                     <Locations path={this.props.path}>
                         <Location path="/" handler={<Blog />} />
                         <Location path="/blog" handler={<Blog />} />
+                        <Location path="/article/create" handler={<EditArticle />} />
+                        <Location path="/article/edit(/:id)" handler={<EditArticle />} />
                     </Locations>
                     <script src="dist/bootstrap.js"></script>
                 </body>

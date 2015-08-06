@@ -8,7 +8,7 @@ TODO www.jayeh.ca
 	*- clean up code
 	*- commit again
  	*- ensure a basic page loads and that routes work
- 	- start a generic rest server with a unique port for blog
+ 	*- start a generic rest server with a unique port for blog
 
  - Basics
  	- Build basic form for adding blog posts

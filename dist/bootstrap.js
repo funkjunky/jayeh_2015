@@ -21554,6 +21554,19 @@ module.exports = require('./lib/React');
 },{"./lib/React":51}],182:[function(require,module,exports){
 var React = require('react');
 
+var EditArticle = React.createClass({displayName: "EditArticle",
+    render: function() {
+        return (
+            React.createElement("h2", null, "Edit Article")
+        );
+    },
+});
+
+module.exports = EditArticle;
+
+},{"react":181}],183:[function(require,module,exports){
+var React = require('react');
+
 var Blog = React.createClass({displayName: "Blog",
     render: function() {
         return (
@@ -21564,7 +21577,7 @@ var Blog = React.createClass({displayName: "Blog",
 
 module.exports = Blog;
 
-},{"react":181}],183:[function(require,module,exports){
+},{"react":181}],184:[function(require,module,exports){
 var React = require('react');
 var Routes = React.createFactory(require('./routes'));
 
@@ -21574,7 +21587,7 @@ if(typeof window !== 'undefined') {
     }
 }
 
-},{"./routes":185,"react":181}],184:[function(require,module,exports){
+},{"./routes":186,"react":181}],185:[function(require,module,exports){
 var React = require('react');
 
 var Header = React.createClass({displayName: "Header",
@@ -21587,7 +21600,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header;
 
-},{"react":181}],185:[function(require,module,exports){
+},{"react":181}],186:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router-component');
 var Locations = Router.Locations;
@@ -21595,6 +21608,7 @@ var Location = Router.Location;
 
 var Header = require('./header');
 var Blog = require('./blog');
+var EditArticle = require('./article/edit');
 
 var Routes = React.createClass({displayName: "Routes",
     render: function() {
@@ -21602,14 +21616,15 @@ var Routes = React.createClass({displayName: "Routes",
             React.createElement("html", null, 
                 React.createElement("head", null, 
                     React.createElement("title", null, "Jayeh - Jason's tech and opinions"), 
-                    React.createElement("link", {rel: "stylesheet", href: "/dist/all.css"}), 
-                    React.createElement("link", {rel: "stylesheet", href: "/node_modules/font-awesome/css/font-awesome.min.css"})
+                    React.createElement("link", {rel: "stylesheet", href: "/dist/reset.css"})
                 ), 
                 React.createElement("body", null, 
                     React.createElement(Header, null), 
                     React.createElement(Locations, {path: this.props.path}, 
                         React.createElement(Location, {path: "/", handler: React.createElement(Blog, null)}), 
-                        React.createElement(Location, {path: "/blog", handler: React.createElement(Blog, null)})
+                        React.createElement(Location, {path: "/blog", handler: React.createElement(Blog, null)}), 
+                        React.createElement(Location, {path: "/article/create", handler: React.createElement(EditArticle, null)}), 
+                        React.createElement(Location, {path: "/article/edit(/:id)", handler: React.createElement(EditArticle, null)})
                     ), 
                     React.createElement("script", {src: "dist/bootstrap.js"})
                 )
@@ -21620,4 +21635,4 @@ var Routes = React.createClass({displayName: "Routes",
 
 module.exports = Routes;
 
-},{"./blog":182,"./header":184,"react":181,"react-router-component":4}]},{},[183]);
+},{"./article/edit":182,"./blog":183,"./header":185,"react":181,"react-router-component":4}]},{},[184]);
