@@ -23,7 +23,7 @@ var Routes = React.createClass({
                         <Location path="/article/create" handler={<EditArticle />} />
                         <Location path="/article/edit(/:id)" handler={<EditArticle />} />
                     </Locations>
-                    <script src="dist/bootstrap.js"></script>
+                    <script src="/dist/bootstrap.js"></script>
                 </body>
             </html>
         );

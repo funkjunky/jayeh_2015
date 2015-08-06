@@ -25,8 +25,8 @@ function error(err, res) {
 }
 
 //this well be called if /dist or node_modules doesn't match a file... it's likea  404
-app.get('/dist', error.bind(app, {type: '', message: ''}));
-app.get('/node_modules', error.bind(app, {type: '', message: ''}));
+app.get('/dist', error.bind(app, {type: '404', message: 'resource for dist not found'}));
+app.get('/node_modules', error.bind(app, {type: '404', message: 'resource for node_modules not found'}));
 
 var proxy = httpProxy.createProxyServer({ ws: true, target: 'http://localhost:1213/' });
 app.all('/api/*', function(req, res) { proxy.web(req, res); } );

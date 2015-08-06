@@ -21626,7 +21626,7 @@ var Routes = React.createClass({displayName: "Routes",
                         React.createElement(Location, {path: "/article/create", handler: React.createElement(EditArticle, null)}), 
                         React.createElement(Location, {path: "/article/edit(/:id)", handler: React.createElement(EditArticle, null)})
                     ), 
-                    React.createElement("script", {src: "dist/bootstrap.js"})
+                    React.createElement("script", {src: "/dist/bootstrap.js"})
                 )
             )
         );
