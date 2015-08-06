@@ -13,6 +13,21 @@ app.use(Favicon(__dirname + '/favicon.ico'));
 app.use('/dist', Express.static(__dirname + '/dist'));
 app.use('/node_modules', Express.static(__dirname + '/node_modules'));
 
+function error(err, res) {
+    console.log('!!!SERVER ERROR!!!');
+    console.log('type: ', err.type);
+    console.log('message: ', err.message);
+    if(err.stack)
+        console.log('stack: ', err.stack);
+    else
+        console.trace();
+    res.send('ERROR: \n' + err.type + '\n' + err.message + '\n' + err.stack);
+}
+
+//this well be called if /dist or node_modules doesn't match a file... it's likea  404
+app.get('/dist', error.bind(app, {type: '', message: ''}));
+app.get('/node_modules', error.bind(app, {type: '', message: ''}));
+
 var proxy = httpProxy.createProxyServer({ ws: true, target: 'http://localhost:1213/' });
 app.all('/api/*', function(req, res) { proxy.web(req, res); } );
 proxy.on('error', function(e) {
@@ -23,13 +38,8 @@ proxy.on('error', function(e) {
 app.get('*', function (req, res) {
     var path = url.parse(req.url).pathname;
     ReactAsync.renderToStringAsync(Routes({path: path}), function(err, markup) {
-        if(err) {
-            console.log('!!!SERVER ERROR!!!');
-            console.log('type: ', err.type);
-            console.log('message: ', err.message);
-            console.log('stack: ', err.stack);
-            res.send('ERROR: \n' + err.type + '\n' + err.message + '\n' + err.stack);
-        }
+        if(err)
+            error(err, res);
         else
             res.send('<!DOCTYPE html>'+markup);
     });
