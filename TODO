@@ -11,15 +11,29 @@ TODO www.jayeh.ca
  	*- start a generic rest server with a unique port for blog
 
  - Basics
- 	- Build basic form for adding blog posts
- 	- Build basic blog route page for showing all blog posts in their entirety
-	- Add github and linkedin info in the header
+	 *- basic form problem… how do i allow editing without modifying state?
+		*- use defaultValue to set the value
+ 	*- Build basic form for adding blog posts
+ 	*- Build basic blog route page for showing all blog posts in their entirety
+	*- add route for viewing full article
+	*- Add github and linkedin info in the header
+
+ - Bit of style
+	- style header nicely
+		- 100% width, font size, borders
+		- linked in icons and github nice.
+	- style blog summaries half decently
+		- min width, centered
+		- whole summary is a link
+	- style full blogs half decently
+		- minwidth centered
+	- Baseline nice fonts everywhere, and nice default spacing
 
  - Create features for blog posts
-	- create article should have a header text area and a body text area
 	- create a ParallaxHeader component that takes an image, and otherwise renders what’s inside it. it well create a parallex effect as the user scrolls down.
 		- fill in todo here…
 	- the default value of the header text area should be a BlogHeader component with an empty image attribute with a p tag inside the component with “Hello World” written in it
+	- button near title input to default header to a parallex of title
 	- add drag and drop to body text area that upload an image, then places an <img /> tag inside the body with the url of the uploaded image.
 	- add drag and drop to the header text area that uploads an image, then replaces BlogHeader image=“” with the image url
 
