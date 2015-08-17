@@ -25,8 +25,8 @@ var FullArticle = React.createClass({
         console.log('rendering full');
         return (
             <div>
-                <a href={'/article/t/'+this.state.article.title}><h1>{this.state.article.header}</h1></a>
-                <p>{this.state.article.body}</p>
+                <a href={'/article/t/'+this.state.article.title} style={{fontSize: 20, margin: 20}} dangerouslySetInnerHTML={{__html: this.state.article.header}}></a>
+                <p style={{fontSize: 14, margin: 20, lineHeight: '200%'}} dangerouslySetInnerHTML={{__html: this.state.article.body}}></p>
             </div>
         )
     },

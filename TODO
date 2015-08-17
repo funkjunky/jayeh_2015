@@ -19,15 +19,25 @@ TODO www.jayeh.ca
 	*- Add github and linkedin info in the header
 
  - Bit of style
-	- style header nicely
-		- 100% width, font size, borders
-		- linked in icons and github nice.
-	- style blog summaries half decently
-		- min width, centered
-		- whole summary is a link
-	- style full blogs half decently
-		- minwidth centered
-	- Baseline nice fonts everywhere, and nice default spacing
+	*- style header nicely
+		*- 100% width, font size, borders
+		*- Github icon.
+	*- style blog summaries half decently (default styles)
+		*- min width, centered
+		*- whole summary is a link
+	*- style full blogs half decently
+		*- minwidth centered
+	*- Baseline nice fonts everywhere, and nice default spacing
+
+	- Use Remarkable for blog and ensure it’s working
+		- package.json
+		- add live preview
+		- add it to the summary and main blog
+	- test markdown-it-regexp with react
+		- package.json
+		- add a simple regex and see if it works in general
+		- return a simple react element
+		- return an interactive react element (simple one)
 
  - Create features for blog posts
 	- create a ParallaxHeader component that takes an image, and otherwise renders what’s inside it. it well create a parallex effect as the user scrolls down.

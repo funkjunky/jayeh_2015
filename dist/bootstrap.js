@@ -22949,8 +22949,8 @@ var FullArticle = React.createClass({displayName: "FullArticle",
         console.log('rendering full');
         return (
             React.createElement("div", null, 
-                React.createElement("a", {href: '/article/t/'+this.state.article.title}, React.createElement("h1", null, this.state.article.header)), 
-                React.createElement("p", null, this.state.article.body)
+                React.createElement("a", {href: '/article/t/'+this.state.article.title, style: {fontSize: 20, margin: 20}, dangerouslySetInnerHTML: {__html: this.state.article.header}}), 
+                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '200%'}, dangerouslySetInnerHTML: {__html: this.state.article.body}})
             )
         )
     },
@@ -22965,8 +22965,8 @@ var ArticleSummary = React.createClass({displayName: "ArticleSummary",
     render: function() {
         return (
             React.createElement("div", {style: {paddingTop: 20, paddingBottom: 20, marginBottom: 'solid 1px black'}}, 
-                React.createElement("a", {href: '/article/t/'+this.props.article.title}, React.createElement("h3", null, this.props.article.header)), 
-                React.createElement("p", null, this.props.article.body)
+                React.createElement("a", {href: '/article/t/'+this.props.article.title, style: {fontSize: 20, margin: 20}, dangerouslySetInnerHTML: {__html: this.props.article.header}}), 
+                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '150%'}, dangerouslySetInnerHTML: {__html: this.props.article.body}})
             )
         )
     },
@@ -22994,10 +22994,10 @@ var Blog = React.createClass({displayName: "Blog",
         console.log('rendering: ', this.state);
         return (
             React.createElement("div", null, 
-                React.createElement("h2", null, "Blog"), 
+                React.createElement("span", {style: {fontFamily: 'Baskerville', fontSize: 36, paddingRight: 10, paddingLeft: 10, borderRight: "solid 2px grey", borderBottom: "solid 2px grey"}}, "Blog"), 
                 this.state.articles.map(function(article) {
                     return React.createElement(ArticleSummary, {article: article});
-                }), ";"
+                })
             )
         );
     },
@@ -23021,10 +23021,11 @@ var React = require('react');
 var Header = React.createClass({displayName: "Header",
     render: function() {
         return (
-            React.createElement("div", {style: {width: '100%'}}, 
-                React.createElement("h1", null, "Jayeh.ca"), 
-                React.createElement("h2", null, "Pro Frisbee Catcher", React.createElement("i", {class: "fa fa-github"})), 
-                React.createElement("a", {href: "https://github.com/funkjunky"}, "Github")
+            React.createElement("div", {style: {display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%', borderBottom: 'solid 2px grey', fontFamily: 'Baskerville'}}, 
+                React.createElement("div", null, 
+                    React.createElement("h1", {style: {fontSize: 48, textAlign: 'right'}}, "Jayeh.ca"), 
+                    React.createElement("h2", {style: {fontSize: 24}}, "Pro Frisbee Guy / Coder ", React.createElement("a", {href: "https://github.com/funkjunky", target: "_blank"}, React.createElement("i", {className: "fa fa-github"})))
+                )
             )
         );
     },
@@ -23051,29 +23052,29 @@ module.exports = function serializeForm(form) {
                 case 'button':
                 case 'reset':
                 case 'submit':
-                    q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
+                    q[form.elements[i].name] = (form.elements[i].value);
                     break;
                 case 'checkbox':
                 case 'radio':
                     if (form.elements[i].checked)
-                        q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
+                        q[form.elements[i].name] = (form.elements[i].value);
                     break;
                 }
                 break;
                 case 'file':
                 break; 
             case 'TEXTAREA':
-                q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
+                q[form.elements[i].name] = (form.elements[i].value);
                 break;
             case 'SELECT':
                 switch (form.elements[i].type) {
                     case 'select-one':
-                        q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
+                        q[form.elements[i].name] = (form.elements[i].value);
                         break;
                     case 'select-multiple':
                         for (j = form.elements[i].options.length - 1; j >= 0; j = j - 1)
                             if (form.elements[i].options[j].selected)
-                                q[form.elements[i].name] = encodeURIComponent(form.elements[i].options[j].value);
+                                q[form.elements[i].name] = (form.elements[i].options[j].value);
                         break;
                     }
                 break;
@@ -23082,7 +23083,7 @@ module.exports = function serializeForm(form) {
                     case 'reset':
                     case 'submit':
                     case 'button':
-                        q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
+                        q[form.elements[i].name] = (form.elements[i].value);
                         break;
                 }
                 break;
@@ -23109,22 +23110,24 @@ var Routes = React.createClass({displayName: "Routes",
                 React.createElement("head", null, 
                     React.createElement("title", null, "Jayeh - Jason's tech and opinions"), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/reset.css"}), 
-                    React.createElement("link", {rel: "stylesheet", href: "/dist/font-awesome.min.css"})
+                    React.createElement("link", {rel: "stylesheet", href: "/node_modules/font-awesome/css/font-awesome.min.css"})
                 ), 
                 React.createElement("body", null, 
                     React.createElement(Header, null), 
-                    React.createElement(Locations, {path: this.props.path}, 
-                        React.createElement(Location, {path: "/", handler: React.createElement(Blog, null)}), 
-                        React.createElement(Location, {path: "/blog", handler: React.createElement(Blog, null)}), 
-                        React.createElement(Location, {path: "/article/create", handler: React.createElement(EditArticle, null)}), 
-                        React.createElement(Location, {path: "/article/edit(/:id)", handler: React.createElement(EditArticle, null)}), 
-                        React.createElement(Location, {path: "/article/id/:id", handler: React.createElement(FullArticle, null)}), 
-                        React.createElement(Location, {path: "/article/t/:title", handler: React.createElement(FullArticle, null)})
+                    React.createElement("div", {style: {fontFamily: 'tahoma'}}, 
+                        React.createElement(Locations, {path: this.props.path}, 
+                            React.createElement(Location, {path: "/", handler: React.createElement(Blog, null)}), 
+                            React.createElement(Location, {path: "/blog", handler: React.createElement(Blog, null)}), 
+                            React.createElement(Location, {path: "/article/create", handler: React.createElement(EditArticle, null)}), 
+                            React.createElement(Location, {path: "/article/edit(/:id)", handler: React.createElement(EditArticle, null)}), 
+                            React.createElement(Location, {path: "/article/id/:id", handler: React.createElement(FullArticle, null)}), 
+                            React.createElement(Location, {path: "/article/t/:title", handler: React.createElement(FullArticle, null)})
+                        )
                     ), 
                     React.createElement("script", {src: "/dist/bootstrap.js"})
                 )
             )
-        );
+        )
     },
 });
 

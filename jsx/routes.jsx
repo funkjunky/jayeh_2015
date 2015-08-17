@@ -15,22 +15,24 @@ var Routes = React.createClass({
                 <head>
                     <title>Jayeh - Jason's tech and opinions</title>
                     <link rel="stylesheet" href="/dist/reset.css" />
-                    <link rel="stylesheet" href="/dist/font-awesome.min.css" />
+                    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
                 </head>
                 <body>
                     <Header />
-                    <Locations path={this.props.path}>
-                        <Location path="/" handler={<Blog />} />
-                        <Location path="/blog" handler={<Blog />} />
-                        <Location path="/article/create" handler={<EditArticle />} />
-                        <Location path="/article/edit(/:id)" handler={<EditArticle />} />
-                        <Location path="/article/id/:id" handler={<FullArticle />} />
-                        <Location path="/article/t/:title" handler={<FullArticle />} />
-                    </Locations>
+                    <div style={{fontFamily: 'tahoma'}}>
+                        <Locations path={this.props.path}>
+                            <Location path="/" handler={<Blog />} />
+                            <Location path="/blog" handler={<Blog />} />
+                            <Location path="/article/create" handler={<EditArticle />} />
+                            <Location path="/article/edit(/:id)" handler={<EditArticle />} />
+                            <Location path="/article/id/:id" handler={<FullArticle />} />
+                            <Location path="/article/t/:title" handler={<FullArticle />} />
+                        </Locations>
+                    </div>
                     <script src="/dist/bootstrap.js"></script>
                 </body>
             </html>
-        );
+        )
     },
 });
 
