@@ -19,7 +19,9 @@
     "serve-favicon": "2.2.x",
     "underscore": "1.8.x",
     "superagent": "latest",
-    "font-awesome": "4.*"
+    "font-awesome": "4.*",
+    "markdown-it": "https://github.com/funkjunky/markdown-it",
+    "markdown-it-regexp": "0.4.*"
   },
   "devDependencies": {
     "browserify": "9.0.x",

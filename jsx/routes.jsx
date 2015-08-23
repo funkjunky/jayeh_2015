@@ -14,7 +14,8 @@ var Routes = React.createClass({
             <html>
                 <head>
                     <title>Jayeh - Jason's tech and opinions</title>
-                    <link rel="stylesheet" href="/dist/reset.css" />
+                    <link rel="stylesheet" href="/dist/base.css" />
+                    <link rel="stylesheet" href="/dist/default.css" />
                     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
                 </head>
                 <body>
