@@ -22,7 +22,8 @@
     "font-awesome": "4.*",
     "markdown-it": "latest",
     "markdown-it-regexp": "0.4.*",
-    "mdreact": "0.1.*"
+    "mdreact": "0.1.*",
+    "highlight.js": "8.*"
   },
   "devDependencies": {
     "browserify": "9.0.x",

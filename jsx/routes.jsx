@@ -17,6 +17,7 @@ var Routes = React.createClass({
                     <link rel="stylesheet" href="/dist/base.css" />
                     <link rel="stylesheet" href="/dist/default.css" />
                     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
+                    <link rel="stylesheet" href="/dist/styles/codepen-embed.css" />
                 </head>
                 <body>
                     <Header />
@@ -31,6 +32,7 @@ var Routes = React.createClass({
                         </Locations>
                     </div>
                     <script src="/dist/bootstrap.js"></script>
+                    <script src="/dist/highlight.pack.js"></script>
                 </body>
             </html>
         )

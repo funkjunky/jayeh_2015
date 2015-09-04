@@ -18,6 +18,11 @@ var EditArticle = React.createClass({
             body: '',
         };
     },
+    componentDidUpdate: function() {
+        var codes = document.querySelectorAll('pre code');
+        for(var i=0; i!=codes.length; ++i)
+            hljs.highlightBlock(codes[i]);
+    },
     render: function() {
         var md = new MarkdownIt();
             md.use(MdParallexHeader);

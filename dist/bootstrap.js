@@ -31160,6 +31160,11 @@ var EditArticle = React.createClass({displayName: "EditArticle",
             body: '',
         };
     },
+    componentDidUpdate: function() {
+        var codes = document.querySelectorAll('pre code');
+        for(var i=0; i!=codes.length; ++i)
+            hljs.highlightBlock(codes[i]);
+    },
     render: function() {
         var md = new MarkdownIt();
             md.use(MdParallexHeader);
@@ -31492,7 +31497,8 @@ var Routes = React.createClass({displayName: "Routes",
                     React.createElement("title", null, "Jayeh - Jason's tech and opinions"), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/base.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/default.css"}), 
-                    React.createElement("link", {rel: "stylesheet", href: "/node_modules/font-awesome/css/font-awesome.min.css"})
+                    React.createElement("link", {rel: "stylesheet", href: "/node_modules/font-awesome/css/font-awesome.min.css"}), 
+                    React.createElement("link", {rel: "stylesheet", href: "/dist/styles/codepen-embed.css"})
                 ), 
                 React.createElement("body", null, 
                     React.createElement(Header, null), 
@@ -31506,7 +31512,8 @@ var Routes = React.createClass({displayName: "Routes",
                             React.createElement(Location, {path: "/article/t/:title", handler: React.createElement(FullArticle, null)})
                         )
                     ), 
-                    React.createElement("script", {src: "/dist/bootstrap.js"})
+                    React.createElement("script", {src: "/dist/bootstrap.js"}), 
+                    React.createElement("script", {src: "/dist/highlight.pack.js"})
                 )
             )
         )
