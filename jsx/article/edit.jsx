@@ -3,8 +3,8 @@ var Superagent = require('superagent');
 var MarkdownIt = require('markdown-it');
 var MarkdownRegexp = require('markdown-it-regexp');
 var MdHighlight = require('markdown-it-highlightjs');
-var MdVariables = require('../md-plugins/mdvariables');
-var MdFigCaption = require('../md-plugins/mdfigcaption');
+var MdVariables = require('mdvariables');
+var MdFigCaption = require('mdfigcaption');
 
 var SerializeForm = require('../helpers/serializeform');
 var StateShortcuts = require('../mixins/stateshortcuts');

@@ -23,6 +23,8 @@
     "markdown-it": "latest",
     "markdown-it-regexp": "0.4.*",
     "mdreact": "0.1.*",
+    "mdvariables": "0.1.*",
+    "mdfigcaption": "0.1.*",
     "highlight.js": "8.*",
     "markdown-it-highlightjs": "2.*"
   },
