@@ -60,22 +60,30 @@ TODO www.jayeh.ca
 		*- rewrite render in my plugin to use renderTokens
 		*- try my plugin with the original version of markdown-it
 
-	- add default styles for headers and such in new css file
+	*- add default styles for headers and such in new css file
 		*- h tags
 		*- strong, em, del, hr
 		*- p tag margins
 		*- a tags
-		- blockquote (nice quote style)
-			- do it like the commonmark dingus, but also change font family and maybe add some jazz?
-		- code (nice, very important! Maybe use a library for syntax highlighting)
-			- include the highlight library highlight.js
+		*- blockquote (nice quote style)
+		*- code
+
+	- try markdown-it-highlightjs instead to auto get highlight js to work without didUpdate
+
  - Create features for blog posts
-	- create a ParallaxHeader component that takes an image, and otherwise renders what’s inside it. it well create a parallex effect as the user scrolls down.
-		- fill in todo here…
-	- the default value of the header text area should be a BlogHeader component with an empty image attribute with a p tag inside the component with “Hello World” written in it
-	- button near title input to default header to a parallex of title
-	- add drag and drop to body text area that upload an image, then places an <img /> tag inside the body with the url of the uploaded image.
-	- add drag and drop to the header text area that uploads an image, then replaces BlogHeader image=“” with the image url
+	- parallax markdown
+		- add “react-parallax” 0.1.* to package.json
+		- create an md plugin using react-parallax
+		- test it out on edit, and fix plugin till it works
+
+	- header should have a variable available to it $title, which is the value of the title field
+		- i may need to make a markdown-it plugin to allow variables
+	
+	- create a figure/img/figcaption md plugin (BASIC! not jsx)
+		- create the basic plugin as an ugly thing
+		- add the styles for the html tags figure and figcaption and img
+
+	- add drag and drop to body text area that uploads an image, then places the url where the carot is. Do the same for header as well!
 
 	- add autosaving to local storage
 

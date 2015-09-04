@@ -32,7 +32,6 @@ var Routes = React.createClass({
                         </Locations>
                     </div>
                     <script src="/dist/bootstrap.js"></script>
-                    <script src="/dist/highlight.pack.js"></script>
                 </body>
             </html>
         )

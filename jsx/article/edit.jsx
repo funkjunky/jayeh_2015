@@ -2,6 +2,7 @@ var React = require('react');
 var Superagent = require('superagent');
 var MarkdownIt = require('markdown-it');
 var MarkdownRegexp = require('markdown-it-regexp');
+var MdHighlight = require('markdown-it-highlightjs');
 
 var SerializeForm = require('../helpers/serializeform');
 var StateShortcuts = require('../mixins/stateshortcuts');
@@ -18,16 +19,11 @@ var EditArticle = React.createClass({
             body: '',
         };
     },
-    componentDidUpdate: function() {
-        var codes = document.querySelectorAll('pre code');
-        for(var i=0; i!=codes.length; ++i)
-            hljs.highlightBlock(codes[i]);
-    },
     render: function() {
         var md = new MarkdownIt();
             md.use(MdParallexHeader);
             md.use(MdReact);
-        //var headerMarkup = md.render(this.state.header);
+            md.use(MdHighlight);
         var headerMarkup = md.renderTokens(this.state.header);
         console.log('markup: ', headerMarkup);
         var bodyMarkup = md.render(this.state.body);
