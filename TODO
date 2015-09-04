@@ -41,7 +41,7 @@ TODO www.jayeh.ca
 			*- simply render a prop?
 			*- add a state, perhaps onhover change style?
 			*- include focusing an element on click
-		- properly fork markdown-it
+		*- properly fork markdown-it
 			*- fork it
 			*- copy renderer and index files from jayeh_2015
 			*- commit
@@ -52,17 +52,23 @@ TODO www.jayeh.ca
 			*- use my fork in package.json for jayeh_2015
 			*- make sure things still work
 			*- push
-			- research to see if map and reduce are truly slower than string concatonation.
-				- make pull request, with disclaimer that map and reduce were used
+			*- research to see if map and reduce are truly slower than string concatonation.
+				*- make pull request, with disclaimer that map and reduce were used
+
+	*- fix rendering both react and markup with html
+		*- rewrite renderTokens in my plugin
+		*- rewrite render in my plugin to use renderTokens
+		*- try my plugin with the original version of markdown-it
+
 	- add default styles for headers and such in new css file
 		*- h tags
-		- strong, em, del, hr
-		- p tag margins
-		- a tags
+		*- strong, em, del, hr
+		*- p tag margins
+		*- a tags
 		- blockquote (nice quote style)
-			- include the highlight library highlight.js
+			- do it like the commonmark dingus, but also change font family and maybe add some jazz?
 		- code (nice, very important! Maybe use a library for syntax highlighting)
-
+			- include the highlight library highlight.js
  - Create features for blog posts
 	- create a ParallaxHeader component that takes an image, and otherwise renders what’s inside it. it well create a parallex effect as the user scrolls down.
 		- fill in todo here…

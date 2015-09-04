@@ -8,6 +8,8 @@ var StateShortcuts = require('../mixins/stateshortcuts');
 
 var MdParallexHeader = require('../md-plugins/parallexheader');
 
+var MdReact = require('mdreact');
+
 var EditArticle = React.createClass({
     mixins: [StateShortcuts],
     getInitialState: function() {
@@ -19,6 +21,7 @@ var EditArticle = React.createClass({
     render: function() {
         var md = new MarkdownIt();
             md.use(MdParallexHeader);
+            md.use(MdReact);
         //var headerMarkup = md.render(this.state.header);
         var headerMarkup = md.renderTokens(this.state.header);
         console.log('markup: ', headerMarkup);
@@ -32,7 +35,6 @@ var EditArticle = React.createClass({
                         <input type="text" name="title" /><br />
                         <textarea name="header" style={{width: 800, height: 150}} defaultValue={'use this for loading data'} onChange={this.setStateAsInput('header')} /><br />
                         {headerMarkup}
-                        <div dangerouslySetInnerHTML={{__html: headerMarkup}} />
                         <textarea name="body" style={{width: 800, height: 250}} onChange={this.setStateAsInput('body')} /><br />
                         <input type="submit" />
                         <div dangerouslySetInnerHTML={{__html: bodyMarkup}} />
