@@ -3,7 +3,7 @@ var Plugin = require('markdown-it-regexp');
 var ParallexHeader = require('../parallex-header');
 
 var MdParallexHeader= Plugin(
-    /@(\w+)/,
+    /~(\w+)/,
     function(match, utils) {
         console.log('inside');
         return (

@@ -15705,7 +15705,7 @@ util.inherits(Plugin, Function)
 
 // function that registers plugin with markdown-it
 Plugin.prototype.init = function (md) {
-  md.inline.ruler.push(this.id, this.parse.bind(this))
+  md.inline.ruler.before('link', this.id, this.parse.bind(this))
 
   md.renderer.rules[this.id] = this.render.bind(this)
 }
@@ -45539,6 +45539,8 @@ var Superagent = require('superagent');
 var MarkdownIt = require('markdown-it');
 var MarkdownRegexp = require('markdown-it-regexp');
 var MdHighlight = require('markdown-it-highlightjs');
+var MdVariables = require('../md-plugins/mdvariables');
+var MdFigCaption = require('../md-plugins/mdfigcaption');
 
 var SerializeForm = require('../helpers/serializeform');
 var StateShortcuts = require('../mixins/stateshortcuts');
@@ -45551,15 +45553,23 @@ var EditArticle = React.createClass({displayName: "EditArticle",
     mixins: [StateShortcuts],
     getInitialState: function() {
         return {
+            title: '',
             header: '',
             body: '',
         };
     },
     render: function() {
+        //TODO: put this in an initial function and reuse the object.
+        //TODO: better way than using self=this. [note: can't use bind, just incase Plugin needs context]
+        var self = this;
         var md = new MarkdownIt();
             md.use(MdParallexHeader);
             md.use(MdReact);
             md.use(MdHighlight);
+            md.use(MdVariables(function() {
+                return self.state;
+            }));
+            md.use(MdFigCaption);
         var headerMarkup = md.renderTokens(this.state.header);
         console.log('markup: ', headerMarkup);
         var bodyMarkup = md.render(this.state.body);
@@ -45569,7 +45579,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                 React.createElement("h2", null, "Edit Article"), 
                 React.createElement("div", null, 
                     React.createElement("form", {onSubmit: this.saveArticle, ref: "myform"}, 
-                        React.createElement("input", {type: "text", name: "title"}), React.createElement("br", null), 
+                        React.createElement("input", {type: "text", name: "title", onChange: this.setStateAsInput('title')}), React.createElement("br", null), 
                         React.createElement("textarea", {name: "header", style: {width: 800, height: 150}, defaultValue: 'use this for loading data', onChange: this.setStateAsInput('header')}), React.createElement("br", null), 
                         headerMarkup, 
                         React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, onChange: this.setStateAsInput('body')}), React.createElement("br", null), 
@@ -45597,7 +45607,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
 
 module.exports = EditArticle;
 
-},{"../helpers/serializeform":409,"../md-plugins/parallexheader":410,"../mixins/stateshortcuts":411,"markdown-it":154,"markdown-it-highlightjs":138,"markdown-it-regexp":151,"mdreact":219,"react":399,"superagent":400}],404:[function(require,module,exports){
+},{"../helpers/serializeform":409,"../md-plugins/mdfigcaption":410,"../md-plugins/mdvariables":411,"../md-plugins/parallexheader":412,"../mixins/stateshortcuts":413,"markdown-it":154,"markdown-it-highlightjs":138,"markdown-it-regexp":151,"mdreact":219,"react":399,"superagent":400}],404:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
@@ -45691,7 +45701,7 @@ if(typeof window !== 'undefined') {
     }
 }
 
-},{"./routes":413,"react":399}],408:[function(require,module,exports){
+},{"./routes":415,"react":399}],408:[function(require,module,exports){
 var React = require('react');
 
 var Header = React.createClass({displayName: "Header",
@@ -45769,12 +45779,51 @@ module.exports = function serializeForm(form) {
 };
 
 },{}],410:[function(require,module,exports){
+var Plugin = require('markdown-it-regexp');
+
+var MdFigCaption = Plugin(
+    /~\[([^\]]*)\]\(([^\)]*)\)/,
+    function(match, utils) {
+        var caption = match[1];
+        var url = match[2];
+        console.log('img stuff: ', caption, url, match);
+        
+        //TODO: is there a safer way to do this? I unno...
+        var html = '<figure><img src="' + url + '" /><figcaption>' + caption + '</figcaption></figure>';
+
+        return html;
+    }
+);
+
+module.exports = MdFigCaption;
+
+},{"markdown-it-regexp":151}],411:[function(require,module,exports){
+var Plugin = require('markdown-it-regexp');
+
+var MdVariables = function(dataFn) {
+    return Plugin(
+        /@(\w+)/,
+        function(match, utils) {
+            var data = dataFn();
+            if(data[match[1]])
+                return data[match[1]];
+            else {
+                console.warn('MdVariables: We couldn\'t find the variable from the data callback. (key, data)', match[1], data);
+                return '';
+            }
+        }
+    );
+};
+
+module.exports = MdVariables;
+
+},{"markdown-it-regexp":151}],412:[function(require,module,exports){
 var React = require('react');
 var Plugin = require('markdown-it-regexp');
 var ParallexHeader = require('../parallex-header');
 
 var MdParallexHeader= Plugin(
-    /@(\w+)/,
+    /~(\w+)/,
     function(match, utils) {
         console.log('inside');
         return (
@@ -45785,7 +45834,7 @@ var MdParallexHeader= Plugin(
 
 module.exports = MdParallexHeader;
 
-},{"../parallex-header":412,"markdown-it-regexp":151,"react":399}],411:[function(require,module,exports){
+},{"../parallex-header":414,"markdown-it-regexp":151,"react":399}],413:[function(require,module,exports){
 var stateShortcuts = {
     getInitialState: function() {
         return {};
@@ -45841,7 +45890,7 @@ var stateShortcuts = {
 
 module.exports = stateShortcuts;
 
-},{}],412:[function(require,module,exports){
+},{}],414:[function(require,module,exports){
 var React = require('react');
 var StateShortcuts = require('./mixins/stateshortcuts');
 
@@ -45868,7 +45917,7 @@ React.findDOMNode(this.refs.bleh).focus();
 
 module.exports = ParallexHeader;
 
-},{"./mixins/stateshortcuts":411,"react":399}],413:[function(require,module,exports){
+},{"./mixins/stateshortcuts":413,"react":399}],415:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router-component');
 var Locations = Router.Locations;

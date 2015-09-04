@@ -65,3 +65,13 @@ code, pre {
     color: #333;
     background-color: #f8f8ff;
 }
+
+figure {
+}
+
+figcaption {
+    padding: 7px 0;
+    border-bottom: 1px solid #ddd;
+    color: #4f525a;
+    text-align: left;
+}
