@@ -8,6 +8,7 @@
     "url": "https://github.com/funkjunky/jayeh_2015"
   },
   "dependencies": {
+    "jquery": "2.1.4",
     "express": "4.9.x",
     "fibers": "^1.0.6",
     "http-proxy": "1.11.x",
