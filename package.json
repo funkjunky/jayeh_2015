@@ -25,6 +25,7 @@
     "mdreact": "0.1.*",
     "mdvariables": "0.1.*",
     "mdfigcaption": "0.1.*",
+    "react-filedrop": "0.1.*",
     "highlight.js": "8.*",
     "markdown-it-highlightjs": "2.*"
   },

@@ -77,21 +77,51 @@ TODO www.jayeh.ca
 		*- create the basic plugin as an ugly thing
 		*- add the styles for the html tags figure and figcaption and img
 
-	- turn the variable and figcaption md plugins into npm plugins [make them JS completely]
+	*- turn the variable and figcaption md plugins into npm plugins [make them JS completely]
 
-	- add drag and drop to body text area that uploads an image, then places the url where the carot is. Do the same for header as well!
-		- i may need to reimplement image saving on generic rest server
+	*- package dropzone react component and include through package
 
-	- parallax markdown
-		- add “react-parallax” 0.1.* to package.json
-		- create an md plugin using react-parallax
-		- test it out on edit, and fix plugin till it works
+	*- get rid of the parallax stuff. It failed. Need to clean it up. I have my better idea now!
+
+	*- add preview for the body textarea
+
+	- add authentication to jayeh_2015… hmmm	
+
+	- migrate data
+		- get data from old mongoDB
+		- write a script to import it to the new blog
+		- put up new website
+		- import old blog posts
+		- update old blog posts with nice headers
+	
+	- write new blog post about building my new blog
+		~at same time work on cute character parallax
+
+	- character parallax [dude in a library!]
+		- calculate dimensions of sprites to fit in header neatly. (imagine it)
+		- make a pixel character of myself
+		- get or make a nice set of book shelves i can use
+		- place graphics on page
+		- add scrolling effect that moves the character
+		- create animations for character walking left and right
+		- create different idling animations
+			- left to right hand scanning books
+			- tip toes, head left right
+			- head tilt, maybe chin scratch
+			- squat
+		- implement the walking animations and idle animations
+		- create an animation for grabbing a book and opening it
+		- create an animation for scanning an open book
+		- create an animation for flipping pages right to left
+			- reverse it for the opposite?
+		- create a sprite for an empty book spot, so I can grab a book and leave an empty spot.
+		- implement the grabbing, scanning and flipping animations for articles
+		~put additional ideas from book in this TODO later on.
 
 	- add autosaving to local storage
 
 	- create Sidenote component like Ars’s Game Details on the right or left. You specify the left or right and the width [defaults: right, 200]. The inside is the html
 
-	- add preview for the body textarea
 	- add very nice default font sizes and formatting for article… now that I have preview I should be able to ensure everything looks incredible
 		- pre-wrap so new lines show
 		- find a nice type font
