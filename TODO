@@ -1,91 +1,57 @@
 TODO www.jayeh.ca
 —
- - Setup
- 	*- copy and paste all necessary files from london fog over.
-	*- .gitignore /src folder and /dist folder
-	*- clean up files
-	*- commit the rest
-	*- clean up code
-	*- commit again
- 	*- ensure a basic page loads and that routes work
- 	*- start a generic rest server with a unique port for blog
 
- - Basics
-	 *- basic form problem… how do i allow editing without modifying state?
-		*- use defaultValue to set the value
- 	*- Build basic form for adding blog posts
- 	*- Build basic blog route page for showing all blog posts in their entirety
-	*- add route for viewing full article
-	*- Add github and linkedin info in the header
+	*- Consider some better security for generic rest server
+		*- implement feathers authentication
+		*- add admin user
+		*- ensure login works
+		*- ensure adding new user works
+	*- add hooks to ensure authorization of user
+		*- write down implementation here
+		*- system now takes config.js file in
+		*- make sure default works.
+		*- make sure config works.
 
- - Bit of style
-	*- style header nicely
-		*- 100% width, font size, borders
-		*- Github icon.
-	*- style blog summaries half decently (default styles)
-		*- min width, centered
-		*- whole summary is a link
-	*- style full blogs half decently
-		*- minwidth centered
-	*- Baseline nice fonts everywhere, and nice default spacing
+	- separate the code into nice sections and files for generic rest server. May as well make it super clean.
+		*- finish separating code into sections
+		*- rename files to be dashed if camel cased
+		*- no static strings… all should be configs!
+		*- ensure server still works as expected, try login and gets
+		*- commit
+		*- merge back to dev
+		*-figure out if there is a way to bypass “/api/“ thing, if no immediate solution becomes apparent, then simply assume always prefixed with api, including make a prefix config and the default is “/api”
+		*- remove the connection event… it’s messy and adds unneeded code. [just remove the function param].
+		*- fix cannot get messages… do better proper error, like 404
+		*- commit
 
-	*- Use Remarkable for blog and ensure it’s working
-		*- package.json
-		*- add live preview
-		*- add it to the summary and main blog
-	- test markdown-it-regexp with react
-		*- package.json
-		*- add a simple regex and see if it works in general
-		*- return a simple react element **SUCCESS, but…**
-		- return an interactive react element (simple one)
-			*- simply render a prop?
-			*- add a state, perhaps onhover change style?
-			*- include focusing an element on click
-		*- properly fork markdown-it
-			*- fork it
-			*- copy renderer and index files from jayeh_2015
-			*- commit
-			*- comment, then commit
-			*- add tests and ensure they pass
-				*- write tests
-				*- run the mocha tests and fix until working
-			*- use my fork in package.json for jayeh_2015
-			*- make sure things still work
-			*- push
-			*- research to see if map and reduce are truly slower than string concatonation.
-				*- make pull request, with disclaimer that map and reduce were used
+	*- figure out how to get global install to work, so people can use generic rest server in a basic global way.
+	*- update readme to reflect authentication and authorization
+	*- commit, merge to master, update package.json with new version, commit, tag new version. push, then push dev branch and delete feature branch
+	*- deploy the generic server
 
-	*- fix rendering both react and markup with html
-		*- rewrite renderTokens in my plugin
-		*- rewrite render in my plugin to use renderTokens
-		*- try my plugin with the original version of markdown-it
+	*- ensure the proxy is setup for jayeh_2015 [url with port]
+		*- through environment variable on local
+		*- how to setup environment variable on heroku
 
-	*- add default styles for headers and such in new css file
-		*- h tags
-		*- strong, em, del, hr
-		*- p tag margins
-		*- a tags
-		*- blockquote (nice quote style)
-		*- code
+	- add authentication to jayeh_2015
+		- add a login page
+		- ensure i can login as super user
+		- add oauth buttons
+			- start with google
+			- troubleshoot…
+			- add the rest
+		- ensure that oauth user returns info, but can’t create or edit articles
 
-	*- try markdown-it-highlightjs instead to auto get highlight js to work without didUpdate
-
- - Create features for blog posts
-	*- header should have a variable available to it $title, which is the value of the title field
-	
-	*- create a figure/img/figcaption md plugin (BASIC! not jsx)
-		*- create the basic plugin as an ugly thing
-		*- add the styles for the html tags figure and figcaption and img
-
-	*- turn the variable and figcaption md plugins into npm plugins [make them JS completely]
-
-	*- package dropzone react component and include through package
-
-	*- get rid of the parallax stuff. It failed. Need to clean it up. I have my better idea now!
-
-	*- add preview for the body textarea
-
-	- add authentication to jayeh_2015… hmmm	
+	- get jayeh_2015 up live on heroku
+		- get a new instance going for generic rest server
+			- get setup and run
+			- test
+		- setup a new instance going for jayeh_2015
+			- set the config variables
+				- PROXYURL to point to generic rest server (heroku config:set x=noquotes)
+				- ADMINUSER [different from dev]
+				- ADMINPASS
+			- run the server and test
 
 	- migrate data
 		- get data from old mongoDB
@@ -93,7 +59,17 @@ TODO www.jayeh.ca
 		- put up new website
 		- import old blog posts
 		- update old blog posts with nice headers
-	
+
+	- add system to edit old articles
+		- simple list with edit and delete links and a create link at the top
+	- edit old links to have beautiful header markup
+		- ??? effects??? I’m thinking greyscale background, text has white gradient out to transparent background, which disappears on hover and the text becomes thing white glow, black text
+
+	- add comment system
+		- ensure oauth users can comment.
+		- try and get avatar from oauth
+		- ensure the comments look nice
+
 	- write new blog post about building my new blog
 		~at same time work on cute character parallax
 
@@ -141,3 +117,8 @@ TODO www.jayeh.ca
 	- On mouseover the first bit of text is shown to give the user a preview with all tags stripped away.
 	- format everything very nicely and add a splash of colour where it seems necessary.
 	- add share button on top of main page article
+		- when clicked, have animation of character text on a cell phone
+
+ - Add my soundcloud likes to my website
+	- create animations for character to listen to music when played
+	- implement animation

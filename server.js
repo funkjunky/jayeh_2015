@@ -28,8 +28,10 @@ function error(err, res) {
 app.get('/dist', error.bind(app, {type: '404', message: 'resource for dist not found'}));
 app.get('/node_modules', error.bind(app, {type: '404', message: 'resource for node_modules not found'}));
 
-var proxy = httpProxy.createProxyServer({ ws: true, target: 'http://localhost:1213/' });
-app.all('/api/*', function(req, res) { proxy.web(req, res); } );
+var proxyUrl = process.env.PROXYURL; //TODO: put this with the configs
+var apiPath = 'api/';
+var proxy = httpProxy.createProxyServer({ ws: true, target: proxyUrl });
+app.all('/' + apiPath + '*', function(req, res) { proxy.web(req, res); } );
 proxy.on('error', function(e) {
     console.log('proxy error: ', e);
 });
@@ -45,11 +47,13 @@ app.get('*', function (req, res) {
     });
 });
 
-var server = app.listen(9002, function () {
-    var host = server.address().address
-    var port = server.address().port
-    console.log('Example app listening at http://%s:%s', host, port)
+var port = process.env.PORT || 9002;
+var server = app.listen(port, function () {
+    var host = server.address().address;
+    var port = server.address().port;
+    console.log('REST/Socket proxy listening at ', proxyUrl + apiPath);
+    console.log('Example app listening at http://%s:%s', host, port);
 })
 server.on('upgrade', function (req, socket, head) {
-  proxy.ws(req, socket, head)
+  proxy.ws(req, socket, head);
 })
