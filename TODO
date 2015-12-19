@@ -53,7 +53,7 @@ TODO www.jayeh.ca
 		*- with the authorization tables, they can add a function(db, context, next)
 		*- handle this function
 
-	- get jayeh_2015 ready for launch
+	*- get jayeh_2015 ready for launch
 		*- deploy latest version of generic rest server properly
 		*- see if jayeh even still runs
 		*- implement comments on articles requiring authentication
@@ -61,9 +61,10 @@ TODO www.jayeh.ca
 		*- add a before create hook of comment add a created_at Date.now()
 		*- add an after hook for find to attach user to comment
 		*- ensure comments work
-		- ensure editing articles works
-			- previews dont show immediately.
-			- remove spam in mdreact plugin
+		*- ensure editing articles works
+			*- previews dont show immediately.
+			*- remove spam in mdreact plugin
+			*- so many things fixed @.@… but seems good
 
 
 	- get jayeh_2015 up live on heroku

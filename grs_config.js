@@ -4,13 +4,13 @@ var config = {
     mongo_url: 'mongodb://localhost:27017/jayeh',
     collections: {
         article: {
-            created: {
+            create: {
                 auth: 'publisher',
             },
-            edited:   {
+            edit:   {
                 auth: 'publisher',
             },
-            deleted: {
+            delete: {
                 auth: 'publisher',
             },
         },
