@@ -7,6 +7,8 @@ var Header = require('./header');
 var Blog = require('./blog');
 var EditArticle = require('./article/edit');
 var FullArticle = require('./article/full');
+var Login = require('./login');
+var UserPanel = require('./user-panel');
 
 var Routes = React.createClass({
     render: function() {
@@ -29,6 +31,9 @@ var Routes = React.createClass({
                             <Location path="/article/edit(/:id)" handler={<EditArticle />} />
                             <Location path="/article/id/:id" handler={<FullArticle />} />
                             <Location path="/article/t/:title" handler={<FullArticle />} />
+                            <Location path="/user/:username" handler={<UserPanel />} />
+
+                            <Location path="/login" handler={<Login />} />
                         </Locations>
                     </div>
                     <script src="/dist/bootstrap.js"></script>

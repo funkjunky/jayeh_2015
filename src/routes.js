@@ -7,6 +7,8 @@ var Header = require('./header');
 var Blog = require('./blog');
 var EditArticle = require('./article/edit');
 var FullArticle = require('./article/full');
+var Login = require('./login');
+var UserPanel = require('./user-panel');
 
 var Routes = React.createClass({displayName: "Routes",
     render: function() {
@@ -28,7 +30,10 @@ var Routes = React.createClass({displayName: "Routes",
                             React.createElement(Location, {path: "/article/create", handler: React.createElement(EditArticle, null)}), 
                             React.createElement(Location, {path: "/article/edit(/:id)", handler: React.createElement(EditArticle, null)}), 
                             React.createElement(Location, {path: "/article/id/:id", handler: React.createElement(FullArticle, null)}), 
-                            React.createElement(Location, {path: "/article/t/:title", handler: React.createElement(FullArticle, null)})
+                            React.createElement(Location, {path: "/article/t/:title", handler: React.createElement(FullArticle, null)}), 
+                            React.createElement(Location, {path: "/user/:username", handler: React.createElement(UserPanel, null)}), 
+
+                            React.createElement(Location, {path: "/login", handler: React.createElement(Login, null)})
                         )
                     ), 
                     React.createElement("script", {src: "/dist/bootstrap.js"})

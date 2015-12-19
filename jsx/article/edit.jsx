@@ -1,38 +1,24 @@
 var React = require('react');
 var Superagent = require('superagent');
-var MarkdownIt = require('markdown-it');
 
+var Jayehmd = require('../helpers/jayehmd');
 var SerializeForm = require('../helpers/serializeform');
 var StateShortcuts = require('../mixins/stateshortcuts');
 var Filedrop = require('react-filedrop');
-
-var MarkdownRegexp = require('markdown-it-regexp');
-var MdHighlight = require('markdown-it-highlightjs');
-var MdVariables = require('mdvariables');
-var MdFigCaption = require('mdfigcaption');
-var MdReact = require('mdreact');
-
 
 var EditArticle = React.createClass({
     mixins: [StateShortcuts],
     getInitialState: function() {
         return {
-            title: '',
-            header: '',
-            body: '',
+            title: ' ',
+            header: ' ',
+            body: ' ',
         };
     },
     render: function() {
-        //TODO: put this in an initial function and reuse the object.
-        //TODO: better way than using self=this. [note: can't use bind, just incase Plugin needs context]
-        var self = this;
-        var md = new MarkdownIt();
-            md.use(MdReact);
-            md.use(MdHighlight);
-            md.use(MdVariables(function() {
-                return self.state;
-            }));
-            md.use(MdFigCaption);
+        var md = Jayehmd(this.state);
+
+        console.log('header: ', this.state.header);
         var headerMarkup = md.renderTokens(this.state.header);
         var bodyMarkup = md.renderTokens(this.state.body);
 
@@ -41,14 +27,14 @@ var EditArticle = React.createClass({
                 <h2>Edit Article</h2>
                 <div>
                     <form onSubmit={this.saveArticle} ref="myform">
-                        <input type="text" name="title" onChange={this.setStateAsInput('title')} /><br />
+                        <input type="text" name="title" value={this.state.title} onChange={this.setStateAsInput('title')} /><br />
                         <Filedrop handleFile={this.handleFile}>
                             <textarea className="dropZone" name="header" style={{width: 800, height: 150}} value={this.state.header} onChange={this.setStateAsInput('header')} onDrop={this.handleDrop} onDragOver={this.preventDefault} /><br />
                         </Filedrop>
                         {headerMarkup}
-                        <textarea name="body" style={{width: 800, height: 250}} onChange={this.setStateAsInput('body')} /><br />
+                        <textarea name="body" style={{width: 800, height: 250}} value={this.state.body} onChange={this.setStateAsInput('body')} /><br />
                         <input type="submit" />
-                        <div dangerouslySetInnerHTML={{__html: bodyMarkup}} />
+                        {bodyMarkup}
                     </form>
                 </div>
             </div>
@@ -56,7 +42,25 @@ var EditArticle = React.createClass({
     },
 
     componentDidMount: function() {
-        console.log('did mount');
+        if(this.props.id)
+            this.fetchArticle(this.props.id);
+
+        this.addEvents();
+    },
+
+    fetchArticle: function(id) {
+        this.setState({title: '-', header: '-', body: '-'});
+        Superagent('get', '/api/article/' + id).end(function(err, response) {
+            console.log('response: ', response);
+            this.setState({
+                title: response.body.title,
+                header: response.body.header,
+                body: response.body.body,
+            });
+        }.bind(this));
+    },
+
+    addEvents: function() {
         document.addEventListener('dragenter', function(event) {
             console.log('drag started: ', document.querySelectorAll('.dropZone'));
             var dropZones = document.querySelectorAll('.dropZone');
@@ -76,21 +80,6 @@ var EditArticle = React.createClass({
     preventDefault: function(e) {
         e.preventDefault();
     },
-
-/*
-    dragEnter: function(e) {
-        e.preventDefault();
-        console.log('wtsgfdgf');
-        this.backgroundColor = e.target.style.backgroundColor;
-        e.target.style.backgroundColor = 'green';
-        event.stopPropagation();
-    },
-    dragLeave: function(e) {
-        console.log('backgroundcolor: ', this.backgroundColor);
-        e.target.style.backgroundColor = this.backgroundColor;
-        event.stopPropagation();
-    },
-    */
 
     handleDrop: function(e) {
         e.stopPropagation();

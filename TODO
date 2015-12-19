@@ -34,13 +34,37 @@ TODO www.jayeh.ca
 		*- how to setup environment variable on heroku
 
 	- add authentication to jayeh_2015
-		- add a login page
-		- ensure i can login as super user
-		- add oauth buttons
-			- start with google
-			- troubleshoot…
-			- add the rest
-		- ensure that oauth user returns info, but can’t create or edit articles
+		*- add a login page
+		*- ensure i can login as super user
+		*- add a user profile page
+		*- add a logout route
+		*- make sure redirect work correctly
+			*- if already logged in, /login redirect to /user/<current>
+		*- add oauth buttons
+			*- just do google
+				*- get verification from Google
+				*- put keys in env variables
+				*- ensure we overwrite config with env variables
+			*- troubleshoot
+				*- try the oauth url… it should redirect to google.
+				*- ensure our user url prints out the new user
+
+	*- generic rest server triggers
+		*- with the authorization tables, they can add a function(db, context, next)
+		*- handle this function
+
+	- get jayeh_2015 ready for launch
+		*- deploy latest version of generic rest server properly
+		*- see if jayeh even still runs
+		*- implement comments on articles requiring authentication
+		*- mostly fix generic rest server brokenness
+		*- add a before create hook of comment add a created_at Date.now()
+		*- add an after hook for find to attach user to comment
+		*- ensure comments work
+		- ensure editing articles works
+			- previews dont show immediately.
+			- remove spam in mdreact plugin
+
 
 	- get jayeh_2015 up live on heroku
 		- get a new instance going for generic rest server
@@ -51,17 +75,18 @@ TODO www.jayeh.ca
 				- PROXYURL to point to generic rest server (heroku config:set x=noquotes)
 				- ADMINUSER [different from dev]
 				- ADMINPASS
+				- HOST that is http://www.jayeh.ca
+				- GOOGLE_ID
+				- GOOGLE_SECRET
 			- run the server and test
 
 	- migrate data
-		- get data from old mongoDB
-		- write a script to import it to the new blog
-		- put up new website
-		- import old blog posts
+		- connect old mongodb to new website
+			- rename article collection to “articles” with an s
 		- update old blog posts with nice headers
 
-	- add system to edit old articles
-		- simple list with edit and delete links and a create link at the top
+	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
+
 	- edit old links to have beautiful header markup
 		- ??? effects??? I’m thinking greyscale background, text has white gradient out to transparent background, which disappears on hover and the text becomes thing white glow, black text
 
