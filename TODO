@@ -66,8 +66,21 @@ TODO www.jayeh.ca
 			*- remove spam in mdreact plugin
 			*- so many things fixed @.@… but seems good
 
+	- setup jayeh for grs deployment
+		*- make a switch.js script that either calls generic rest server from node grs_config.js, or server.js, depending on an env variable
+		*- test it and ensure it works in both modes.
 
-	- get jayeh_2015 up live on heroku
+	[db creds: jayehroot lePassword8]
+	[mongodb://jayehroot:lePassword8@ds035965.mongolab.com:35965/heroku_5ckp93sv]
+	- Deploy Generic Rest Server (through jayeh)
+		*- read about setting up mongo lab through heroku
+		*- setup mongolab addon for GRS
+		*- import old articles onto mongolab instance
+		*- ensure all env variables are correct through grs_config.js for mongolab env variables
+		- try running GRS
+		- get GRS fully deployed and reading through REST urls
+
+	- Deploy jayeh_2015 up live on heroku
 		- get a new instance going for generic rest server
 			- get setup and run
 			- test
@@ -85,6 +98,10 @@ TODO www.jayeh.ca
 		- connect old mongodb to new website
 			- rename article collection to “articles” with an s
 		- update old blog posts with nice headers
+
+	- generic reset server has an error with security.
+		- firs tof all auth: should be an array. Both jayeh and generic configs
+		- second it calls ‘some’ with an array, but it should be a callback
 
 	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
 

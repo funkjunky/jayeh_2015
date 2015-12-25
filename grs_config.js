@@ -2,6 +2,7 @@ var ObjectId = require('mongodb').ObjectID;
 
 var config = {
     mongo_url: 'mongodb://localhost:27017/jayeh',
+    mongo_url_env: 'MONGOLAB_URI',  //superceds mongo_url. this env well be used in prod
     collections: {
         article: {
             create: {
