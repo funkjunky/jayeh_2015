@@ -35,6 +35,9 @@ app.all('/' + apiPath + '*', function(req, res) { req.headers.host = proxyUrl; p
 proxy.on('error', function(e) {
     console.log('proxy error: ', e);
 });
+proxy.on('proxyReq', function(proxyReq, req, res, options) {
+    proxyReq.setHeader('HOST', proxyUrl);
+});
 
 // if using express it might look like this
 app.get('*', function (req, res) {
