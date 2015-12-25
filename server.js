@@ -31,7 +31,7 @@ app.get('/node_modules', error.bind(app, {type: '404', message: 'resource for no
 var proxyUrl = process.env.PROXYURL; //TODO: put this with the configs
 var apiPath = 'api/';
 var proxy = httpProxy.createProxyServer({ ws: true, target: proxyUrl });
-app.all('/' + apiPath + '*', function(req, res) { proxy.web(req, res); } );
+app.all('/' + apiPath + '*', function(req, res) { req.headers.HOST = proxyUrl; proxy.web(req, res); } );
 proxy.on('error', function(e) {
     console.log('proxy error: ', e);
 });

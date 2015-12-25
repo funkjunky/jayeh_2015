@@ -118,6 +118,8 @@ TODO www.jayeh.ca
 	- write new blog post about building my new blog
 		~at same time work on cute character parallax
 
+	 - have a single database entry point. A function that get a dbh and use that EVERYWHERE database is needed or passed or created. [this burned me during the first deployment]
+
 	- character parallax [dude in a library!]
 		- calculate dimensions of sprites to fit in header neatly. (imagine it)
 		- make a pixel character of myself
