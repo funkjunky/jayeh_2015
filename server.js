@@ -35,11 +35,8 @@ app.all('/' + apiPath + '*', function(req, res) { proxy.web(req, res); } );
 proxy.on('error', function(e) {
     console.log('proxy error: ', e);
 });
-proxy.on('proxyReq', function(proxyReq, req, res, options) {
-    proxyReq.setHeader('HOST', proxyUrl);
-});
 proxy.on('proxyRes', function(proxyRes, req, res, options) {
-    proxyReq.setHeader('RAW RESPONSE: ', res.body, JSON.stringify(proxyRes.headers, true, 2));
+    console.log('RAW RESPONSE: ', res.body, JSON.stringify(proxyRes.headers, true, 2));
 });
 
 // if using express it might look like this
