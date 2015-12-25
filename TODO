@@ -78,6 +78,8 @@ TODO www.jayeh.ca
 		*- import old articles onto mongolab instance
 		*- ensure all env variables are correct through grs_config.js for mongolab env variables
 		- try running GRS
+			- trying again
+			- if it fails, then try from scratch… don’t bother with import
 		- get GRS fully deployed and reading through REST urls
 
 	- Deploy jayeh_2015 up live on heroku
