@@ -106,7 +106,7 @@ TODO www.jayeh.ca
 		*- firs tof all auth: should be an array. Both jayeh and generic configs
 		*- second it calls ‘some’ with an array, but it should be a callback
 
-	- ensure both are setup correct with branches from now on.
+	*- ensure both are setup correct with branches from now on.
 
 	- deploy them again, in this nicer setup
 
