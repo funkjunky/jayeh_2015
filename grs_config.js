@@ -39,12 +39,14 @@ var config = {
                 auth: false,
                 after: function(dbh, ctx, next) {
                     var count = ctx.result.length;
+                    if(count == 0)
+                        next();
                     ctx.result.forEach(function(comment) {
                         var user = dbh.collection('users').findOne({_id: ObjectId(comment.user_id)}, function(comment, err, user) {
                             comment.user = user;
                             if(!--count) {
-                                next();
                                 console.log('comments result: ', ctx.result);
+                                next();
                             }
                         }.bind(this, comment));
                     });
