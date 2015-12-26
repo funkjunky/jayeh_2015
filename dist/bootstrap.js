@@ -46706,13 +46706,20 @@ module.exports = FullArticle;
 
 },{"../comments":422,"../helpers/jayehmd":424,"react":406,"superagent":408}],418:[function(require,module,exports){
 var React = require('react');
+var Jayehmd = require('../helpers/jayehmd');
 
 var ArticleSummary = React.createClass({displayName: "ArticleSummary",
     render: function() {
+        var md = Jayehmd(this.props.article);
+        //ya... i have to do this twice until i fix the first time bug.
+        var headerMarkup = md.renderTokens(this.props.article.header);
+        //
+        var headerMarkup = md.renderTokens(this.props.article.header);
+        var truncatedBody = this.props.article.body.substr(0,80) + '...';
         return (
             React.createElement("div", {style: {paddingTop: 20, paddingBottom: 20, marginBottom: 'solid 1px black'}}, 
-                React.createElement("a", {href: '/article/t/'+this.props.article.title, style: {fontSize: 20, margin: 20}, dangerouslySetInnerHTML: {__html: this.props.article.header}}), 
-                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '150%'}, dangerouslySetInnerHTML: {__html: this.props.article.body}})
+                React.createElement("a", {href: '/article/t/'+this.props.article.title, style: {fontSize: 20, margin: 20}}, {headerMarkup}), 
+                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '150%'}}, {truncatedBody})
             )
         )
     },
@@ -46720,7 +46727,7 @@ var ArticleSummary = React.createClass({displayName: "ArticleSummary",
 
 module.exports = ArticleSummary;
 
-},{"react":406}],419:[function(require,module,exports){
+},{"../helpers/jayehmd":424,"react":406}],419:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
