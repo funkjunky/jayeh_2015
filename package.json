@@ -1,6 +1,6 @@
 {
   "name": "jayeh_2015",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Jason McCarrell <jason.abz@gmail.com>",
   "main": "start_here.js",
   "repository": {
@@ -41,5 +41,5 @@
     "grunt-nodemon": "^0.4.0",
     "grunt-react": "^0.10.0"
   },
-  "license": "GNUP"
+  "license": "GNU-3.0+"
 }

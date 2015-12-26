@@ -23086,6 +23086,7 @@ var MdReact = function(md, options) {
     md.renderTokens = function(src, env) {
         env = env || {};
 
+        console.log('src: ', src);
         return this.renderer.renderTokens(this.parse(src, env), this.options, env);
     };
     md.renderer.renderTokens = function(tokens, options, env) {
@@ -45502,6 +45503,18 @@ function parseHeader(str) {
 }
 
 /**
+ * Check if `mime` is json or has +json structured syntax suffix.
+ *
+ * @param {String} mime
+ * @return {Boolean}
+ * @api private
+ */
+
+function isJSON(mime) {
+  return /[\/+]json\b/.test(mime);
+}
+
+/**
  * Return the mime type for the given `str`.
  *
  * @param {String} str
@@ -45756,6 +45769,8 @@ function Request(method, url) {
       err = new Error('Parser is unable to parse the response');
       err.parse = true;
       err.original = e;
+      // issue #675: return the raw response if the response parsing fails
+      err.rawResponse = self.xhr && self.xhr.responseText ? self.xhr.responseText : null;
       return self.callback(err);
     }
 
@@ -46146,8 +46161,13 @@ Request.prototype.callback = function(err, res){
  */
 
 Request.prototype.crossDomainError = function(){
-  var err = new Error('Origin is not allowed by Access-Control-Allow-Origin');
+  var err = new Error('Request has been terminated\nPossible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.');
   err.crossDomain = true;
+
+  err.status = this.status;
+  err.method = this.method;
+  err.url = this.url;
+
   this.callback(err);
 };
 
@@ -46263,6 +46283,7 @@ Request.prototype.end = function(fn){
     // serialize stuff
     var contentType = this.getHeader('Content-Type');
     var serialize = this._parser || request.serialize[contentType ? contentType.split(';')[0] : ''];
+    if (!serialize && isJSON(contentType)) serialize = request.serialize['application/json'];
     if (serialize) data = serialize(data);
   }
 
@@ -46651,7 +46672,7 @@ var Comments = require('../comments');
 
 var FullArticle = React.createClass({displayName: "FullArticle",
     getInitialState: function() {
-        return {article: {title: '', header: '', body: ''}};
+        return {article: {title: '-', header: '-', body: '-'}};
     },
     componentDidMount: function() {
         var url = '/api/article';
@@ -46660,13 +46681,13 @@ var FullArticle = React.createClass({displayName: "FullArticle",
         else if(this.props.title)
             url += '?title=' + this.props.title;
 
-        this.setState({article: {title: '-', header: '-', body: '-'}});
         Request('get', url).end(function(err, response) {
             console.log('response: ', response);
-            this.setState({article: response.body});
+            this.setState({article: response.body[0]});
         }.bind(this));
     },
     render: function() {
+        console.log('this.state.article: ', this.state.article);
         var md = Jayehmd(this.state.article);
         var headerMarkup = md.renderTokens(this.state.article.header);
         var bodyMarkup = md.renderTokens(this.state.article.body);
@@ -46822,6 +46843,7 @@ var MdHighlight = require('markdown-it-highlightjs');
 var MdVariables = require('mdvariables');
 var MdFigCaption = require('mdfigcaption');
 var MdReact = require('mdreact');
+var React = require('react');
 
 var Jayehmd = function(variables) {
             var md = new MarkdownIt();
@@ -46837,7 +46859,7 @@ var Jayehmd = function(variables) {
 
 module.exports = Jayehmd;
 
-},{"markdown-it":165,"markdown-it-highlightjs":149,"markdown-it-regexp":162,"mdfigcaption":218,"mdreact":219,"mdvariables":225}],425:[function(require,module,exports){
+},{"markdown-it":165,"markdown-it-highlightjs":149,"markdown-it-regexp":162,"mdfigcaption":218,"mdreact":219,"mdvariables":225,"react":406}],425:[function(require,module,exports){
 module.exports = function serializeForm(form) {
     if (!form || form.nodeName !== "FORM") {
             return;

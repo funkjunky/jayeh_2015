@@ -7,7 +7,7 @@ var Comments = require('../comments');
 
 var FullArticle = React.createClass({displayName: "FullArticle",
     getInitialState: function() {
-        return {article: {title: '', header: '', body: ''}};
+        return {article: {title: '-', header: '-', body: '-'}};
     },
     componentDidMount: function() {
         var url = '/api/article';
@@ -16,13 +16,13 @@ var FullArticle = React.createClass({displayName: "FullArticle",
         else if(this.props.title)
             url += '?title=' + this.props.title;
 
-        this.setState({article: {title: '-', header: '-', body: '-'}});
         Request('get', url).end(function(err, response) {
             console.log('response: ', response);
-            this.setState({article: response.body});
+            this.setState({article: response.body[0]});
         }.bind(this));
     },
     render: function() {
+        console.log('this.state.article: ', this.state.article);
         var md = Jayehmd(this.state.article);
         var headerMarkup = md.renderTokens(this.state.article.header);
         var bodyMarkup = md.renderTokens(this.state.article.body);

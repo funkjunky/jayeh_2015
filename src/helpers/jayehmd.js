@@ -5,6 +5,7 @@ var MdHighlight = require('markdown-it-highlightjs');
 var MdVariables = require('mdvariables');
 var MdFigCaption = require('mdfigcaption');
 var MdReact = require('mdreact');
+var React = require('react');
 
 var Jayehmd = function(variables) {
             var md = new MarkdownIt();

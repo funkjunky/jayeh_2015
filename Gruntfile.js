@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         },
         nodemon: {
             dev: {
-                script: 'server.js',
+                script: 'start_here.js',
             },
         },
         watch: {

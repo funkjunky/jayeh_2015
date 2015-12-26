@@ -66,57 +66,60 @@ TODO www.jayeh.ca
 			*- remove spam in mdreact plugin
 			*- so many things fixed @.@… but seems good
 
-	- setup jayeh for grs deployment
+	*- add comment system
+		*- ensure oauth users can comment.
+		*- try and get avatar from oauth
+		*- ensure the comments look nice
+
+	*- setup jayeh for grs deployment
 		*- make a switch.js script that either calls generic rest server from node grs_config.js, or server.js, depending on an env variable
 		*- test it and ensure it works in both modes.
 
 	[db creds: jayehroot lePassword8]
 	[mongodb://jayehroot:lePassword8@ds035965.mongolab.com:35965/heroku_5ckp93sv]
-	- Deploy Generic Rest Server (through jayeh)
+	*- Deploy Generic Rest Server (through jayeh)
 		*- read about setting up mongo lab through heroku
 		*- setup mongolab addon for GRS
 		*- import old articles onto mongolab instance
 		*- ensure all env variables are correct through grs_config.js for mongolab env variables
-		- try running GRS
-			- trying again
-			- if it fails, then try from scratch… don’t bother with import
-		- get GRS fully deployed and reading through REST urls
+		*- try running GRS
+		*- get GRS fully deployed and reading through REST urls
 
-	- Deploy jayeh_2015 up live on heroku
-		- get a new instance going for generic rest server
-			- get setup and run
-			- test
-		- setup a new instance going for jayeh_2015
-			- set the config variables
-				- PROXYURL to point to generic rest server (heroku config:set x=noquotes)
-				- ADMINUSER [different from dev]
-				- ADMINPASS
-				- HOST that is http://www.jayeh.ca
-				- GOOGLE_ID
-				- GOOGLE_SECRET
-			- run the server and test
+	*- Deploy jayeh_2015 up live on heroku
+		*- get a new instance going for generic rest server
+			*- get setup and run
+			*- test
+		*- setup a new instance going for jayeh_2015
+			*- set the config variables
+				*- PROXYURL to point to generic rest server (heroku config:set x=noquotes)
+			*- run the server and test
 
-	- migrate data
-		- connect old mongodb to new website
-			- rename article collection to “articles” with an s
-		- update old blog posts with nice headers
+	*- titles aren’t showing up
 
-	- generic reset server has an error with security.
-		- firs tof all auth: should be an array. Both jayeh and generic configs
-		- second it calls ‘some’ with an array, but it should be a callback
+	*- migrate data
+		*- connect old mongodb to new website
+			*- rename article collection to “articles” with an s
 
-	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
+	*-rename jasonjason to generic-rest-server
+
+	*- generic rest server has an error with security.
+		*- firs tof all auth: should be an array. Both jayeh and generic configs
+		*- second it calls ‘some’ with an array, but it should be a callback
+
+	- ensure both are setup correct with branches from now on.
+
+	- deploy them again, in this nicer setup
+
+	* washroom and exercise break
+
+	- write new blog post about building my new blog
+
+	** before trip **
 
 	- edit old links to have beautiful header markup
 		- ??? effects??? I’m thinking greyscale background, text has white gradient out to transparent background, which disappears on hover and the text becomes thing white glow, black text
 
-	- add comment system
-		- ensure oauth users can comment.
-		- try and get avatar from oauth
-		- ensure the comments look nice
-
-	- write new blog post about building my new blog
-		~at same time work on cute character parallax
+	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
 
 	 - have a single database entry point. A function that get a dbh and use that EVERYWHERE database is needed or passed or created. [this burned me during the first deployment]
 
