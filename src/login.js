@@ -1,5 +1,4 @@
 var React = require('react');
-var Superagent = require('superagent');
 
 var User = require('./helpers/user');
 var SerializeForm = require('./helpers/serializeform');
@@ -20,7 +19,6 @@ var Login = React.createClass({displayName: "Login",
         var formJson = SerializeForm(event.target);
         
         User.login(formJson, function(err, response) {
-            console.log('post /api/login, response: ', response);
             var user = JSON.parse(response.text);
             console.log('user: ', user);
             window.location.replace('/user/' + user.username);           

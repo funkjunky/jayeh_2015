@@ -46929,13 +46929,14 @@ module.exports = function serializeForm(form) {
 var Superagent = require('superagent');
 
 var User = {
-    _user: null,
+    _user: {},
+    _ready: false,
     authenticated: function() {
         return this.currentUser() != null;
     },
     //If next is provided, then next is responsible for handling the error
     login: function(credentials, next) {
-        return Superagent.post('/api/login').send({
+        return Superagent.post('/api/auth/login').send({
             username: credentials.username,
             password: credentials.password,
         }).end(function(err, response) {
@@ -46954,12 +46955,13 @@ var User = {
     },
     currentUser: function() {
         this.initialize();
+        console.log('this._user: ', this._user);
         return this._user;
     },
     //Note, this returns a promise. to use it:
     //  user.getUser('jason').end(function(err, response) { this.setState({user: response.body[0]}); }.bind(this));
     getUser: function(user) {
-        if(this._user && user == this._user.username)
+        if(user == this._user.username)
             return {end: function(fnc) { fnc(null, {body: [this.currentUser()]}); }};
         else
             return Superagent('get', '/api/users?username=' + user);
@@ -46967,10 +46969,14 @@ var User = {
 
     //to see if im logged in, initially.
     initialize: function() {
-        if(!this._ready) {
-            this._ready = true;
-            Superagent('get', '/api/user').end(function(err, response) {
-                this._user = response.body;
+        if(!this._ready && !this._loggingIn) {
+            this._loggingIn = true;
+            Superagent.get('/api/user').end(function(err, response) {
+                this._loggingIn = false;
+                if(!err) {
+                    this._user = response.body;
+                    this._ready = true;
+                }
             }.bind(this));
         }
     },
@@ -46980,7 +46986,6 @@ module.exports = User;
 
 },{"superagent":408}],427:[function(require,module,exports){
 var React = require('react');
-var Superagent = require('superagent');
 
 var User = require('./helpers/user');
 var SerializeForm = require('./helpers/serializeform');
@@ -47001,7 +47006,6 @@ var Login = React.createClass({displayName: "Login",
         var formJson = SerializeForm(event.target);
         
         User.login(formJson, function(err, response) {
-            console.log('post /api/login, response: ', response);
             var user = JSON.parse(response.text);
             console.log('user: ', user);
             window.location.replace('/user/' + user.username);           
@@ -47011,7 +47015,7 @@ var Login = React.createClass({displayName: "Login",
 
 module.exports = Login;
 
-},{"./helpers/serializeform":425,"./helpers/user":426,"react":406,"superagent":408}],428:[function(require,module,exports){
+},{"./helpers/serializeform":425,"./helpers/user":426,"react":406}],428:[function(require,module,exports){
 var stateShortcuts = {
     getInitialState: function() {
         return {};
@@ -47123,10 +47127,10 @@ var User = require('./helpers/user');
 
 var UserPanel = React.createClass({displayName: "UserPanel",
     getInitialState: function() {
-        return {user: null};
+        return {user: {}};
     },
     componentDidMount: function() {
-        this.getUser(this.props.username).end(function(err, response) {
+        User.getUser(this.props.username).end(function(err, response) {
             console.log('user page response: ', response);
             this.setState({user: response.body[0]});
         }.bind(this));
@@ -47137,7 +47141,7 @@ var UserPanel = React.createClass({displayName: "UserPanel",
                 React.createElement("pre", null, this.state.user), 
                 React.createElement("br", null), 
                 (this.state.user.username == User.currentUser().username)
-                ? React.createElement("a", {href: "/api/logout", onClick: User.logout()}, "Logout") : ''
+                ? React.createElement("a", {href: "/api/logout", onClick: User.logout}, "Logout") : ''
             )
         );
     },

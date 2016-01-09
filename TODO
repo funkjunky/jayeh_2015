@@ -110,11 +110,11 @@ TODO www.jayeh.ca
 
 	*- deploy them again, in this nicer setup
 
-	* washroom and exercise break
+	- get local login working
 
-	- write new blog post about building my new blog
+	- check oauth on local, then check it on live
 
-	** before trip **
+	- stop server from starting twice through grunt… 
 
 	- edit old links to have beautiful header markup
 		- ??? effects??? I’m thinking greyscale background, text has white gradient out to transparent background, which disappears on hover and the text becomes thing white glow, black text
@@ -122,6 +122,8 @@ TODO www.jayeh.ca
 	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
 
 	 - have a single database entry point. A function that get a dbh and use that EVERYWHERE database is needed or passed or created. [this burned me during the first deployment]
+
+	- write new blog post about building my new blog
 
 	- character parallax [dude in a library!]
 		- calculate dimensions of sprites to fit in header neatly. (imagine it)
