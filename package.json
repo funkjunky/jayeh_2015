@@ -1,6 +1,6 @@
 {
   "name": "jayeh_2015",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "author": "Jason McCarrell <jason.abz@gmail.com>",
   "main": "start_here.js",
   "repository": {
@@ -29,7 +29,7 @@
     "serve-favicon": "2.2.x",
     "superagent": "latest",
     "underscore": "1.8.x",
-    "generic_rest_server": "0.3.26",  
+    "generic_rest_server": "0.5.3",  
     "mongodb": "^1.4.0"
   },
   "devDependencies": {

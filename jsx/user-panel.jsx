@@ -5,10 +5,10 @@ var User = require('./helpers/user');
 
 var UserPanel = React.createClass({
     getInitialState: function() {
-        return {user: null};
+        return {user: {}};
     },
     componentDidMount: function() {
-        this.getUser(this.props.username).end(function(err, response) {
+        User.getUser(this.props.username).end(function(err, response) {
             console.log('user page response: ', response);
             this.setState({user: response.body[0]});
         }.bind(this));
@@ -19,7 +19,7 @@ var UserPanel = React.createClass({
                 <pre>{this.state.user}</pre>
                 <br />
                 {(this.state.user.username == User.currentUser().username)
-                ? <a href="/api/logout" onClick={User.logout()}>Logout</a> : ''}
+                ? <a href="/api/auth/logout" onClick={User.logout}>Logout</a> : ''}
             </div>
         );
     },

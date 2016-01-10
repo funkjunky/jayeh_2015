@@ -9,6 +9,7 @@ var EditArticle = require('./article/edit');
 var FullArticle = require('./article/full');
 var Login = require('./login');
 var UserPanel = require('./user-panel');
+var User = require('./helpers/user');
 
 var Routes = React.createClass({
     render: function() {
