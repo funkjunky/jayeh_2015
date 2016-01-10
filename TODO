@@ -140,9 +140,9 @@ TODO www.jayeh.ca
 			*- restart grunt on grs tab
 
 	- redeploy
-		- redeploy
+		*- redeploy
 		- ensure redeployment works
-			- test homepage
+			*- test homepage
 			- test local login
 			- test oauth login
 	- remerge into dev, then checkout dev and work in dev
