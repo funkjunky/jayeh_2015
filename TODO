@@ -144,13 +144,17 @@ TODO www.jayeh.ca
 		- ensure redeployment works
 			*- test homepage
 			- test local login
-			- test oauth login
+				- not working fix
 	- remerge into dev, then checkout dev and work in dev
 
 	- reboot chrome
 
-	- edit old links to have beautiful header markup
-		- ??? effects??? I’m thinking greyscale background, text has white gradient out to transparent background, which disappears on hover and the text becomes thing white glow, black text
+	- prepare pretty setup and default for blog
+		- title, summary, body
+		- copy ars for summary, make it default
+		- use full image, with header and subheader that is % based font for the body starting.
+
+	- update articles with nice summary and better body with my image thing
 
 	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
 
