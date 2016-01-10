@@ -23,7 +23,7 @@ var User = {
         });
     },
     logout: function() {
-        return Superagent('get', '/api/logout');
+        return Superagent('get', '/api/auth/logout');
     },
     currentUser: function() {
         this.initialize();

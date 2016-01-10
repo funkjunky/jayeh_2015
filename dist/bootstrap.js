@@ -46951,7 +46951,7 @@ var User = {
         });
     },
     logout: function() {
-        return Superagent('get', '/api/logout');
+        return Superagent('get', '/api/auth/logout');
     },
     currentUser: function() {
         this.initialize();
@@ -46996,7 +46996,8 @@ var Login = React.createClass({displayName: "Login",
             React.createElement("form", {onSubmit: this.login}, 
                 React.createElement("input", {type: "text", name: "username"}), 
                 React.createElement("input", {type: "password", name: "password"}), 
-                React.createElement("input", {type: "submit", value: "Login"})
+                React.createElement("input", {type: "submit", value: "Login"}), 
+                React.createElement("button", {type: "button", onClick: this.oauthLogin, style: {backgroundImage: 'url("/dist/googlelogin.png")', width: 200, height: 40, backgroundSize: '100%', display: 'block'}})
             )
         );
     },
@@ -47010,6 +47011,9 @@ var Login = React.createClass({displayName: "Login",
             console.log('user: ', user);
             window.location.replace('/user/' + user.username);           
         });
+    },
+    oauthLogin: function() {
+        window.location.replace('/api/auth/google');
     },
 });
 
@@ -47083,6 +47087,7 @@ var EditArticle = require('./article/edit');
 var FullArticle = require('./article/full');
 var Login = require('./login');
 var UserPanel = require('./user-panel');
+var User = require('./helpers/user');
 
 var Routes = React.createClass({displayName: "Routes",
     render: function() {
@@ -47119,7 +47124,7 @@ var Routes = React.createClass({displayName: "Routes",
 
 module.exports = Routes;
 
-},{"./article/edit":416,"./article/full":417,"./blog":419,"./header":423,"./login":427,"./user-panel":430,"react":406,"react-router-component":229}],430:[function(require,module,exports){
+},{"./article/edit":416,"./article/full":417,"./blog":419,"./header":423,"./helpers/user":426,"./login":427,"./user-panel":430,"react":406,"react-router-component":229}],430:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
@@ -47141,7 +47146,7 @@ var UserPanel = React.createClass({displayName: "UserPanel",
                 React.createElement("pre", null, this.state.user), 
                 React.createElement("br", null), 
                 (this.state.user.username == User.currentUser().username)
-                ? React.createElement("a", {href: "/api/logout", onClick: User.logout}, "Logout") : ''
+                ? React.createElement("a", {href: "/api/auth/logout", onClick: User.logout}, "Logout") : ''
             )
         );
     },

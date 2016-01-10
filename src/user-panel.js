@@ -19,7 +19,7 @@ var UserPanel = React.createClass({displayName: "UserPanel",
                 React.createElement("pre", null, this.state.user), 
                 React.createElement("br", null), 
                 (this.state.user.username == User.currentUser().username)
-                ? React.createElement("a", {href: "/api/logout", onClick: User.logout}, "Logout") : ''
+                ? React.createElement("a", {href: "/api/auth/logout", onClick: User.logout}, "Logout") : ''
             )
         );
     },

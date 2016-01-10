@@ -10,6 +10,7 @@ var Login = React.createClass({
                 <input type="text" name="username" />
                 <input type="password" name="password" />
                 <input type="submit" value="Login" />
+                <button type="button" onClick={this.oauthLogin} style={{backgroundImage: 'url("/dist/googlelogin.png")', width: 200, height: 40, backgroundSize: '100%', display: 'block'}} />
             </form>
         );
     },
@@ -23,6 +24,9 @@ var Login = React.createClass({
             console.log('user: ', user);
             window.location.replace('/user/' + user.username);           
         });
+    },
+    oauthLogin: function() {
+        window.location.replace('/api/auth/google');
     },
 });
 

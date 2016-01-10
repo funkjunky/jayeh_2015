@@ -107,14 +107,47 @@ TODO www.jayeh.ca
 		*- second it calls ‘some’ with an array, but it should be a callback
 
 	*- ensure both are setup correct with branches from now on.
-
 	*- deploy them again, in this nicer setup
 
-	- get local login working
+	*- get local login working
+	*- add a google login button
+	*- check oauth on local, then check it on live
+	*- test to see if it’s possible to setup redirects through proxies
+	*- redirect properly
+		*- first I should be able to send GRS a redirect value through oauth
+		*- setup redirect for success
+		*- attempt to use a callback to setup a redirect for failure
+		*- ensure it works on success
+		*- ensure it works on failure
 
-	- check oauth on local, then check it on live
+		*-the user isn’t being set…
+			*[didnt work]- reorganize oatuhcall back to simply call urls again
+			*- try and get sessions to work
+			*- create a function to consume and set push. Consume errors if there is no redirect.
+	*- clean up config
+		*- create functions in the config file for combining config values
+			(ie. userRoute(), usersRoute())
+		*- Route, should be in a _routes object. ie. _routes.oauth
+	- deploy GRS
+		- deploy to NPM
+			*- merge to master
+			*- update package.json [0.4?]
+			*- add tag
+			*- push, and push tags
+			*- deploy
+			*- update version on jayeh if necessary
+			*- npm install on jayeh to get latest
+			*- restart grunt on grs tab
 
-	- stop server from starting twice through grunt… 
+	- redeploy
+		- redeploy
+		- ensure redeployment works
+			- test homepage
+			- test local login
+			- test oauth login
+	- remerge into dev, then checkout dev and work in dev
+
+	- reboot chrome
 
 	- edit old links to have beautiful header markup
 		- ??? effects??? I’m thinking greyscale background, text has white gradient out to transparent background, which disappears on hover and the text becomes thing white glow, black text
