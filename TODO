@@ -139,12 +139,12 @@ TODO www.jayeh.ca
 			*- npm install on jayeh to get latest
 			*- restart grunt on grs tab
 
-	- redeploy
+	*- redeploy
 		*- redeploy
-		- ensure redeployment works
+		*- ensure redeployment works
 			*- test homepage
-			- test local login
-				- not working fix
+			*- test local login
+				*- not working fix
 	- remerge into dev, then checkout dev and work in dev
 
 	- reboot chrome
