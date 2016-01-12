@@ -46485,10 +46485,20 @@ module.exports.Z   = require('./categories/Z/regex');
 module.exports=/[\0-\uD7FF\uDC00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF]/
 },{}],415:[function(require,module,exports){
 var React = require('react');
+var Routes = React.createFactory(require('./routes'));
+
+if(typeof window !== 'undefined') {
+    window.onload = function() {
+        React.render(Routes(), document);
+    }
+}
+
+},{"./routes":425,"react":406}],416:[function(require,module,exports){
+var React = require('react');
 var Superagent = require('superagent');
 
-var User = require('./helpers/user');
-var SerializeForm = require('./helpers/serializeform');
+var User = require('../helpers/user');
+var SerializeForm = require('../helpers/serializeform');
 
 var AddComment = React.createClass({displayName: "AddComment",
     initialize: false, //TODO: so hacky...
@@ -46541,234 +46551,29 @@ var AddComment = React.createClass({displayName: "AddComment",
 
 module.exports = AddComment;
 
-},{"./helpers/serializeform":425,"./helpers/user":426,"react":406,"superagent":408}],416:[function(require,module,exports){
+},{"../helpers/serializeform":422,"../helpers/user":423,"react":406,"superagent":408}],417:[function(require,module,exports){
 var React = require('react');
-var Superagent = require('superagent');
 
-var Jayehmd = require('../helpers/jayehmd');
-var SerializeForm = require('../helpers/serializeform');
-var StateShortcuts = require('../mixins/stateshortcuts');
-var Filedrop = require('react-filedrop');
+var ArticleHeader = React.createClass({displayName: "ArticleHeader",
+    render: function() {
+        var style = {
+            minHeight: '100vh', //this makes the image take the entire screen height, but allow scrolling past
 
-var EditArticle = React.createClass({displayName: "EditArticle",
-    mixins: [StateShortcuts],
-    getInitialState: function() {
-        return {
-            title: ' ',
-            header: ' ',
-            body: ' ',
+            backgroundImage: 'url(' + this.props.image + ')',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
         };
-    },
-    render: function() {
-        var md = Jayehmd(this.state);
-
-        console.log('header: ', this.state.header);
-        var headerMarkup = md.renderTokens(this.state.header);
-        var bodyMarkup = md.renderTokens(this.state.body);
-
         return (
-            React.createElement("div", null, 
-                React.createElement("h2", null, "Edit Article"), 
-                React.createElement("div", null, 
-                    React.createElement("form", {onSubmit: this.saveArticle, ref: "myform"}, 
-                        React.createElement("input", {type: "text", name: "title", value: this.state.title, onChange: this.setStateAsInput('title')}), React.createElement("br", null), 
-                        React.createElement(Filedrop, {handleFile: this.handleFile}, 
-                            React.createElement("textarea", {className: "dropZone", name: "header", style: {width: 800, height: 150}, value: this.state.header, onChange: this.setStateAsInput('header'), onDrop: this.handleDrop, onDragOver: this.preventDefault}), React.createElement("br", null)
-                        ), 
-                        headerMarkup, 
-                        React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, value: this.state.body, onChange: this.setStateAsInput('body')}), React.createElement("br", null), 
-                        React.createElement("input", {type: "submit"}), 
-                        bodyMarkup
-                    )
-                )
+            React.createElement("div", {style: style}, 
+               this.props.children
             )
         );
-    },
-
-    componentDidMount: function() {
-        if(this.props.id)
-            this.fetchArticle(this.props.id);
-
-        this.addEvents();
-    },
-
-    fetchArticle: function(id) {
-        this.setState({title: '-', header: '-', body: '-'});
-        Superagent('get', '/api/article/' + id).end(function(err, response) {
-            console.log('response: ', response);
-            this.setState({
-                title: response.body.title,
-                header: response.body.header,
-                body: response.body.body,
-            });
-        }.bind(this));
-    },
-
-    addEvents: function() {
-        document.addEventListener('dragenter', function(event) {
-            console.log('drag started: ', document.querySelectorAll('.dropZone'));
-            var dropZones = document.querySelectorAll('.dropZone');
-            for(var i=0; i!=dropZones.length; ++i) {
-                this.backgroundColor = dropZones[i].style.backgroundColor;
-                dropZones[i].style.backgroundColor = 'yellow';
-            }
-        }, false);
-        document.addEventListener('dragleave', function(event) {
-            console.log('drag ended: ', this.backgroundColor);
-            var dropZones = document.querySelectorAll('.dropZone');
-            for(var i=0; i!=dropZones.length; ++i)
-                dropZones[i].style.backgroundColor = this.backgroundColor;
-        }, false);
-    },
-
-    preventDefault: function(e) {
-        e.preventDefault();
-    },
-
-    handleDrop: function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        function splice(text, splice, pos) {  return text.slice(0, pos) + splice + text.slice(pos); }
-
-        var carPos = e.target.selectionStart;
-        console.log('caret: ', carPos);
-
-        this.uploadFile(e, function(err, response) {
-            console.log('err, response: ', err, response);
-            this.setState({header: splice(this.state.header, response.body.url, carPos)});
-        }.bind(this));
-
-    },
-
-    uploadFile: function(event, cb) {
-        var dt = event.dataTransfer;
-        var files = dt.files;
-
-        Superagent
-            .post('/api/__file/images')
-            .attach('image', files[0])
-            .end(cb);
-    },
-
-    saveArticle: function(event) {
-        event.preventDefault();
-        console.log('Save Article');
-        var formJson = SerializeForm(event.target);
-        Superagent.post('/api/article').send(formJson).end(function(err, response) {
-            console.log('post /api/article, response: ', response.body);
-        });
-    },
-});
-
-module.exports = EditArticle;
-
-},{"../helpers/jayehmd":424,"../helpers/serializeform":425,"../mixins/stateshortcuts":428,"react":406,"react-filedrop":228,"superagent":408}],417:[function(require,module,exports){
-var React = require('react');
-var Request = require('superagent');
-
-var Jayehmd = require('../helpers/jayehmd');
-
-var Comments = require('../comments');
-
-var FullArticle = React.createClass({displayName: "FullArticle",
-    getInitialState: function() {
-        return {article: {title: '-', header: '-', body: '-'}};
-    },
-    componentDidMount: function() {
-        var url = '/api/article';
-        if(this.props.id)
-            url += '/' + this.props.id;
-        else if(this.props.title)
-            url += '?title=' + this.props.title;
-
-        Request('get', url).end(function(err, response) {
-            console.log('response: ', response);
-            this.setState({article: response.body[0]});
-        }.bind(this));
-    },
-    render: function() {
-        console.log('this.state.article: ', this.state.article);
-        var md = Jayehmd(this.state.article);
-        var headerMarkup = md.renderTokens(this.state.article.header);
-        var bodyMarkup = md.renderTokens(this.state.article.body);
-
-        return (
-            React.createElement("div", null, 
-                React.createElement("a", {href: '/article/t/'+this.state.article.title, style: {fontSize: 20, margin: 20}}, headerMarkup), 
-                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '200%'}}, bodyMarkup), 
-                React.createElement(Comments, {article: this.state.article})
-            )
-        )
-    },
-});
-
-module.exports = FullArticle;
-
-},{"../comments":422,"../helpers/jayehmd":424,"react":406,"superagent":408}],418:[function(require,module,exports){
-var React = require('react');
-var Jayehmd = require('../helpers/jayehmd');
-
-var ArticleSummary = React.createClass({displayName: "ArticleSummary",
-    render: function() {
-        var md = Jayehmd(this.props.article);
-        //ya... i have to do this twice until i fix the first time bug.
-        var headerMarkup = md.renderTokens(this.props.article.header);
-        //
-        var headerMarkup = md.renderTokens(this.props.article.header);
-        var truncatedBody = this.props.article.body.substr(0,80) + '...';
-        return (
-            React.createElement("div", {style: {paddingTop: 20, paddingBottom: 20, marginBottom: 'solid 1px black'}}, 
-                React.createElement("a", {href: '/article/t/'+this.props.article.title, style: {fontSize: 20, margin: 20}}, {headerMarkup}), 
-                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '150%'}}, {truncatedBody})
-            )
-        )
-    },
-});
-
-module.exports = ArticleSummary;
-
-},{"../helpers/jayehmd":424,"react":406}],419:[function(require,module,exports){
-var React = require('react');
-var Request = require('superagent');
-
-var ArticleSummary = require('./article/summary');
-
-var Blog = React.createClass({displayName: "Blog",
-    getInitialState: function() {
-        return {articles: []};
-    },
-    componentDidMount: function() {
-        Request('get', '/api/article').end(function(err, response) {
-            console.log('response: ', response);
-            this.setState({articles: response.body});
-        }.bind(this));
-    },
-    render: function() {
-        console.log('rendering: ', this.state);
-        return (
-            React.createElement("div", null, 
-                React.createElement("span", {style: {fontFamily: 'Baskerville', fontSize: 36, paddingRight: 10, paddingLeft: 10, borderRight: "solid 2px grey", borderBottom: "solid 2px grey"}}, "Blog"), 
-                this.state.articles.map(function(article) {
-                    return React.createElement(ArticleSummary, {article: article});
-                })
-            )
-        );
-    },
-});
-
-module.exports = Blog;
-
-},{"./article/summary":418,"react":406,"superagent":408}],420:[function(require,module,exports){
-var React = require('react');
-var Routes = React.createFactory(require('./routes'));
-
-if(typeof window !== 'undefined') {
-    window.onload = function() {
-        React.render(Routes(), document);
     }
-}
+});
 
-},{"./routes":429,"react":406}],421:[function(require,module,exports){
+module.exports = ArticleHeader;
+
+},{"react":406}],418:[function(require,module,exports){
 var React = require('react');
 
 var Comment = React.createClass({displayName: "Comment",
@@ -46784,7 +46589,7 @@ var Comment = React.createClass({displayName: "Comment",
 
 module.exports = Comment;
 
-},{"react":406}],422:[function(require,module,exports){
+},{"react":406}],419:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
@@ -46824,7 +46629,7 @@ var Comments = React.createClass({displayName: "Comments",
 
 module.exports = Comments;
 
-},{"./addcomment":415,"./comment":421,"react":406,"superagent":408}],423:[function(require,module,exports){
+},{"./addcomment":416,"./comment":418,"react":406,"superagent":408}],420:[function(require,module,exports){
 var React = require('react');
 
 var Header = React.createClass({displayName: "Header",
@@ -46842,7 +46647,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header;
 
-},{"react":406}],424:[function(require,module,exports){
+},{"react":406}],421:[function(require,module,exports){
 var MarkdownIt = require('markdown-it');
 
 var MarkdownRegexp = require('markdown-it-regexp');
@@ -46866,7 +46671,7 @@ var Jayehmd = function(variables) {
 
 module.exports = Jayehmd;
 
-},{"markdown-it":165,"markdown-it-highlightjs":149,"markdown-it-regexp":162,"mdfigcaption":218,"mdreact":219,"mdvariables":225,"react":406}],425:[function(require,module,exports){
+},{"markdown-it":165,"markdown-it-highlightjs":149,"markdown-it-regexp":162,"mdfigcaption":218,"mdreact":219,"mdvariables":225,"react":406}],422:[function(require,module,exports){
 module.exports = function serializeForm(form) {
     if (!form || form.nodeName !== "FORM") {
             return;
@@ -46925,7 +46730,7 @@ module.exports = function serializeForm(form) {
     return q;
 };
 
-},{}],426:[function(require,module,exports){
+},{}],423:[function(require,module,exports){
 var Superagent = require('superagent');
 
 var User = {
@@ -46984,42 +46789,7 @@ var User = {
 
 module.exports = User;
 
-},{"superagent":408}],427:[function(require,module,exports){
-var React = require('react');
-
-var User = require('./helpers/user');
-var SerializeForm = require('./helpers/serializeform');
-
-var Login = React.createClass({displayName: "Login",
-    render: function() {
-        return (
-            React.createElement("form", {onSubmit: this.login}, 
-                React.createElement("input", {type: "text", name: "username"}), 
-                React.createElement("input", {type: "password", name: "password"}), 
-                React.createElement("input", {type: "submit", value: "Login"}), 
-                React.createElement("button", {type: "button", onClick: this.oauthLogin, style: {backgroundImage: 'url("/dist/googlelogin.png")', width: 200, height: 40, backgroundSize: '100%', display: 'block'}})
-            )
-        );
-    },
-    login: function(event) {
-        event.preventDefault();
-        console.log('Logging in...');
-        var formJson = SerializeForm(event.target);
-        
-        User.login(formJson, function(err, response) {
-            var user = JSON.parse(response.text);
-            console.log('user: ', user);
-            window.location.replace('/user/' + user.username);           
-        });
-    },
-    oauthLogin: function() {
-        window.location.replace('/api/auth/google');
-    },
-});
-
-module.exports = Login;
-
-},{"./helpers/serializeform":425,"./helpers/user":426,"react":406}],428:[function(require,module,exports){
+},{"superagent":408}],424:[function(require,module,exports){
 var stateShortcuts = {
     getInitialState: function() {
         return {};
@@ -47075,22 +46845,27 @@ var stateShortcuts = {
 
 module.exports = stateShortcuts;
 
-},{}],429:[function(require,module,exports){
+},{}],425:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router-component');
 var Locations = Router.Locations;
 var Location = Router.Location;
 
-var Header = require('./header');
-var Blog = require('./blog');
-var EditArticle = require('./article/edit');
-var FullArticle = require('./article/full');
-var Login = require('./login');
-var UserPanel = require('./user-panel');
+var Header = require('./components/header');
+var Blog = require('./routes/blog');
+var EditArticle = require('./routes/article/edit');
+var FullArticle = require('./routes/article/full');
+var Login = require('./routes/login');
+var UserPanel = require('./routes/user-panel');
 var User = require('./helpers/user');
 
 var Routes = React.createClass({displayName: "Routes",
     render: function() {
+        if(this.props.path) {
+            var parts = this.props.path.split('/');
+            var excludeHeader = parts[1] == 'article' && (parts[2] == 't' || parts[2] == 'id');
+        }
+            
         return (
             React.createElement("html", null, 
                 React.createElement("head", null, 
@@ -47101,7 +46876,7 @@ var Routes = React.createClass({displayName: "Routes",
                     React.createElement("link", {rel: "stylesheet", href: "/dist/styles/codepen-embed.css"})
                 ), 
                 React.createElement("body", null, 
-                    React.createElement(Header, null), 
+                    (excludeHeader) ? '' : React.createElement(Header, null), 
                     React.createElement("div", {style: {fontFamily: 'tahoma'}}, 
                         React.createElement(Locations, {path: this.props.path}, 
                             React.createElement(Location, {path: "/", handler: React.createElement(Blog, null)}), 
@@ -47124,11 +46899,278 @@ var Routes = React.createClass({displayName: "Routes",
 
 module.exports = Routes;
 
-},{"./article/edit":416,"./article/full":417,"./blog":419,"./header":423,"./helpers/user":426,"./login":427,"./user-panel":430,"react":406,"react-router-component":229}],430:[function(require,module,exports){
+},{"./components/header":420,"./helpers/user":423,"./routes/article/edit":426,"./routes/article/full":427,"./routes/blog":429,"./routes/login":430,"./routes/user-panel":431,"react":406,"react-router-component":229}],426:[function(require,module,exports){
+var React = require('react');
+var Superagent = require('superagent');
+var Filedrop = require('react-filedrop');
+
+var Jayehmd = require('../../helpers/jayehmd');
+var SerializeForm = require('../../helpers/serializeform');
+var StateShortcuts = require('../../mixins/stateshortcuts');
+
+var EditArticle = React.createClass({displayName: "EditArticle",
+    mixins: [StateShortcuts],
+    getInitialState: function() {
+        return {
+            title: ' ',
+            subtitle: ' ',
+            image: ' ',
+            header: ' ',
+            body: ' ',
+        };
+    },
+    render: function() {
+        var md = Jayehmd(this.state);
+
+        console.log('summary: ', this.state.summary);
+        var summaryMarkup = md.renderTokens(this.state.summary);
+        var bodyMarkup = md.renderTokens(this.state.body);
+
+        //TODO: inputs should use a component that gets rid of hte massive redundency, if possible... i just hate writing subtitle 3 times
+        return (
+            React.createElement("div", null, 
+                React.createElement("h2", null, "Edit Article"), 
+                React.createElement("div", null, 
+                    React.createElement("form", {onSubmit: this.saveArticle, ref: "myform"}, 
+                        React.createElement("input", {type: "text", name: "title", value: this.state.title, onChange: this.setStateAsInput('title')}), React.createElement("br", null), 
+                        React.createElement("input", {type: "text", name: "subtitle", value: this.state.subtitle, onChange: this.setStateAsInput('subtitle')}), React.createElement("br", null), 
+                        React.createElement("input", {type: "text", name: "image", value: this.state.image, onChange: this.setStateAsInput('image')}), React.createElement("br", null), 
+                        React.createElement(Filedrop, {handleFile: this.handleFile}, 
+                            React.createElement("textarea", {className: "dropZone", name: "summary", style: {width: 800, height: 150}, value: this.state.summary, onChange: this.setStateAsInput('summary'), onDrop: this.handleDrop, onDragOver: this.preventDefault}), React.createElement("br", null)
+                        ), 
+                        React.createElement("div", {style: {width: 600, height: 200}}, summaryMarkup), 
+                        React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, value: this.state.body, onChange: this.setStateAsInput('body')}), React.createElement("br", null), 
+                        React.createElement("input", {type: "submit"}), 
+                        bodyMarkup
+                    )
+                )
+            )
+        );
+    },
+
+    componentDidMount: function() {
+        if(this.props.id)
+            this.fetchArticle(this.props.id);
+
+        this.addEvents();
+    },
+
+    fetchArticle: function(id) {
+        this.setState({title: '-', subtitle: '-', image: '-', summary: '-', body: '-'});
+        Superagent('get', '/api/article/' + id).end(function(err, response) {
+            console.log('response: ', response);
+            //TODO: try doing this.setState(response.body); instead. If not, then perhaps a clone method.
+            this.setState({
+                title: response.body.title,
+                subtitle: response.body.subtitle,
+                image: response.body.image,
+                summary: response.body.summary,
+                body: response.body.body,
+            });
+        }.bind(this));
+    },
+
+    addEvents: function() {
+        document.addEventListener('dragenter', function(event) {
+            console.log('drag started: ', document.querySelectorAll('.dropZone'));
+            var dropZones = document.querySelectorAll('.dropZone');
+            for(var i=0; i!=dropZones.length; ++i) {
+                this.backgroundColor = dropZones[i].style.backgroundColor;
+                dropZones[i].style.backgroundColor = 'yellow';
+            }
+        }, false);
+        document.addEventListener('dragleave', function(event) {
+            console.log('drag ended: ', this.backgroundColor);
+            var dropZones = document.querySelectorAll('.dropZone');
+            for(var i=0; i!=dropZones.length; ++i)
+                dropZones[i].style.backgroundColor = this.backgroundColor;
+        }, false);
+    },
+
+    preventDefault: function(e) {
+        e.preventDefault();
+    },
+
+    handleDrop: function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        function splice(text, splice, pos) {  return text.slice(0, pos) + splice + text.slice(pos); }
+
+        var carPos = e.target.selectionStart;
+        console.log('caret: ', carPos);
+
+        this.uploadFile(e, function(err, response) {
+            console.log('err, response: ', err, response);
+            this.setState({summary: splice(this.state.summary, response.body.url, carPos)});
+        }.bind(this));
+
+    },
+
+    uploadFile: function(event, cb) {
+        var dt = event.dataTransfer;
+        var files = dt.files;
+
+        Superagent
+            .post('/api/__file/images')
+            .attach('image', files[0])
+            .end(cb);
+    },
+
+    saveArticle: function(event) {
+        event.preventDefault();
+        console.log('Save Article');
+        var formJson = SerializeForm(event.target);
+        Superagent.post('/api/article').send(formJson).end(function(err, response) {
+            console.log('post /api/article, response: ', response.body);
+        });
+    },
+});
+
+module.exports = EditArticle;
+
+},{"../../helpers/jayehmd":421,"../../helpers/serializeform":422,"../../mixins/stateshortcuts":424,"react":406,"react-filedrop":228,"superagent":408}],427:[function(require,module,exports){
+var React = require('react');
+var Request = require('superagent');
+
+var Jayehmd = require('../../helpers/jayehmd');
+var Comments = require('../../components/comments');
+var ArticleHeader = require('../../components/article-header');
+
+var FullArticle = React.createClass({displayName: "FullArticle",
+    getInitialState: function() {
+        return {article: {title: '-', header: '-', body: '-'}};
+    },
+    componentDidMount: function() {
+        var url = '/api/article';
+        if(this.props.id)
+            url += '/' + this.props.id;
+        else if(this.props.title)
+            url += '?title=' + this.props.title;
+
+        Request('get', url).end(function(err, response) {
+            console.log('response: ', response);
+            this.setState({article: response.body[0]});
+        }.bind(this));
+    },
+    render: function() {
+        console.log('this.state.article: ', this.state.article);
+        var md = Jayehmd(this.state.article);
+        var headerMarkup = md.renderTokens(this.state.article.header);
+        var bodyMarkup = md.renderTokens(this.state.article.body);
+
+        return (
+            React.createElement("div", null, 
+                React.createElement(ArticleHeader, {image: "/dist/header1.jpg"}, 
+                    React.createElement("a", {href: '/article/t/'+this.state.article.title, style: {fontSize: 20, margin: 20}}, headerMarkup)
+                ), 
+                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '200%'}}, bodyMarkup), 
+                React.createElement(Comments, {article: this.state.article})
+            )
+        )
+    },
+});
+
+module.exports = FullArticle;
+
+},{"../../components/article-header":417,"../../components/comments":419,"../../helpers/jayehmd":421,"react":406,"superagent":408}],428:[function(require,module,exports){
+//DEPRECATED: TODO: use basic summary
+var React = require('react');
+var Jayehmd = require('../../helpers/jayehmd');
+
+var ArticleSummary = React.createClass({displayName: "ArticleSummary",
+    render: function() {
+        var md = Jayehmd(this.props.article);
+        //ya... i have to do this twice until i fix the first time bug.
+        var headerMarkup = md.renderTokens(this.props.article.header);
+        //
+        var headerMarkup = md.renderTokens(this.props.article.header);
+        var truncatedBody = this.props.article.body.substr(0,80) + '...';
+        return (
+            React.createElement("div", {style: {paddingTop: 20, paddingBottom: 20, marginBottom: 'solid 1px black'}}, 
+                React.createElement("a", {href: '/article/t/'+this.props.article.title, style: {fontSize: 20, margin: 20}}, {headerMarkup}), 
+                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '150%'}}, {truncatedBody})
+            )
+        )
+    },
+});
+
+module.exports = ArticleSummary;
+
+},{"../../helpers/jayehmd":421,"react":406}],429:[function(require,module,exports){
+var React = require('react');
+var Request = require('superagent');
+
+//TODO: use Basic-Summary instead
+var ArticleSummary = require('./article/summary');
+
+var Blog = React.createClass({displayName: "Blog",
+    getInitialState: function() {
+        return {articles: []};
+    },
+    componentDidMount: function() {
+        Request('get', '/api/article').end(function(err, response) {
+            console.log('response: ', response);
+            this.setState({articles: response.body});
+        }.bind(this));
+    },
+    render: function() {
+        return (
+            React.createElement("div", null, 
+                React.createElement("span", {style: {fontFamily: 'Baskerville', fontSize: 36, paddingRight: 10, paddingLeft: 10, borderRight: "solid 2px grey", borderBottom: "solid 2px grey"}}, "Blog"), 
+                this.state.articles.map(function(article) {
+                    return React.createElement(ArticleSummary, {article: article});
+                })
+            )
+        );
+    },
+});
+
+module.exports = Blog;
+
+},{"./article/summary":428,"react":406,"superagent":408}],430:[function(require,module,exports){
+var React = require('react');
+
+var User = require('../helpers/user');
+var SerializeForm = require('../helpers/serializeform');
+var ArticleHeader = require('../components/article-header');
+
+var Login = React.createClass({displayName: "Login",
+    render: function() {
+        return (
+            React.createElement("form", {onSubmit: this.login}, 
+                React.createElement("div", {style: {width: 600, height: 100}}, 
+                    React.createElement(ArticleHeader, {image: "/dist/header2.jpg", title: "THE title", subtitle: "this is a summary of my article."})
+                ), 
+                React.createElement("input", {type: "text", name: "username"}), 
+                React.createElement("input", {type: "password", name: "password"}), 
+                React.createElement("input", {type: "submit", value: "Login"}), 
+                React.createElement("button", {type: "button", onClick: this.oauthLogin, style: {backgroundImage: 'url("/dist/googlelogin.png")', width: 200, height: 40, backgroundSize: '100%', display: 'block'}})
+            )
+        );
+    },
+    login: function(event) {
+        event.preventDefault();
+        console.log('Logging in...');
+        var formJson = SerializeForm(event.target);
+        
+        User.login(formJson, function(err, response) {
+            var user = JSON.parse(response.text);
+            console.log('user: ', user);
+            window.location.replace('/user/' + user.username);           
+        });
+    },
+    oauthLogin: function() {
+        window.location.replace('/api/auth/google');
+    },
+});
+
+module.exports = Login;
+
+},{"../components/article-header":417,"../helpers/serializeform":422,"../helpers/user":423,"react":406}],431:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
-var User = require('./helpers/user');
+var User = require('../helpers/user');
 
 var UserPanel = React.createClass({displayName: "UserPanel",
     getInitialState: function() {
@@ -47154,4 +47196,4 @@ var UserPanel = React.createClass({displayName: "UserPanel",
 
 module.exports = UserPanel;
 
-},{"./helpers/user":426,"react":406,"superagent":408}]},{},[420]);
+},{"../helpers/user":423,"react":406,"superagent":408}]},{},[415]);

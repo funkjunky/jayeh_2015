@@ -3,16 +3,21 @@ var Router = require('react-router-component');
 var Locations = Router.Locations;
 var Location = Router.Location;
 
-var Header = require('./header');
-var Blog = require('./blog');
-var EditArticle = require('./article/edit');
-var FullArticle = require('./article/full');
-var Login = require('./login');
-var UserPanel = require('./user-panel');
+var Header = require('./components/header');
+var Blog = require('./routes/blog');
+var EditArticle = require('./routes/article/edit');
+var FullArticle = require('./routes/article/full');
+var Login = require('./routes/login');
+var UserPanel = require('./routes/user-panel');
 var User = require('./helpers/user');
 
 var Routes = React.createClass({displayName: "Routes",
     render: function() {
+        if(this.props.path) {
+            var parts = this.props.path.split('/');
+            var excludeHeader = parts[1] == 'article' && (parts[2] == 't' || parts[2] == 'id');
+        }
+            
         return (
             React.createElement("html", null, 
                 React.createElement("head", null, 
@@ -23,7 +28,7 @@ var Routes = React.createClass({displayName: "Routes",
                     React.createElement("link", {rel: "stylesheet", href: "/dist/styles/codepen-embed.css"})
                 ), 
                 React.createElement("body", null, 
-                    React.createElement(Header, null), 
+                    (excludeHeader) ? '' : React.createElement(Header, null), 
                     React.createElement("div", {style: {fontFamily: 'tahoma'}}, 
                         React.createElement(Locations, {path: this.props.path}, 
                             React.createElement(Location, {path: "/", handler: React.createElement(Blog, null)}), 

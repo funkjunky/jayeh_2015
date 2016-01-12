@@ -145,14 +145,39 @@ TODO www.jayeh.ca
 			*- test homepage
 			*- test local login
 				*- not working fix
-	- remerge into dev, then checkout dev and work in dev
+	*- remerge into dev, then checkout dev and work in dev
 
-	- reboot chrome
+	*- reboot chrome
 
 	- prepare pretty setup and default for blog
-		- title, summary, body
-		- copy ars for summary, make it default
-		- use full image, with header and subheader that is % based font for the body starting.
+		*- add 3 images to repo that look nice and are good resolution [mix od dark and light]
+		*- title, summary, body
+			*- change form
+			*- make the summary preview be in a box of 600px wide and 200px high
+		*- make a react item for summary
+			*- simply takes an image, title and subtitle
+			*- make an item that is 100% width and 100% height with %font for title and subtitle
+			*- ensure it shows…
+		*- react item for full header
+			*- takes image, white text option [black default]
+			*- image should fill screen initially
+		
+		- git rm all the src files that are no longer relevant
+
+		- in the new blog thing, randomly choose one of the three images to use for default image.
+		- turn the image field into a drag and drop image uploader
+
+	- use basic summary instead of article summary
+	- add css animations, perhaps through react animations, to smooth the hover effect of basic summary.
+	- rename basic summary to article summary
+
+	- add font smoothing aliased if i havent already
+
+	*- routes folder, components folder
+		*- move files
+		*- update all references
+
+	- deploy
 
 	- update articles with nice summary and better body with my image thing
 
