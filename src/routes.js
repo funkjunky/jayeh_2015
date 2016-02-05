@@ -21,7 +21,7 @@ var Routes = React.createClass({displayName: "Routes",
         return (
             React.createElement("html", null, 
                 React.createElement("head", null, 
-                    React.createElement("title", null, "Jayeh - Jason's tech and opinions"), 
+                    React.createElement("title", null, "Jayeh - Jasons tech and opinions"), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/base.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/default.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/node_modules/font-awesome/css/font-awesome.min.css"}), 

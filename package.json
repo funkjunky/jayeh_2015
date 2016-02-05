@@ -24,7 +24,7 @@
     "react": "0.13.x",
     "react-async": "2.1.x",
     "react-document-title": "1.0.x",
-    "react-filedrop": "0.1.*",
+    "react-filedrop": "^0.2.0",
     "react-router-component": "0.24.x",
     "serve-favicon": "2.2.x",
     "superagent": "latest",

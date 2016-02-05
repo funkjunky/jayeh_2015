@@ -162,20 +162,37 @@ TODO www.jayeh.ca
 			*- takes image, white text option [black default]
 			*- image should fill screen initially
 		
-		- git rm all the src files that are no longer relevant
+		*- git rm all the src files that are no longer relevant
 
-		- in the new blog thing, randomly choose one of the three images to use for default image.
-		- turn the image field into a drag and drop image uploader
+		*- in the new blog thing, randomly choose one of the three images to use for default image.
+		
+		- fileDropZone component, that allows any html inside and uploads and calls handler
+			*- file is showing…
+			*- try the fileDrop event on the text area inside… try and get cursor and get the file somehow.
+			*- make sure the highlighting is working nicely and recognizable
+			*- ensure the filedrop full works with image
+			*- ensure it works with the text as i would expect with carot
+
+	*- routes folder, components folder
+		*- move files
+		*- update all references
+
+	*- package filedrop react element
+		*- use old repo
+		*- update version in package.json
+		*- git tag
+		*- npm publish
+		*- make jayeh use new filedrop package.
+
+	- commit jayeh, because it’s been forever
+	- try changing the npm to use ~ everywhere instead of ^
+	- take an apartment hunting break. Mile end.
 
 	- use basic summary instead of article summary
 	- add css animations, perhaps through react animations, to smooth the hover effect of basic summary.
 	- rename basic summary to article summary
 
 	- add font smoothing aliased if i havent already
-
-	*- routes folder, components folder
-		*- move files
-		*- update all references
 
 	- deploy
 

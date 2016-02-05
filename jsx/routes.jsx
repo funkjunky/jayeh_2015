@@ -21,7 +21,7 @@ var Routes = React.createClass({
         return (
             <html>
                 <head>
-                    <title>Jayeh - Jason's tech and opinions</title>
+                    <title>Jayeh - Jasons tech and opinions</title>
                     <link rel="stylesheet" href="/dist/base.css" />
                     <link rel="stylesheet" href="/dist/default.css" />
                     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
