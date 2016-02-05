@@ -1,5 +1,5 @@
 var React = require('react');
-var StateShortcuts = require('./mixins/stateshortcuts');
+var StateShortcuts = require('../mixins/stateshortcuts');
 
 var BasicSummary = React.createClass({displayName: "BasicSummary",
     mixins: [StateShortcuts],

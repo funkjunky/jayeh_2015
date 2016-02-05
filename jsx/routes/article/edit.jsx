@@ -14,9 +14,10 @@ var EditArticle = React.createClass({
     mixins: [StateShortcuts],
     getInitialState: function() {
         return {
+            _id: false,
             title: ' ',
             subtitle: ' ',
-            summary: ' ',
+            header: ' ',
             image: '/dist/header3.jpg',
             header: ' ',
             body: ' ',
@@ -25,8 +26,8 @@ var EditArticle = React.createClass({
     render: function() {
         var md = Jayehmd(this.state);
 
-        console.log('summary: ', this.state.summary);
-        var summaryMarkup = md.renderTokens(this.state.summary);
+        console.log('header: ', this.state.header);
+        var headerMarkup = md.renderTokens(this.state.header);
         var bodyMarkup = md.renderTokens(this.state.body);
 
         //TODO: inputs should use a component that gets rid of hte massive redundency, if possible... i just hate writing subtitle 3 times
@@ -43,9 +44,9 @@ var EditArticle = React.createClass({
                             </Filedrop>
                         </div>
                         <Filedrop>
-                            <textarea name="summary" style={{width: 800, height: 150}} value={this.state.summary} onChange={this.setStateAsInput('summary')} onDrop={this.dropTextFnc('summary')} /><br />
+                            <textarea name="header" style={{width: 800, height: 150}} value={this.state.header} onChange={this.setStateAsInput('header')} onDrop={this.dropTextFnc('header')} /><br />
                         </Filedrop>
-                        <div style={{width: 600, height: 200}}>{summaryMarkup}</div>
+                        <div style={{width: 600, height: 200}}>{headerMarkup}</div>
                             <textarea name="body" style={{width: 800, height: 250}} value={this.state.body} onChange={this.setStateAsInput('body')} onDrop={this.dropTextFnc('body')} /><br />
                         <input type="submit" />
                         {bodyMarkup}
@@ -61,15 +62,16 @@ var EditArticle = React.createClass({
     },
 
     fetchArticle: function(id) {
-        this.setState({title: '-', subtitle: '-', image: '-', summary: '-', body: '-'});
+        this.setState({title: '-', subtitle: '-', image: '-', header: '-', body: '-'});
         Superagent('get', '/api/article/' + id).end(function(err, response) {
             console.log('response: ', response);
             //TODO: try doing this.setState(response.body); instead. If not, then perhaps a clone method.
             this.setState({
+                _id: response.body._id,
                 title: response.body.title,
                 subtitle: response.body.subtitle,
                 image: response.body.image,
-                summary: response.body.summary,
+                header: response.body.header,
                 body: response.body.body,
             });
         }.bind(this));
@@ -111,9 +113,14 @@ var EditArticle = React.createClass({
         event.preventDefault();
         console.log('Save Article');
         var formJson = SerializeForm(event.target);
-        Superagent.post('/api/article').send(formJson).end(function(err, response) {
-            console.log('post /api/article, response: ', response.body);
-        });
+        if(this.state._id)
+            Superagent.put('/api/article/' + this.state._id).send(formJson).end(function(err, response) {
+                console.log('PUT /api/article, response: ', response.body);
+            });
+        else
+            Superagent.post('/api/article').send(formJson).end(function(err, response) {
+                console.log('POST /api/article, response: ', response.body);
+            });
     },
 });
 

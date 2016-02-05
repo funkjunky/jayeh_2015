@@ -184,9 +184,8 @@ TODO www.jayeh.ca
 		*- npm publish
 		*- make jayeh use new filedrop package.
 
-	- commit jayeh, because it’s been forever
-	- try changing the npm to use ~ everywhere instead of ^
-	- take an apartment hunting break. Mile end.
+	*- commit jayeh, because it’s been forever
+	*- try changing the npm to use ~ everywhere instead of ^
 
 	- use basic summary instead of article summary
 	- add css animations, perhaps through react animations, to smooth the hover effect of basic summary.

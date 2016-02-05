@@ -2,7 +2,8 @@ var React = require('react');
 var Request = require('superagent');
 
 //TODO: use Basic-Summary instead
-var ArticleSummary = require('./article/summary');
+//var ArticleSummary = require('./article/summary');
+var BasicSummary = require('../components/basic-summary');
 
 var Blog = React.createClass({displayName: "Blog",
     getInitialState: function() {
@@ -19,7 +20,7 @@ var Blog = React.createClass({displayName: "Blog",
             React.createElement("div", null, 
                 React.createElement("span", {style: {fontFamily: 'Baskerville', fontSize: 36, paddingRight: 10, paddingLeft: 10, borderRight: "solid 2px grey", borderBottom: "solid 2px grey"}}, "Blog"), 
                 this.state.articles.map(function(article) {
-                    return React.createElement(ArticleSummary, {article: article});
+                    return React.createElement(BasicSummary, {title: article.title, subtitle: article.subtitle});
                 })
             )
         );
