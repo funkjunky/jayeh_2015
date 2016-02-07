@@ -1,5 +1,5 @@
 h1 {
-    padding-top: 1em;
+    padding: 0.25em;
     font-size: 4em;
     margin-left: 0.5em;
 }
@@ -14,7 +14,7 @@ h3 {
 }
 
 p {
-    margin: 0.75em;
+    margin: 0.25em;
 }
 
 a:visited {

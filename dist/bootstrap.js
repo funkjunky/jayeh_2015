@@ -46719,27 +46719,19 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
     mixins: [StateShortcuts],
     getInitialState: function() {
         return {
-            hovered: false,
         };
     },
     render: function() {
         var style = {
             width: '100%',
             height: '100%',
-            color: (this.props.whitetext)?'white':'black',
-            backgroundImage: 'url(' + this.props.image + ')',
+            backgroundImage: 'url(' + this.props.article.image + ')',
             backgroundSize: '100%',
         };
-        var titleEm = '3em';
-        var subtitleDisplay = 'none';
-        if(this.state.hovered) {
-            titleEm = '2em';
-            subtitleDisplay = 'block';
-        }
         return (
-            React.createElement("div", {style: style, onMouseEnter: this.toggleState('hovered'), onMouseLeave: this.toggleState('hovered')}, 
-                React.createElement("p", {style: {fontSize: titleEm}}, this.props.title), 
-                React.createElement("p", {style: {fontSize: '1em', display: subtitleDisplay}}, this.props.subtitle)
+            React.createElement("div", {style: style}, 
+                React.createElement("p", {style: {fontSize: '2em'}}, this.props.article.title), 
+                React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle)
             )
         );
     }
@@ -47272,7 +47264,11 @@ var Blog = React.createClass({displayName: "Blog",
             React.createElement("div", null, 
                 React.createElement("span", {style: {fontFamily: 'Baskerville', fontSize: 36, paddingRight: 10, paddingLeft: 10, borderRight: "solid 2px grey", borderBottom: "solid 2px grey"}}, "Blog"), 
                 this.state.articles.map(function(article) {
-                    return React.createElement(BasicSummary, {title: article.title, subtitle: article.subtitle});
+                    return (
+                        React.createElement("div", {style: {marginLeft: '5%', maxWidth: 800, height: 100}}, 
+                            React.createElement(ArticleSummary, {article: article})
+                        )
+                    );
                 })
             )
         );

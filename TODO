@@ -192,7 +192,6 @@ TODO www.jayeh.ca
 	*- rename basic summary to article summary
 
 	*- add font smoothing aliased if i havent already
-	- add css animations, perhaps through react animations, to smooth the hover effect of basic summary.
 
 	- deploy
 

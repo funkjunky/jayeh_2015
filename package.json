@@ -26,6 +26,7 @@
     "react-document-title": "~1.0.0",
     "react-filedrop": "~0.2.0",
     "react-router-component": "~0.24.0",
+    "react-animate": "~3.0.0",
     "serve-favicon": "~2.2.0",
     "superagent": "~1.7",
     "underscore": "~1.8.0",
