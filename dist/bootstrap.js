@@ -47121,7 +47121,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                         ), 
                             React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, value: this.state.body, onChange: this.setStateAsInput('body'), onDrop: this.dropTextFnc('body')}), React.createElement("br", null), 
                         React.createElement("input", {type: "submit"}), 
-                        React.createElement(ArticleSummary, {title: this.state.title, subtitle: this.state.subtitle, image: this.state.image}), 
+                        React.createElement(ArticleSummary, {article: this.state}), 
                         React.createElement(ArticleHeader, {image: this.state.image}, headerMarkup), 
                         bodyMarkup
                     )
