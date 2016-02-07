@@ -47088,7 +47088,7 @@ var Jayehmd = require('../../helpers/jayehmd');
 var SerializeForm = require('../../helpers/serializeform');
 var StateShortcuts = require('../../mixins/stateshortcuts');
 
-var BasicSummary = require('../../components/basic-summary');
+var ArticleSummary = require('../../components/article-summary');
 var ArticleHeader = require('../../components/article-header');
 
 var EditArticle = React.createClass({displayName: "EditArticle",
@@ -47129,7 +47129,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                         ), 
                             React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, value: this.state.body, onChange: this.setStateAsInput('body'), onDrop: this.dropTextFnc('body')}), React.createElement("br", null), 
                         React.createElement("input", {type: "submit"}), 
-                        React.createElement(BasicSummary, {title: this.state.title, subtitle: this.state.subtitle, image: this.state.image}), 
+                        React.createElement(ArticleSummary, {title: this.state.title, subtitle: this.state.subtitle, image: this.state.image}), 
                         React.createElement(ArticleHeader, {image: this.state.image}, headerMarkup), 
                         bodyMarkup
                     )
@@ -47208,7 +47208,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
 
 module.exports = EditArticle;
 
-},{"../../components/article-header":417,"../../components/basic-summary":418,"../../helpers/jayehmd":422,"../../helpers/serializeform":423,"../../mixins/stateshortcuts":425,"react":405,"react-filedrop":227,"superagent":407}],428:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/article-summary":418,"../../helpers/jayehmd":422,"../../helpers/serializeform":423,"../../mixins/stateshortcuts":425,"react":405,"react-filedrop":227,"superagent":407}],428:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
@@ -47254,9 +47254,8 @@ module.exports = FullArticle;
 var React = require('react');
 var Request = require('superagent');
 
-//TODO: use Basic-Summary instead
 //var ArticleSummary = require('./article/summary');
-var BasicSummary = require('../components/basic-summary');
+var ArticleSummary = require('../components/article-summary');
 
 var Blog = React.createClass({displayName: "Blog",
     getInitialState: function() {
@@ -47282,7 +47281,7 @@ var Blog = React.createClass({displayName: "Blog",
 
 module.exports = Blog;
 
-},{"../components/basic-summary":418,"react":405,"superagent":407}],430:[function(require,module,exports){
+},{"../components/article-summary":418,"react":405,"superagent":407}],430:[function(require,module,exports){
 var React = require('react');
 
 var User = require('../helpers/user');
