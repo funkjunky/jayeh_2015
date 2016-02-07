@@ -1,9 +1,9 @@
 var React = require('react');
 var Request = require('superagent');
 
-var Jayehmd = require('../helpers/jayehmd');
-
-var Comments = require('../comments');
+var Jayehmd = require('../../helpers/jayehmd');
+var Comments = require('../../components/comments');
+var ArticleHeader = require('../../components/article-header');
 
 var FullArticle = React.createClass({
     getInitialState: function() {
@@ -29,7 +29,7 @@ var FullArticle = React.createClass({
 
         return (
             <div>
-                <a href={'/article/t/'+this.state.article.title} style={{fontSize: 20, margin: 20}}>{headerMarkup}</a>
+                <ArticleHeader image={this.state.article.image}>{headerMarkup}</ArticleHeader>
                 <p style={{fontSize: 14, margin: 20, lineHeight: '200%'}}>{bodyMarkup}</p>
                 <Comments article={this.state.article} />
             </div>

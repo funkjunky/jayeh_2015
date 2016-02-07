@@ -11,15 +11,15 @@ var EditArticle = React.createClass({displayName: "EditArticle",
     getInitialState: function() {
         return {
             title: ' ',
-            header: ' ',
+            summary: ' ',
             body: ' ',
         };
     },
     render: function() {
         var md = Jayehmd(this.state);
 
-        console.log('header: ', this.state.header);
-        var headerMarkup = md.renderTokens(this.state.header);
+        console.log('summary: ', this.state.summary);
+        var summaryMarkup = md.renderTokens(this.state.summary);
         var bodyMarkup = md.renderTokens(this.state.body);
 
         return (
@@ -29,9 +29,9 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                     React.createElement("form", {onSubmit: this.saveArticle, ref: "myform"}, 
                         React.createElement("input", {type: "text", name: "title", value: this.state.title, onChange: this.setStateAsInput('title')}), React.createElement("br", null), 
                         React.createElement(Filedrop, {handleFile: this.handleFile}, 
-                            React.createElement("textarea", {className: "dropZone", name: "header", style: {width: 800, height: 150}, value: this.state.header, onChange: this.setStateAsInput('header'), onDrop: this.handleDrop, onDragOver: this.preventDefault}), React.createElement("br", null)
+                            React.createElement("textarea", {className: "dropZone", name: "summary", style: {width: 800, height: 150}, value: this.state.summary, onChange: this.setStateAsInput('summary'), onDrop: this.handleDrop, onDragOver: this.preventDefault}), React.createElement("br", null)
                         ), 
-                        headerMarkup, 
+                        React.createElement("div", {style: {width: 600, height: 200}}, summaryMarkup), 
                         React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, value: this.state.body, onChange: this.setStateAsInput('body')}), React.createElement("br", null), 
                         React.createElement("input", {type: "submit"}), 
                         bodyMarkup
@@ -49,12 +49,12 @@ var EditArticle = React.createClass({displayName: "EditArticle",
     },
 
     fetchArticle: function(id) {
-        this.setState({title: '-', header: '-', body: '-'});
+        this.setState({title: '-', summary: '-', body: '-'});
         Superagent('get', '/api/article/' + id).end(function(err, response) {
             console.log('response: ', response);
             this.setState({
                 title: response.body.title,
-                header: response.body.header,
+                summary: response.body.summary,
                 body: response.body.body,
             });
         }.bind(this));
@@ -91,7 +91,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
 
         this.uploadFile(e, function(err, response) {
             console.log('err, response: ', err, response);
-            this.setState({header: splice(this.state.header, response.body.url, carPos)});
+            this.setState({summary: splice(this.state.summary, response.body.url, carPos)});
         }.bind(this));
 
     },

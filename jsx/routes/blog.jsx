@@ -1,7 +1,8 @@
 var React = require('react');
 var Request = require('superagent');
 
-var ArticleSummary = require('./article/summary');
+//var ArticleSummary = require('./article/summary');
+var ArticleSummary = require('../components/article-summary');
 
 var Blog = React.createClass({
     getInitialState: function() {
@@ -14,12 +15,15 @@ var Blog = React.createClass({
         }.bind(this));
     },
     render: function() {
-        console.log('rendering: ', this.state);
         return (
             <div>
                 <span style={{fontFamily: 'Baskerville', fontSize: 36, paddingRight: 10, paddingLeft: 10, borderRight: "solid 2px grey", borderBottom: "solid 2px grey"}}>Blog</span>
                 {this.state.articles.map(function(article) {
-                    return <ArticleSummary article={article} />;
+                    return (
+                        <div style={{marginLeft: '5%', maxWidth: 800, height: 100}}>
+                            <ArticleSummary article={article} />
+                        </div>
+                    );
                 })}
             </div>
         );

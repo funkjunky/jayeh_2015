@@ -1,9 +1,9 @@
 var React = require('react');
 var Request = require('superagent');
 
-var Jayehmd = require('../helpers/jayehmd');
-var Comments = require('../comments');
-var ArticleHeader = require('../article-header');
+var Jayehmd = require('../../helpers/jayehmd');
+var Comments = require('../../components/comments');
+var ArticleHeader = require('../../components/article-header');
 
 var FullArticle = React.createClass({displayName: "FullArticle",
     getInitialState: function() {
@@ -27,11 +27,9 @@ var FullArticle = React.createClass({displayName: "FullArticle",
         var headerMarkup = md.renderTokens(this.state.article.header);
         var bodyMarkup = md.renderTokens(this.state.article.body);
 
-        //<ArticleHeader image="/dist/header1.jpg">
-        //</ArticleHeader>
         return (
             React.createElement("div", null, 
-                React.createElement("a", {href: '/article/t/'+this.state.article.title, style: {fontSize: 20, margin: 20}}, headerMarkup), 
+                React.createElement(ArticleHeader, {image: this.state.article.image}, headerMarkup), 
                 React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '200%'}}, bodyMarkup), 
                 React.createElement(Comments, {article: this.state.article})
             )

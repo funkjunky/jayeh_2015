@@ -1,7 +1,8 @@
 var React = require('react');
 
-var User = require('./helpers/user');
-var SerializeForm = require('./helpers/serializeform');
+var User = require('../helpers/user');
+var SerializeForm = require('../helpers/serializeform');
+var ArticleHeader = require('../components/article-header');
 
 var Login = React.createClass({displayName: "Login",
     render: function() {

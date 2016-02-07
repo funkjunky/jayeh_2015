@@ -1,9 +1,9 @@
 var React = require('react');
 var Superagent = require('superagent');
 
-var User = require('./helpers/user');
+var User = require('../helpers/user');
 
-var UserPanel = React.createClass({displayName: "UserPanel",
+var UserPanel = React.createClass({
     getInitialState: function() {
         return {user: {}};
     },
@@ -15,12 +15,12 @@ var UserPanel = React.createClass({displayName: "UserPanel",
     },
     render: function() {
         return (
-            React.createElement("div", null, 
-                React.createElement("pre", null, this.state.user), 
-                React.createElement("br", null), 
-                (this.state.user.username == User.currentUser().username)
-                ? React.createElement("a", {href: "/api/auth/logout", onClick: User.logout}, "Logout") : ''
-            )
+            <div>
+                <pre>{this.state.user}</pre>
+                <br />
+                {(this.state.user.username == User.currentUser().username)
+                ? <a href="/api/auth/logout" onClick={User.logout}>Logout</a> : ''}
+            </div>
         );
     },
 });

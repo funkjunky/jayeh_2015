@@ -1,8 +1,8 @@
 var React = require('react');
 var Superagent = require('superagent');
 
-var User = require('./helpers/user');
-var SerializeForm = require('./helpers/serializeform');
+var User = require('../helpers/user');
+var SerializeForm = require('../helpers/serializeform');
 
 var AddComment = React.createClass({displayName: "AddComment",
     initialize: false, //TODO: so hacky...

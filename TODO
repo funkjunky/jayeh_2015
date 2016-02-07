@@ -145,14 +145,55 @@ TODO www.jayeh.ca
 			*- test homepage
 			*- test local login
 				*- not working fix
-	- remerge into dev, then checkout dev and work in dev
+	*- remerge into dev, then checkout dev and work in dev
 
-	- reboot chrome
+	*- reboot chrome
 
 	- prepare pretty setup and default for blog
-		- title, summary, body
-		- copy ars for summary, make it default
-		- use full image, with header and subheader that is % based font for the body starting.
+		*- add 3 images to repo that look nice and are good resolution [mix od dark and light]
+		*- title, summary, body
+			*- change form
+			*- make the summary preview be in a box of 600px wide and 200px high
+		*- make a react item for summary
+			*- simply takes an image, title and subtitle
+			*- make an item that is 100% width and 100% height with %font for title and subtitle
+			*- ensure it shows…
+		*- react item for full header
+			*- takes image, white text option [black default]
+			*- image should fill screen initially
+		
+		*- git rm all the src files that are no longer relevant
+
+		*- in the new blog thing, randomly choose one of the three images to use for default image.
+		
+		- fileDropZone component, that allows any html inside and uploads and calls handler
+			*- file is showing…
+			*- try the fileDrop event on the text area inside… try and get cursor and get the file somehow.
+			*- make sure the highlighting is working nicely and recognizable
+			*- ensure the filedrop full works with image
+			*- ensure it works with the text as i would expect with carot
+
+	*- routes folder, components folder
+		*- move files
+		*- update all references
+
+	*- package filedrop react element
+		*- use old repo
+		*- update version in package.json
+		*- git tag
+		*- npm publish
+		*- make jayeh use new filedrop package.
+
+	*- commit jayeh, because it’s been forever
+	*- try changing the npm to use ~ everywhere instead of ^
+
+	*- use basic summary instead of article summary
+	*- convert the first article’s header to use markup for headers… so the text is bigger! Use @title and @subtitle!!!
+	*- rename basic summary to article summary
+
+	*- add font smoothing aliased if i havent already
+
+	- deploy
 
 	- update articles with nice summary and better body with my image thing
 
