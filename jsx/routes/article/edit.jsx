@@ -51,7 +51,7 @@ var EditArticle = React.createClass({
                         </Filedrop>
                             <textarea name="body" style={{width: 800, height: 250}} value={this.state.body} onChange={this.setStateAsInput('body')} onDrop={this.dropTextFnc('body')} /><br />
                         <input type="submit" />
-                        <ArticleSummary title={this.state.title} subtitle={this.state.subtitle} image={this.state.image} />
+                        <ArticleSummary article={this.state} />
                         <ArticleHeader image={this.state.image}>{headerMarkup}</ArticleHeader>
                         {bodyMarkup}
                     </form>
