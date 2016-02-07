@@ -10,6 +10,9 @@ var Jayehmd = require('../../helpers/jayehmd');
 var SerializeForm = require('../../helpers/serializeform');
 var StateShortcuts = require('../../mixins/stateshortcuts');
 
+var BasicSummary = require('../../components/basic-summary');
+var ArticleHeader = require('../../components/article-header');
+
 var EditArticle = React.createClass({
     mixins: [StateShortcuts],
     getInitialState: function() {
@@ -46,9 +49,10 @@ var EditArticle = React.createClass({
                         <Filedrop>
                             <textarea name="header" style={{width: 800, height: 150}} value={this.state.header} onChange={this.setStateAsInput('header')} onDrop={this.dropTextFnc('header')} /><br />
                         </Filedrop>
-                        <div style={{width: 600, height: 200}}>{headerMarkup}</div>
                             <textarea name="body" style={{width: 800, height: 250}} value={this.state.body} onChange={this.setStateAsInput('body')} onDrop={this.dropTextFnc('body')} /><br />
                         <input type="submit" />
+                        <BasicSummary title={this.state.title} subtitle={this.state.subtitle} image={this.state.image} />
+                        <ArticleHeader image={this.state.image}>{headerMarkup}</ArticleHeader>
                         {bodyMarkup}
                     </form>
                 </div>

@@ -46698,6 +46698,8 @@ var ArticleHeader = React.createClass({displayName: "ArticleHeader",
             backgroundImage: 'url(' + this.props.image + ')',
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
+            textAlign: 'center',
+            fontFamily: 'Raleway',
         };
         return (
             React.createElement("div", {style: style}, 
@@ -47045,7 +47047,9 @@ var Routes = React.createClass({displayName: "Routes",
                     React.createElement("link", {rel: "stylesheet", href: "/dist/base.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/default.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/node_modules/font-awesome/css/font-awesome.min.css"}), 
-                    React.createElement("link", {rel: "stylesheet", href: "/dist/styles/codepen-embed.css"})
+                    React.createElement("link", {rel: "stylesheet", href: "/dist/styles/codepen-embed.css"}), 
+                    React.createElement("link", {rel: "stylesheet", type: "text/css", href: "https://fonts.googleapis.com/css?family=raleway"})
+
                 ), 
                 React.createElement("body", null, 
                     (excludeHeader) ? '' : React.createElement(Header, null), 
@@ -47084,6 +47088,9 @@ var Jayehmd = require('../../helpers/jayehmd');
 var SerializeForm = require('../../helpers/serializeform');
 var StateShortcuts = require('../../mixins/stateshortcuts');
 
+var BasicSummary = require('../../components/basic-summary');
+var ArticleHeader = require('../../components/article-header');
+
 var EditArticle = React.createClass({displayName: "EditArticle",
     mixins: [StateShortcuts],
     getInitialState: function() {
@@ -47120,9 +47127,10 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                         React.createElement(Filedrop, null, 
                             React.createElement("textarea", {name: "header", style: {width: 800, height: 150}, value: this.state.header, onChange: this.setStateAsInput('header'), onDrop: this.dropTextFnc('header')}), React.createElement("br", null)
                         ), 
-                        React.createElement("div", {style: {width: 600, height: 200}}, headerMarkup), 
                             React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, value: this.state.body, onChange: this.setStateAsInput('body'), onDrop: this.dropTextFnc('body')}), React.createElement("br", null), 
                         React.createElement("input", {type: "submit"}), 
+                        React.createElement(BasicSummary, {title: this.state.title, subtitle: this.state.subtitle, image: this.state.image}), 
+                        React.createElement(ArticleHeader, {image: this.state.image}, headerMarkup), 
                         bodyMarkup
                     )
                 )
@@ -47200,7 +47208,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
 
 module.exports = EditArticle;
 
-},{"../../helpers/jayehmd":422,"../../helpers/serializeform":423,"../../mixins/stateshortcuts":425,"react":405,"react-filedrop":227,"superagent":407}],428:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/basic-summary":418,"../../helpers/jayehmd":422,"../../helpers/serializeform":423,"../../mixins/stateshortcuts":425,"react":405,"react-filedrop":227,"superagent":407}],428:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
@@ -47232,9 +47240,7 @@ var FullArticle = React.createClass({displayName: "FullArticle",
 
         return (
             React.createElement("div", null, 
-                React.createElement(ArticleHeader, {image: "/dist/header1.jpg"}, 
-                    React.createElement("a", {href: '/article/t/'+this.state.article.title, style: {fontSize: 20, margin: 20}}, headerMarkup)
-                ), 
+                React.createElement(ArticleHeader, {image: this.state.article.image}, headerMarkup), 
                 React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '200%'}}, bodyMarkup), 
                 React.createElement(Comments, {article: this.state.article})
             )

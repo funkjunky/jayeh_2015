@@ -8,6 +8,8 @@ var ArticleHeader = React.createClass({displayName: "ArticleHeader",
             backgroundImage: 'url(' + this.props.image + ')',
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
+            textAlign: 'center',
+            fontFamily: 'Raleway',
         };
         return (
             React.createElement("div", {style: style}, 

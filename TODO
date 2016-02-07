@@ -187,10 +187,11 @@ TODO www.jayeh.ca
 	*- commit jayeh, because it’s been forever
 	*- try changing the npm to use ~ everywhere instead of ^
 
-	- use basic summary instead of article summary
-	- add css animations, perhaps through react animations, to smooth the hover effect of basic summary.
+	*- use basic summary instead of article summary
+	*- convert the first article’s header to use markup for headers… so the text is bigger! Use @title and @subtitle!!!
 	- rename basic summary to article summary
 
+	- add css animations, perhaps through react animations, to smooth the hover effect of basic summary.
 	- add font smoothing aliased if i havent already
 
 	- deploy

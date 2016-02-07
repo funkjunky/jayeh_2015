@@ -10,6 +10,9 @@ var Jayehmd = require('../../helpers/jayehmd');
 var SerializeForm = require('../../helpers/serializeform');
 var StateShortcuts = require('../../mixins/stateshortcuts');
 
+var BasicSummary = require('../../components/basic-summary');
+var ArticleHeader = require('../../components/article-header');
+
 var EditArticle = React.createClass({displayName: "EditArticle",
     mixins: [StateShortcuts],
     getInitialState: function() {
@@ -46,9 +49,10 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                         React.createElement(Filedrop, null, 
                             React.createElement("textarea", {name: "header", style: {width: 800, height: 150}, value: this.state.header, onChange: this.setStateAsInput('header'), onDrop: this.dropTextFnc('header')}), React.createElement("br", null)
                         ), 
-                        React.createElement("div", {style: {width: 600, height: 200}}, headerMarkup), 
                             React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, value: this.state.body, onChange: this.setStateAsInput('body'), onDrop: this.dropTextFnc('body')}), React.createElement("br", null), 
                         React.createElement("input", {type: "submit"}), 
+                        React.createElement(BasicSummary, {title: this.state.title, subtitle: this.state.subtitle, image: this.state.image}), 
+                        React.createElement(ArticleHeader, {image: this.state.image}, headerMarkup), 
                         bodyMarkup
                     )
                 )

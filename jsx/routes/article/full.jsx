@@ -29,9 +29,7 @@ var FullArticle = React.createClass({
 
         return (
             <div>
-                <ArticleHeader image="/dist/header1.jpg">
-                    <a href={'/article/t/'+this.state.article.title} style={{fontSize: 20, margin: 20}}>{headerMarkup}</a>
-                </ArticleHeader>
+                <ArticleHeader image={this.state.article.image}>{headerMarkup}</ArticleHeader>
                 <p style={{fontSize: 14, margin: 20, lineHeight: '200%'}}>{bodyMarkup}</p>
                 <Comments article={this.state.article} />
             </div>
