@@ -92,10 +92,17 @@ var EditArticle = React.createClass({
         var dt = event.dataTransfer;
         var files = dt.files;
 
-        Superagent
-            .post('/api/__file/images')
-            .attach('image', files[0])
-            .end(cb);
+        console.log('signs3 url: ', 'sign_s3?file_name='+files[0].name+'&file_type='+files[0].type);
+        Superagent('get', '/api/sign_s3?file_name='+files[0].name+'&file_type='+files[0].type).end(function(err, response) {
+                console.log('signs3 response: ', response);
+
+                Superagent('put', response.body.signed_request)
+                //Superagent('put', 'https://jayehtest.s3-us-west-2.amazonaws.com/10172871_10101161917002037_713851410092755221_n.jpg?AWSAccessKeyId=AKIAJOQ7AL7QGIGSXMQQ&Content-Type=image%2Fjpeg&Expires=1454947575&Signature=nBvjbkCLD5XsvFktEjnQOTdRFzM%3D&x-amz-acl=public-read'
+                .set('x-amz-acl', 'public-read')
+                .set('Content-Type', 'multipart/form-data')
+                .attach('image', files[0])
+                .end(cb);
+            });
     },
     
     dropTextFnc: function(stateKey) {
