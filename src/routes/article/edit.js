@@ -82,9 +82,9 @@ var EditArticle = React.createClass({displayName: "EditArticle",
     },
 
     handleDrop: function(event) {
-        this.uploadFile(event, function(error, response) {
-            console.log('successfull uploaded file?', response.body);
-            this.setState({image: response.body.url});
+        this.uploadFile(event, function(url) {
+            console.log('successfull uploaded file?', url);
+            this.setState({image: url});
         }.bind(this));
     },
 
@@ -92,10 +92,20 @@ var EditArticle = React.createClass({displayName: "EditArticle",
         var dt = event.dataTransfer;
         var files = dt.files;
 
-        Superagent
-            .post('/api/__file/images')
-            .attach('image', files[0])
-            .end(cb);
+        var type = files[0].type;
+
+        var getUrl = '/api/sign_s3?file_name='+encodeURIComponent(files[0].name)+'&file_type='+encodeURIComponent(type);
+        console.log('signs3 url: ', getUrl);
+        console.log('file: ', files[0]);
+        Superagent('get', getUrl).end(function(err, response) {
+                console.log('signs3 response: ', response);
+
+                Superagent('put', response.body.signed_request)
+                .set('x-amz-acl', 'public-read')
+                .set('Content-Type', type)
+                .send(files[0])
+                .end(cb.bind(this, response.body.url));
+            });
     },
     
     dropTextFnc: function(stateKey) {

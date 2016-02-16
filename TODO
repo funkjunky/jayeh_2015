@@ -190,12 +190,27 @@ TODO www.jayeh.ca
 	*- use basic summary instead of article summary
 	*- convert the first article’s header to use markup for headers… so the text is bigger! Use @title and @subtitle!!!
 	*- rename basic summary to article summary
-
 	*- add font smoothing aliased if i havent already
+
+	*- uploading doesn’t appear to be working. Fix it.
+	*- add an environment variable s3uploader true or false to choose upload code
+	*- add the code for the s3 upload
+	*- setup s3 bucket and set environment variables
+	*- add client side code for s3 PUT
+	*- get s3 working
+
+	*- generic rest server, commit new version and push, then publish
+	*- get new version on jayeh
+	*- push jayeh
+
+	- test jayeh s3 with published version of GRS
+	- merge to master, version and tag jayeh
 
 	- deploy
 
 	- update articles with nice summary and better body with my image thing
+		- update with header, title, and subtitle
+		- Just for my latest article, throw in placeholder images where i want to make nice images to show things
 
 	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
 
