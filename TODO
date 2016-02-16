@@ -201,9 +201,10 @@ TODO www.jayeh.ca
 
 	*- generic rest server, commit new version and push, then publish
 	*- get new version on jayeh
-	*- version and push jayeh
+	*- push jayeh
 
-	- test s3 with published version of GRS
+	- test jayeh s3 with published version of GRS
+	- merge to master, version and tag jayeh
 
 	- deploy
 
