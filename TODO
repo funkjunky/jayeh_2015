@@ -203,8 +203,8 @@ TODO www.jayeh.ca
 	*- get new version on jayeh
 	*- push jayeh
 
-	- test jayeh s3 with published version of GRS
-	- merge to master, version and tag jayeh
+	*- test jayeh s3 with published version of GRS
+	*- merge to master, version and tag jayeh
 
 	- deploy
 
