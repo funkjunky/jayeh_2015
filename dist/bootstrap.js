@@ -46695,7 +46695,7 @@ var ArticleHeader = React.createClass({displayName: "ArticleHeader",
         var style = {
             minHeight: '100vh', //this makes the image take the entire screen height, but allow scrolling past
 
-            backgroundImage: 'url(' + this.props.image + ')',
+            backgroundImage: 'url(\'' + this.props.image + '\')',
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
             textAlign: 'center',
@@ -46725,7 +46725,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
         var style = {
             width: '100%',
             height: '100%',
-            backgroundImage: 'url(' + this.props.article.image + ')',
+            backgroundImage: 'url(\'' + this.props.article.image + '\')',
             backgroundSize: '100%',
         };
         return (

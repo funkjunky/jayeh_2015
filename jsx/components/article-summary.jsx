@@ -11,7 +11,7 @@ var BasicSummary = React.createClass({
         var style = {
             width: '100%',
             height: '100%',
-            backgroundImage: 'url(' + this.props.article.image + ')',
+            backgroundImage: 'url(\'' + this.props.article.image + '\')',
             backgroundSize: '100%',
         };
         return (

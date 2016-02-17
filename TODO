@@ -211,8 +211,8 @@ TODO www.jayeh.ca
 	*- update articles with nice summary and better body with my image thing
 		*- update with header, title, and subtitle
 
-	- fix blog links so they work, then redeploy
-	- fix background url in edit, summary, and full, put quotes around the url
+	*- fix blog links so they work, then redeploy
+	*- fix background url in edit, summary, and full, put quotes around the url
 	- check security on live… I don’t think it’s working…
 	- check security on dev and fix it…
 	- redeploy
