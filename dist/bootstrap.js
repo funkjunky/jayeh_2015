@@ -46729,10 +46729,10 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
             backgroundSize: '100%',
         };
         return (
-            React.createElement("div", {style: style}, 
+            React.createElement("a", {href: "/article/t/" + this.props.article.title}, React.createElement("div", {style: style}, 
                 React.createElement("p", {style: {fontSize: '2em'}}, this.props.article.title), 
                 React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle)
-            )
+            ))
         );
     }
 });
