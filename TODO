@@ -217,6 +217,9 @@ TODO www.jayeh.ca
 	*- check security on dev and fix it…
 	*- redeploy
 
+	*- trying to style some things a little bit better on my blog
+	- login button on full article isnt working.
+
 	- make a new blog post celebrating my new blog
 		- write it out in a nice format, throw in lots of images
 		- create a custom react element to show off the power i have

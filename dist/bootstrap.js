@@ -46635,6 +46635,7 @@ var Superagent = require('superagent');
 
 var User = require('../helpers/user');
 var SerializeForm = require('../helpers/serializeform');
+var Login = require('../routes/login');
 
 var AddComment = React.createClass({displayName: "AddComment",
     initialize: false, //TODO: so hacky...
@@ -46644,8 +46645,8 @@ var AddComment = React.createClass({displayName: "AddComment",
         this.initialize = true;
     },
     render: function() {
-        if(this.initialize && !User.authenticated())   //TODO: allow more ways to login.
-            return React.createElement("button", {type: "button"}, "Login to comment")
+        if(this.initialize && !User.authenticated())
+            return React.createElement(Login, null)
         else if(this.initialize)
             var user_id = User.currentUser()._id;
 
@@ -46655,7 +46656,7 @@ var AddComment = React.createClass({displayName: "AddComment",
             'You want to comment what? How rude.',
             'Please post all your ideas here and I well make millions of them, then send you bran muffins in appreciation.',
         ];
-        var placeholder = placeholders[Math.floor(Math.random * placeholders.length)];
+        var placeholder = placeholders[Math.floor(Math.random() * placeholders.length)];
 
         return (
             React.createElement("div", {style: {margin: 20}}, 
@@ -46687,7 +46688,7 @@ var AddComment = React.createClass({displayName: "AddComment",
 
 module.exports = AddComment;
 
-},{"../helpers/serializeform":423,"../helpers/user":424,"react":405,"superagent":407}],417:[function(require,module,exports){
+},{"../helpers/serializeform":423,"../helpers/user":424,"../routes/login":430,"react":405,"superagent":407}],417:[function(require,module,exports){
 var React = require('react');
 
 var ArticleHeader = React.createClass({displayName: "ArticleHeader",
@@ -46729,7 +46730,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
             backgroundSize: '100%',
         };
         return (
-            React.createElement("a", {href: "/article/t/" + this.props.article.title}, React.createElement("div", {style: style}, 
+            React.createElement("a", {href: "/article/t/" + this.props.article.title, className: "blackReadable"}, React.createElement("div", {style: style}, 
                 React.createElement("p", {style: {fontSize: '2em'}}, this.props.article.title), 
                 React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle)
             ))
@@ -47275,7 +47276,7 @@ var Blog = React.createClass({displayName: "Blog",
                 React.createElement("span", {style: {fontFamily: 'Baskerville', fontSize: 36, paddingRight: 10, paddingLeft: 10, borderRight: "solid 2px grey", borderBottom: "solid 2px grey"}}, "Blog"), 
                 this.state.articles.map(function(article) {
                     return (
-                        React.createElement("div", {style: {marginLeft: '5%', maxWidth: 800, height: 100}}, 
+                        React.createElement("div", {style: {marginLeft: '5%', maxWidth: 800, height: 120}}, 
                             React.createElement(ArticleSummary, {article: article})
                         )
                     );

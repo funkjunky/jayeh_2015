@@ -15,7 +15,7 @@ var BasicSummary = React.createClass({
             backgroundSize: '100%',
         };
         return (
-            <a href={"/article/t/" + this.props.article.title}><div style={style}>
+            <a href={"/article/t/" + this.props.article.title} className="blackReadable"><div style={style}>
                 <p style={{fontSize: '2em'}}>{this.props.article.title}</p>
                 <p style={{fontSize: '1em', marginLeft: '4em'}}>{this.props.article.subtitle}</p>
             </div></a>
