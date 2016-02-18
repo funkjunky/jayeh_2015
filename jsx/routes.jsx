@@ -26,7 +26,7 @@ var Routes = React.createClass({
                     <link rel="stylesheet" href="/dist/default.css" />
                     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
                     <link rel="stylesheet" href="/dist/styles/codepen-embed.css" />
-                    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=raleway" />
+                    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
 
                 </head>
                 <body>

@@ -13,6 +13,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
             height: '100%',
             backgroundImage: 'url(\'' + this.props.article.image + '\')',
             backgroundSize: '100%',
+            fontFamily: 'Open Sans',
         };
         return (
             React.createElement("a", {href: "/article/t/" + this.props.article.title, className: "blackReadable"}, React.createElement("div", {style: style}, 
