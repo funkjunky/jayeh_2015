@@ -9,10 +9,10 @@ var config = {
             create: {
                 auth: ['publisher'],
             },
-            edit:   {
+            update:   {
                 auth: ['publisher'],
             },
-            delete: {
+            remove: {
                 auth: ['publisher'],
             },
         },
@@ -25,14 +25,14 @@ var config = {
                     next();
                 },
             },
-            edit: {
+            update: {
                 auth: ['admin'],
                 before: function(dbh, ctx, next) {
                     ctx.data.updated_at = Date.now();
                     next();
                 },
             },
-            delete: {
+            remove: {
                 auth: ['admin'],
             },
             find: {
