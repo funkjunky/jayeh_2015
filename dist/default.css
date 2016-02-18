@@ -18,13 +18,13 @@ p {
 }
 
 a:visited {
-    border-bottom: 1px dashed purple;
-    color: #330066;
+    border-bottom: 1px dashed #444;
+    color: #444;
 }
 
 a:hover {
-    border-bottom: 1px solid blue;
-    color: blue;
+    border-bottom: 1px solid #CCC;
+    color: #CCC;
 }
 
 blockquote {
@@ -75,4 +75,15 @@ figcaption {
     border-bottom: 1px solid #ddd;
     color: #4f525a;
     text-align: left;
+}
+
+/* a small set of classes that are handy. Don't let this get out of control */
+.blackReadable {
+    color: black;
+    text-shadow: 1px 1px 5px white, -1px -1px 5px white;
+}
+
+.whiteReadable {
+    color: black;
+    text-shadow: 1px 1px 5px white, -1px -1px 5px white;
 }

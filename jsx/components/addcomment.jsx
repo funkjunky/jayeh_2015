@@ -3,6 +3,7 @@ var Superagent = require('superagent');
 
 var User = require('../helpers/user');
 var SerializeForm = require('../helpers/serializeform');
+var Login = require('../routes/login');
 
 var AddComment = React.createClass({
     initialize: false, //TODO: so hacky...
@@ -12,8 +13,8 @@ var AddComment = React.createClass({
         this.initialize = true;
     },
     render: function() {
-        if(this.initialize && !User.authenticated())   //TODO: allow more ways to login.
-            return <button type="button">Login to comment</button>
+        if(this.initialize && !User.authenticated())
+            return <Login />
         else if(this.initialize)
             var user_id = User.currentUser()._id;
 
@@ -23,7 +24,7 @@ var AddComment = React.createClass({
             'You want to comment what? How rude.',
             'Please post all your ideas here and I well make millions of them, then send you bran muffins in appreciation.',
         ];
-        var placeholder = placeholders[Math.floor(Math.random * placeholders.length)];
+        var placeholder = placeholders[Math.floor(Math.random() * placeholders.length)];
 
         return (
             <div style={{margin: 20}}>
