@@ -1,213 +1,6 @@
 TODO www.jayeh.ca
 —
 
-	*- Consider some better security for generic rest server
-		*- implement feathers authentication
-		*- add admin user
-		*- ensure login works
-		*- ensure adding new user works
-	*- add hooks to ensure authorization of user
-		*- write down implementation here
-		*- system now takes config.js file in
-		*- make sure default works.
-		*- make sure config works.
-
-	- separate the code into nice sections and files for generic rest server. May as well make it super clean.
-		*- finish separating code into sections
-		*- rename files to be dashed if camel cased
-		*- no static strings… all should be configs!
-		*- ensure server still works as expected, try login and gets
-		*- commit
-		*- merge back to dev
-		*-figure out if there is a way to bypass “/api/“ thing, if no immediate solution becomes apparent, then simply assume always prefixed with api, including make a prefix config and the default is “/api”
-		*- remove the connection event… it’s messy and adds unneeded code. [just remove the function param].
-		*- fix cannot get messages… do better proper error, like 404
-		*- commit
-
-	*- figure out how to get global install to work, so people can use generic rest server in a basic global way.
-	*- update readme to reflect authentication and authorization
-	*- commit, merge to master, update package.json with new version, commit, tag new version. push, then push dev branch and delete feature branch
-	*- deploy the generic server
-
-	*- ensure the proxy is setup for jayeh_2015 [url with port]
-		*- through environment variable on local
-		*- how to setup environment variable on heroku
-
-	- add authentication to jayeh_2015
-		*- add a login page
-		*- ensure i can login as super user
-		*- add a user profile page
-		*- add a logout route
-		*- make sure redirect work correctly
-			*- if already logged in, /login redirect to /user/<current>
-		*- add oauth buttons
-			*- just do google
-				*- get verification from Google
-				*- put keys in env variables
-				*- ensure we overwrite config with env variables
-			*- troubleshoot
-				*- try the oauth url… it should redirect to google.
-				*- ensure our user url prints out the new user
-
-	*- generic rest server triggers
-		*- with the authorization tables, they can add a function(db, context, next)
-		*- handle this function
-
-	*- get jayeh_2015 ready for launch
-		*- deploy latest version of generic rest server properly
-		*- see if jayeh even still runs
-		*- implement comments on articles requiring authentication
-		*- mostly fix generic rest server brokenness
-		*- add a before create hook of comment add a created_at Date.now()
-		*- add an after hook for find to attach user to comment
-		*- ensure comments work
-		*- ensure editing articles works
-			*- previews dont show immediately.
-			*- remove spam in mdreact plugin
-			*- so many things fixed @.@… but seems good
-
-	*- add comment system
-		*- ensure oauth users can comment.
-		*- try and get avatar from oauth
-		*- ensure the comments look nice
-
-	*- setup jayeh for grs deployment
-		*- make a switch.js script that either calls generic rest server from node grs_config.js, or server.js, depending on an env variable
-		*- test it and ensure it works in both modes.
-
-	[db creds: jayehroot lePassword8]
-	[mongodb://jayehroot:lePassword8@ds035965.mongolab.com:35965/heroku_5ckp93sv]
-	*- Deploy Generic Rest Server (through jayeh)
-		*- read about setting up mongo lab through heroku
-		*- setup mongolab addon for GRS
-		*- import old articles onto mongolab instance
-		*- ensure all env variables are correct through grs_config.js for mongolab env variables
-		*- try running GRS
-		*- get GRS fully deployed and reading through REST urls
-
-	*- Deploy jayeh_2015 up live on heroku
-		*- get a new instance going for generic rest server
-			*- get setup and run
-			*- test
-		*- setup a new instance going for jayeh_2015
-			*- set the config variables
-				*- PROXYURL to point to generic rest server (heroku config:set x=noquotes)
-			*- run the server and test
-
-	*- titles aren’t showing up
-
-	*- migrate data
-		*- connect old mongodb to new website
-			*- rename article collection to “articles” with an s
-
-	*-rename jasonjason to generic-rest-server
-
-	*- generic rest server has an error with security.
-		*- firs tof all auth: should be an array. Both jayeh and generic configs
-		*- second it calls ‘some’ with an array, but it should be a callback
-
-	*- ensure both are setup correct with branches from now on.
-	*- deploy them again, in this nicer setup
-
-	*- get local login working
-	*- add a google login button
-	*- check oauth on local, then check it on live
-	*- test to see if it’s possible to setup redirects through proxies
-	*- redirect properly
-		*- first I should be able to send GRS a redirect value through oauth
-		*- setup redirect for success
-		*- attempt to use a callback to setup a redirect for failure
-		*- ensure it works on success
-		*- ensure it works on failure
-
-		*-the user isn’t being set…
-			*[didnt work]- reorganize oatuhcall back to simply call urls again
-			*- try and get sessions to work
-			*- create a function to consume and set push. Consume errors if there is no redirect.
-	*- clean up config
-		*- create functions in the config file for combining config values
-			(ie. userRoute(), usersRoute())
-		*- Route, should be in a _routes object. ie. _routes.oauth
-	- deploy GRS
-		- deploy to NPM
-			*- merge to master
-			*- update package.json [0.4?]
-			*- add tag
-			*- push, and push tags
-			*- deploy
-			*- update version on jayeh if necessary
-			*- npm install on jayeh to get latest
-			*- restart grunt on grs tab
-
-	*- redeploy
-		*- redeploy
-		*- ensure redeployment works
-			*- test homepage
-			*- test local login
-				*- not working fix
-	*- remerge into dev, then checkout dev and work in dev
-
-	*- reboot chrome
-
-	- prepare pretty setup and default for blog
-		*- add 3 images to repo that look nice and are good resolution [mix od dark and light]
-		*- title, summary, body
-			*- change form
-			*- make the summary preview be in a box of 600px wide and 200px high
-		*- make a react item for summary
-			*- simply takes an image, title and subtitle
-			*- make an item that is 100% width and 100% height with %font for title and subtitle
-			*- ensure it shows…
-		*- react item for full header
-			*- takes image, white text option [black default]
-			*- image should fill screen initially
-		
-		*- git rm all the src files that are no longer relevant
-
-		*- in the new blog thing, randomly choose one of the three images to use for default image.
-		
-		- fileDropZone component, that allows any html inside and uploads and calls handler
-			*- file is showing…
-			*- try the fileDrop event on the text area inside… try and get cursor and get the file somehow.
-			*- make sure the highlighting is working nicely and recognizable
-			*- ensure the filedrop full works with image
-			*- ensure it works with the text as i would expect with carot
-
-	*- routes folder, components folder
-		*- move files
-		*- update all references
-
-	*- package filedrop react element
-		*- use old repo
-		*- update version in package.json
-		*- git tag
-		*- npm publish
-		*- make jayeh use new filedrop package.
-
-	*- commit jayeh, because it’s been forever
-	*- try changing the npm to use ~ everywhere instead of ^
-
-	*- use basic summary instead of article summary
-	*- convert the first article’s header to use markup for headers… so the text is bigger! Use @title and @subtitle!!!
-	*- rename basic summary to article summary
-	*- add font smoothing aliased if i havent already
-
-	*- uploading doesn’t appear to be working. Fix it.
-	*- add an environment variable s3uploader true or false to choose upload code
-	*- add the code for the s3 upload
-	*- setup s3 bucket and set environment variables
-	*- add client side code for s3 PUT
-	*- get s3 working
-
-	*- generic rest server, commit new version and push, then publish
-	*- get new version on jayeh
-	*- push jayeh
-
-	*- test jayeh s3 with published version of GRS
-	*- merge to master, version and tag jayeh
-
-	*- deploy
-
 	*- update articles with nice summary and better body with my image thing
 		*- update with header, title, and subtitle
 
@@ -218,13 +11,19 @@ TODO www.jayeh.ca
 	*- redeploy
 
 	*- trying to style some things a little bit better on my blog
-	- login button on full article isnt working.
+	*- login button on full article isnt working.
+	*- redeploy
+
+	- add metadata (dates etc.)
 
 	- make a new blog post celebrating my new blog
+		- use an intro text… poppying text that is simple
 		- write it out in a nice format, throw in lots of images
 		- create a custom react element to show off the power i have
 
 	- link jayeh.com and jayeh.ca to heroku jayeh
+
+	- test out oauth on jayeh.ca and jayeh.com
 
 	*free to program other stuff*
 
@@ -258,22 +57,23 @@ TODO www.jayeh.ca
 		- implement the grabbing, scanning and flipping animations for articles
 		~put additional ideas from book in this TODO later on.
 
+	-Idea: a new way to blog with micro posts, eventually combined into a culminatory post? microposts would be like tweets. I would also tweet them and post them on facebook and G+, and they would be recorded in a collection. When i make a full blog post, I would select all microposts related.
+		- somehow do something spectacular with the design…
+
 	- add autosaving to local storage
 
 	- create Sidenote component like Ars’s Game Details on the right or left. You specify the left or right and the width [defaults: right, 200]. The inside is the html
 
-	- add very nice default font sizes and formatting for article… now that I have preview I should be able to ensure everything looks incredible
-		- pre-wrap so new lines show
-		- find a nice type font
-		- ensure font size is appropriate
-		- ensure images and their captions look beautiful
-	- ensure the main article page looks incredibly nice with header.
-	- add a preview link above the header textarea to preview the whole article, so you can see the header effect in a testing environment.
-		- the url grabs the data from local storage to render
-
 	- create a Definition component that when hovered provides a definition for a term on the spot. Word attribute is displayed, while the inside is the html for the definition.
 
+
+ - Replace FeathersJS with my own socket and REST service. Has to be simpler and faster to develop with than FeathersJS without being ineffecient.
+
+
  - Add responsive design setup, ensure it works on my ipad and iphone [doesn’t need to look that good, just be readable without scrolling left right or having to zoom]
+
+- add a preview link above the header textarea to preview the whole article, so you can see the header effect in a testing environment.
+		- the url grabs the data from get parameters
 
  - Prettify front page
 	- articles show header without parallax effect and with zoom out perhaps

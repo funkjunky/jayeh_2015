@@ -26,7 +26,7 @@ var Routes = React.createClass({displayName: "Routes",
                     React.createElement("link", {rel: "stylesheet", href: "/dist/default.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/node_modules/font-awesome/css/font-awesome.min.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/styles/codepen-embed.css"}), 
-                    React.createElement("link", {rel: "stylesheet", type: "text/css", href: "https://fonts.googleapis.com/css?family=raleway"})
+                    React.createElement("link", {rel: "stylesheet", type: "text/css", href: "https://fonts.googleapis.com/css?family=Open+Sans"})
 
                 ), 
                 React.createElement("body", null, 

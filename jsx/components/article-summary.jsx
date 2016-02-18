@@ -13,6 +13,7 @@ var BasicSummary = React.createClass({
             height: '100%',
             backgroundImage: 'url(\'' + this.props.article.image + '\')',
             backgroundSize: '100%',
+            fontFamily: 'Open Sans',
         };
         return (
             <a href={"/article/t/" + this.props.article.title} className="blackReadable"><div style={style}>

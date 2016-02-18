@@ -9,7 +9,7 @@ var ArticleHeader = React.createClass({
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
             textAlign: 'center',
-            fontFamily: 'Raleway',
+            fontFamily: 'Open Sans',
         };
         return (
             <div style={style}>
