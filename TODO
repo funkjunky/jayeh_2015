@@ -206,17 +206,26 @@ TODO www.jayeh.ca
 	*- test jayeh s3 with published version of GRS
 	*- merge to master, version and tag jayeh
 
-	- deploy
+	*- deploy
 
-	- update articles with nice summary and better body with my image thing
-		- update with header, title, and subtitle
-		- Just for my latest article, throw in placeholder images where i want to make nice images to show things
+	*- update articles with nice summary and better body with my image thing
+		*- update with header, title, and subtitle
+
+	*- fix blog links so they work, then redeploy
+	*- fix background url in edit, summary, and full, put quotes around the url
+	*- check security on live… I don’t think it’s working…
+	*- check security on dev and fix it…
+	- redeploy
+
+	- link jayeh.com and jayeh.ca to heroku jayeh
+
+	- make a new blog post celebrating my new blog
+		- write it out in a nice format, throw in lots of images
+		- create a custom react element to show off the power i have
 
 	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
 
 	 - have a single database entry point. A function that get a dbh and use that EVERYWHERE database is needed or passed or created. [this burned me during the first deployment]
-
-	- write new blog post about building my new blog
 
 	- character parallax [dude in a library!]
 		- calculate dimensions of sprites to fit in header neatly. (imagine it)

@@ -11,14 +11,14 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
         var style = {
             width: '100%',
             height: '100%',
-            backgroundImage: 'url(' + this.props.article.image + ')',
+            backgroundImage: 'url(\'' + this.props.article.image + '\')',
             backgroundSize: '100%',
         };
         return (
-            React.createElement("div", {style: style}, 
+            React.createElement("a", {href: "/article/t/" + this.props.article.title}, React.createElement("div", {style: style}, 
                 React.createElement("p", {style: {fontSize: '2em'}}, this.props.article.title), 
                 React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle)
-            )
+            ))
         );
     }
 });

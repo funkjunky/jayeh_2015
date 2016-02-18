@@ -11,14 +11,14 @@ var BasicSummary = React.createClass({
         var style = {
             width: '100%',
             height: '100%',
-            backgroundImage: 'url(' + this.props.article.image + ')',
+            backgroundImage: 'url(\'' + this.props.article.image + '\')',
             backgroundSize: '100%',
         };
         return (
-            <div style={style}>
+            <a href={"/article/t/" + this.props.article.title}><div style={style}>
                 <p style={{fontSize: '2em'}}>{this.props.article.title}</p>
                 <p style={{fontSize: '1em', marginLeft: '4em'}}>{this.props.article.subtitle}</p>
-            </div>
+            </div></a>
         );
     }
 });
