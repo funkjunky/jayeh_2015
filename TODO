@@ -215,17 +215,24 @@ TODO www.jayeh.ca
 	*- fix background url in edit, summary, and full, put quotes around the url
 	*- check security on live… I don’t think it’s working…
 	*- check security on dev and fix it…
-	- redeploy
-
-	- link jayeh.com and jayeh.ca to heroku jayeh
+	*- redeploy
 
 	- make a new blog post celebrating my new blog
 		- write it out in a nice format, throw in lots of images
 		- create a custom react element to show off the power i have
 
+	- link jayeh.com and jayeh.ca to heroku jayeh
+
+	*free to program other stuff*
+
 	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
 
 	 - have a single database entry point. A function that get a dbh and use that EVERYWHERE database is needed or passed or created. [this burned me during the first deployment]
+	- use sessions to keep track of user:
+		- setup session on login
+		- on logout, remove session
+		- route /login should redirect to /user/<username> is logged in
+		- all auth routes should redirect to login if user isn’t in group “publisher” or doesn’t have super attribute.
 
 	- character parallax [dude in a library!]
 		- calculate dimensions of sprites to fit in header neatly. (imagine it)
