@@ -4,6 +4,7 @@ var Request = require('superagent');
 var Jayehmd = require('../../helpers/jayehmd');
 var Comments = require('../../components/comments');
 var ArticleHeader = require('../../components/article-header');
+var FormatDate = require('../../helpers/format-date');
 
 var FullArticle = React.createClass({
     getInitialState: function() {
@@ -31,6 +32,7 @@ var FullArticle = React.createClass({
             <div>
                 <ArticleHeader image={this.state.article.image}>{headerMarkup}</ArticleHeader>
                 <p style={{fontSize: 14, margin: 20, lineHeight: '200%'}}>{bodyMarkup}</p>
+                <p>Created On: {FormatDate(this.state.article.created_at)} - Edited On: {FormatDate(this.state.article.edited_at)}</p>
                 <Comments article={this.state.article} />
             </div>
         )

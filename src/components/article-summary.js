@@ -1,5 +1,6 @@
 var React = require('react');
 var StateShortcuts = require('../mixins/stateshortcuts');
+var FormatDate = require('../helpers/format-date');
 
 var BasicSummary = React.createClass({displayName: "BasicSummary",
     mixins: [StateShortcuts],
@@ -9,6 +10,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
     },
     render: function() {
         var style = {
+            position: 'relative',
             width: '100%',
             height: '100%',
             backgroundImage: 'url(\'' + this.props.article.image + '\')',
@@ -18,7 +20,8 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
         return (
             React.createElement("a", {href: "/article/t/" + this.props.article.title, className: "blackReadable"}, React.createElement("div", {style: style}, 
                 React.createElement("p", {style: {fontSize: '2em'}}, this.props.article.title), 
-                React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle)
+                React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle), 
+                React.createElement("p", {style: {position: 'absolute', left: 0, bottom: 0}}, "Created On: ", FormatDate(this.props.article.created_at))
             ))
         );
     }

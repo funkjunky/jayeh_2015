@@ -40,6 +40,7 @@ var EditArticle = React.createClass({
                 <div>
                     <form onSubmit={this.saveArticle} ref="myform">
                         <div>
+                            {(this.state.created_at) ? <input type="hidden" name="created_at" value={this.state.created_at} /> : ''}
                             <input type="text" name="title" value={this.state.title} onChange={this.setStateAsInput('title')} /><br />
                             <input type="text" name="subtitle" value={this.state.subtitle} onChange={this.setStateAsInput('subtitle')} /><br />
                             <Filedrop handleDrop={this.handleDrop}>
@@ -51,7 +52,9 @@ var EditArticle = React.createClass({
                         </Filedrop>
                             <textarea name="body" style={{width: 800, height: 250}} value={this.state.body} onChange={this.setStateAsInput('body')} onDrop={this.dropTextFnc('body')} /><br />
                         <input type="submit" />
-                        <ArticleSummary article={this.state} />
+                        <div style={{marginLeft: '5%', maxWidth: 800, height: 120}}>
+                            <ArticleSummary article={this.state} />
+                        </div>
                         <ArticleHeader image={this.state.image}>{headerMarkup}</ArticleHeader>
                         {bodyMarkup}
                     </form>
@@ -70,14 +73,17 @@ var EditArticle = React.createClass({
         Superagent('get', '/api/article/' + id).end(function(err, response) {
             console.log('response: ', response);
             //TODO: try doing this.setState(response.body); instead. If not, then perhaps a clone method.
-            this.setState({
+            var state = {
                 _id: response.body._id,
                 title: response.body.title,
                 subtitle: response.body.subtitle,
                 image: response.body.image,
                 header: response.body.header,
                 body: response.body.body,
-            });
+            };
+            if(response.body.created_at)
+                state.created_at = response.body.created_at;
+            this.setState(state);
         }.bind(this));
     },
 

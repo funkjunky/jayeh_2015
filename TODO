@@ -14,7 +14,10 @@ TODO www.jayeh.ca
 	*- login button on full article isnt working.
 	*- redeploy
 
-	- add metadata (dates etc.)
+	*- add metadata (dates etc.)
+		*- create function in config for the timestamp hooks.
+		*- add before hook to creation and editing articles with date
+		*- add before hook for comments for creation
 
 	- make a new blog post celebrating my new blog
 		- use an intro text… poppying text that is simple

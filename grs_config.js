@@ -1,5 +1,12 @@
 var ObjectId = require('mongodb').ObjectID;
 
+var setTimestamps = function(dbh, ctx, next) {
+    if(!ctx.data.created_at)
+        ctx.data.created_at = Date.now();
+    ctx.data.updated_at = Date.now();
+    next();
+};
+
 var config = {
     //if things stop working it may be because mongo_url is superceeding url_env
     mongo_url: 'mongodb://localhost:27017/jayeh',
@@ -8,9 +15,11 @@ var config = {
         article: {
             create: {
                 auth: ['publisher'],
+                before: setTimestamps,
             },
             update:   {
                 auth: ['publisher'],
+                before: setTimestamps,
             },
             remove: {
                 auth: ['publisher'],
@@ -19,18 +28,11 @@ var config = {
         comment: {
             create: {
                 auth: true,
-                before: function(dbh, ctx, next) {
-                    ctx.data.created_at = Date.now();
-                    ctx.data.updated_at = Date.now();
-                    next();
-                },
+                before: setTimestamps,
             },
             update: {
                 auth: ['admin'],
-                before: function(dbh, ctx, next) {
-                    ctx.data.updated_at = Date.now();
-                    next();
-                },
+                before: setTimestamps,
             },
             remove: {
                 auth: ['admin'],

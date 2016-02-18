@@ -1,7 +1,6 @@
 var React = require('react');
 var Request = require('superagent');
 
-//var ArticleSummary = require('./article/summary');
 var ArticleSummary = require('../components/article-summary');
 
 var Blog = React.createClass({
