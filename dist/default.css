@@ -23,8 +23,8 @@ a:visited {
 }
 
 a:hover {
-    border-bottom: 1px solid #CCC;
-    color: #CCC;
+    border-bottom: 1px solid #888;
+    color: #888;
 }
 
 blockquote {
