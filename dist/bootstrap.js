@@ -46736,7 +46736,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
             React.createElement("a", {href: "/article/t/" + this.props.article.title, className: "blackReadable"}, React.createElement("div", {style: style}, 
                 React.createElement("p", {style: {fontSize: '2em'}}, this.props.article.title), 
                 React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle), 
-                React.createElement("p", {style: {position: 'absolute', left: 0, bottom: 0}}, "Created On: ", FormatDate(this.props.article.created_at))
+                React.createElement("p", {style: {position: 'absolute', right: 0, bottom: 0}}, "Created On: ", FormatDate(this.props.article.created_at))
             ))
         );
     }
@@ -47083,7 +47083,6 @@ module.exports = Routes;
 },{"./components/header":421,"./helpers/user":425,"./routes/article/edit":428,"./routes/article/full":429,"./routes/blog":430,"./routes/login":431,"./routes/user-panel":432,"react":405,"react-router-component":228}],428:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
-//var Filedrop = require('../../components/filedrop')({
 var Filedrop = require('react-filedrop')({
     dragStartStyle: {border: 'dashed 1px #00DD00', backgroundColor: '#AAFFAA'},
     dragHoverStyle: {border: 'dashed 2px #0000DD', backgroundColor: '#AAAAFF'},

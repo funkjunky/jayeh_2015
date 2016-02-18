@@ -21,7 +21,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
             React.createElement("a", {href: "/article/t/" + this.props.article.title, className: "blackReadable"}, React.createElement("div", {style: style}, 
                 React.createElement("p", {style: {fontSize: '2em'}}, this.props.article.title), 
                 React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle), 
-                React.createElement("p", {style: {position: 'absolute', left: 0, bottom: 0}}, "Created On: ", FormatDate(this.props.article.created_at))
+                React.createElement("p", {style: {position: 'absolute', right: 0, bottom: 0}}, "Created On: ", FormatDate(this.props.article.created_at))
             ))
         );
     }

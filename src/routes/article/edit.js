@@ -1,6 +1,5 @@
 var React = require('react');
 var Superagent = require('superagent');
-//var Filedrop = require('../../components/filedrop')({
 var Filedrop = require('react-filedrop')({
     dragStartStyle: {border: 'dashed 1px #00DD00', backgroundColor: '#AAFFAA'},
     dragHoverStyle: {border: 'dashed 2px #0000DD', backgroundColor: '#AAAAFF'},
