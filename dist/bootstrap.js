@@ -46629,7 +46629,7 @@ if(typeof window !== 'undefined') {
     }
 }
 
-},{"./routes":427,"react":405}],416:[function(require,module,exports){
+},{"./routes":426,"react":405}],416:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
@@ -46688,7 +46688,7 @@ var AddComment = React.createClass({displayName: "AddComment",
 
 module.exports = AddComment;
 
-},{"../helpers/serializeform":424,"../helpers/user":425,"../routes/login":431,"react":405,"superagent":407}],417:[function(require,module,exports){
+},{"../helpers/serializeform":423,"../helpers/user":424,"../routes/login":430,"react":405,"superagent":407}],417:[function(require,module,exports){
 var React = require('react');
 
 var ArticleHeader = React.createClass({displayName: "ArticleHeader",
@@ -46715,7 +46715,6 @@ module.exports = ArticleHeader;
 },{"react":405}],418:[function(require,module,exports){
 var React = require('react');
 var StateShortcuts = require('../mixins/stateshortcuts');
-var FormatDate = require('../helpers/format-date');
 
 var BasicSummary = React.createClass({displayName: "BasicSummary",
     mixins: [StateShortcuts],
@@ -46725,7 +46724,6 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
     },
     render: function() {
         var style = {
-            position: 'relative',
             width: '100%',
             height: '100%',
             backgroundImage: 'url(\'' + this.props.article.image + '\')',
@@ -46735,8 +46733,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
         return (
             React.createElement("a", {href: "/article/t/" + this.props.article.title, className: "blackReadable"}, React.createElement("div", {style: style}, 
                 React.createElement("p", {style: {fontSize: '2em'}}, this.props.article.title), 
-                React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle), 
-                React.createElement("p", {style: {position: 'absolute', left: 0, bottom: 0}}, "Created On: ", FormatDate(this.props.article.created_at))
+                React.createElement("p", {style: {fontSize: '1em', marginLeft: '4em'}}, this.props.article.subtitle)
             ))
         );
     }
@@ -46744,7 +46741,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
 
 module.exports = BasicSummary;
 
-},{"../helpers/format-date":422,"../mixins/stateshortcuts":426,"react":405}],419:[function(require,module,exports){
+},{"../mixins/stateshortcuts":425,"react":405}],419:[function(require,module,exports){
 var React = require('react');
 
 var Comment = React.createClass({displayName: "Comment",
@@ -46819,14 +46816,6 @@ var Header = React.createClass({displayName: "Header",
 module.exports = Header;
 
 },{"react":405}],422:[function(require,module,exports){
-var FormatDate = function(timestamp) {
-    var date = new Date(parseInt(timestamp));
-    return date.toDateString();
-};
-
-module.exports = FormatDate;
-
-},{}],423:[function(require,module,exports){
 var MarkdownIt = require('markdown-it');
 
 var MarkdownRegexp = require('markdown-it-regexp');
@@ -46850,7 +46839,7 @@ var Jayehmd = function(variables) {
 
 module.exports = Jayehmd;
 
-},{"markdown-it":164,"markdown-it-highlightjs":9,"markdown-it-regexp":161,"mdfigcaption":217,"mdreact":218,"mdvariables":224,"react":405}],424:[function(require,module,exports){
+},{"markdown-it":164,"markdown-it-highlightjs":9,"markdown-it-regexp":161,"mdfigcaption":217,"mdreact":218,"mdvariables":224,"react":405}],423:[function(require,module,exports){
 module.exports = function serializeForm(form) {
     if (!form || form.nodeName !== "FORM") {
             return;
@@ -46909,7 +46898,7 @@ module.exports = function serializeForm(form) {
     return q;
 };
 
-},{}],425:[function(require,module,exports){
+},{}],424:[function(require,module,exports){
 var Superagent = require('superagent');
 
 var User = {
@@ -46968,7 +46957,7 @@ var User = {
 
 module.exports = User;
 
-},{"superagent":407}],426:[function(require,module,exports){
+},{"superagent":407}],425:[function(require,module,exports){
 var stateShortcuts = {
     getInitialState: function() {
         return {};
@@ -47024,7 +47013,7 @@ var stateShortcuts = {
 
 module.exports = stateShortcuts;
 
-},{}],427:[function(require,module,exports){
+},{}],426:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router-component');
 var Locations = Router.Locations;
@@ -47080,7 +47069,7 @@ var Routes = React.createClass({displayName: "Routes",
 
 module.exports = Routes;
 
-},{"./components/header":421,"./helpers/user":425,"./routes/article/edit":428,"./routes/article/full":429,"./routes/blog":430,"./routes/login":431,"./routes/user-panel":432,"react":405,"react-router-component":228}],428:[function(require,module,exports){
+},{"./components/header":421,"./helpers/user":424,"./routes/article/edit":427,"./routes/article/full":428,"./routes/blog":429,"./routes/login":430,"./routes/user-panel":431,"react":405,"react-router-component":228}],427:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 //var Filedrop = require('../../components/filedrop')({
@@ -47123,7 +47112,6 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                 React.createElement("div", null, 
                     React.createElement("form", {onSubmit: this.saveArticle, ref: "myform"}, 
                         React.createElement("div", null, 
-                            (this.state.created_at) ? React.createElement("input", {type: "hidden", name: "created_at", value: this.state.created_at}) : '', 
                             React.createElement("input", {type: "text", name: "title", value: this.state.title, onChange: this.setStateAsInput('title')}), React.createElement("br", null), 
                             React.createElement("input", {type: "text", name: "subtitle", value: this.state.subtitle, onChange: this.setStateAsInput('subtitle')}), React.createElement("br", null), 
                             React.createElement(Filedrop, {handleDrop: this.handleDrop}, 
@@ -47135,9 +47123,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                         ), 
                             React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, value: this.state.body, onChange: this.setStateAsInput('body'), onDrop: this.dropTextFnc('body')}), React.createElement("br", null), 
                         React.createElement("input", {type: "submit"}), 
-                        React.createElement("div", {style: {marginLeft: '5%', maxWidth: 800, height: 120}}, 
-                            React.createElement(ArticleSummary, {article: this.state})
-                        ), 
+                        React.createElement(ArticleSummary, {article: this.state}), 
                         React.createElement(ArticleHeader, {image: this.state.image}, headerMarkup), 
                         bodyMarkup
                     )
@@ -47156,17 +47142,14 @@ var EditArticle = React.createClass({displayName: "EditArticle",
         Superagent('get', '/api/article/' + id).end(function(err, response) {
             console.log('response: ', response);
             //TODO: try doing this.setState(response.body); instead. If not, then perhaps a clone method.
-            var state = {
+            this.setState({
                 _id: response.body._id,
                 title: response.body.title,
                 subtitle: response.body.subtitle,
                 image: response.body.image,
                 header: response.body.header,
                 body: response.body.body,
-            };
-            if(response.body.created_at)
-                state.created_at = response.body.created_at;
-            this.setState(state);
+            });
         }.bind(this));
     },
 
@@ -47229,14 +47212,13 @@ var EditArticle = React.createClass({displayName: "EditArticle",
 
 module.exports = EditArticle;
 
-},{"../../components/article-header":417,"../../components/article-summary":418,"../../helpers/jayehmd":423,"../../helpers/serializeform":424,"../../mixins/stateshortcuts":426,"react":405,"react-filedrop":227,"superagent":407}],429:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/article-summary":418,"../../helpers/jayehmd":422,"../../helpers/serializeform":423,"../../mixins/stateshortcuts":425,"react":405,"react-filedrop":227,"superagent":407}],428:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
 var Jayehmd = require('../../helpers/jayehmd');
 var Comments = require('../../components/comments');
 var ArticleHeader = require('../../components/article-header');
-var FormatDate = require('../../helpers/format-date');
 
 var FullArticle = React.createClass({displayName: "FullArticle",
     getInitialState: function() {
@@ -47264,7 +47246,6 @@ var FullArticle = React.createClass({displayName: "FullArticle",
             React.createElement("div", null, 
                 React.createElement(ArticleHeader, {image: this.state.article.image}, headerMarkup), 
                 React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '200%'}}, bodyMarkup), 
-                React.createElement("p", null, "Created On: ", FormatDate(this.state.article.created_at), " - Edited On: ", FormatDate(this.state.article.edited_at)), 
                 React.createElement(Comments, {article: this.state.article})
             )
         )
@@ -47273,10 +47254,11 @@ var FullArticle = React.createClass({displayName: "FullArticle",
 
 module.exports = FullArticle;
 
-},{"../../components/article-header":417,"../../components/comments":420,"../../helpers/format-date":422,"../../helpers/jayehmd":423,"react":405,"superagent":407}],430:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/comments":420,"../../helpers/jayehmd":422,"react":405,"superagent":407}],429:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
+//var ArticleSummary = require('./article/summary');
 var ArticleSummary = require('../components/article-summary');
 
 var Blog = React.createClass({displayName: "Blog",
@@ -47307,7 +47289,7 @@ var Blog = React.createClass({displayName: "Blog",
 
 module.exports = Blog;
 
-},{"../components/article-summary":418,"react":405,"superagent":407}],431:[function(require,module,exports){
+},{"../components/article-summary":418,"react":405,"superagent":407}],430:[function(require,module,exports){
 var React = require('react');
 
 var User = require('../helpers/user');
@@ -47343,7 +47325,7 @@ var Login = React.createClass({displayName: "Login",
 
 module.exports = Login;
 
-},{"../components/article-header":417,"../helpers/serializeform":424,"../helpers/user":425,"react":405}],432:[function(require,module,exports){
+},{"../components/article-header":417,"../helpers/serializeform":423,"../helpers/user":424,"react":405}],431:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
@@ -47373,4 +47355,4 @@ var UserPanel = React.createClass({displayName: "UserPanel",
 
 module.exports = UserPanel;
 
-},{"../helpers/user":425,"react":405,"superagent":407}]},{},[415]);
+},{"../helpers/user":424,"react":405,"superagent":407}]},{},[415]);
