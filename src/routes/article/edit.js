@@ -40,6 +40,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                 React.createElement("div", null, 
                     React.createElement("form", {onSubmit: this.saveArticle, ref: "myform"}, 
                         React.createElement("div", null, 
+                            (this.state.created_at) ? React.createElement("input", {type: "hidden", name: "created_at", value: this.state.created_at}) : '', 
                             React.createElement("input", {type: "text", name: "title", value: this.state.title, onChange: this.setStateAsInput('title')}), React.createElement("br", null), 
                             React.createElement("input", {type: "text", name: "subtitle", value: this.state.subtitle, onChange: this.setStateAsInput('subtitle')}), React.createElement("br", null), 
                             React.createElement(Filedrop, {handleDrop: this.handleDrop}, 
@@ -51,7 +52,9 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                         ), 
                             React.createElement("textarea", {name: "body", style: {width: 800, height: 250}, value: this.state.body, onChange: this.setStateAsInput('body'), onDrop: this.dropTextFnc('body')}), React.createElement("br", null), 
                         React.createElement("input", {type: "submit"}), 
-                        React.createElement(ArticleSummary, {article: this.state}), 
+                        React.createElement("div", {style: {marginLeft: '5%', maxWidth: 800, height: 120}}, 
+                            React.createElement(ArticleSummary, {article: this.state})
+                        ), 
                         React.createElement(ArticleHeader, {image: this.state.image}, headerMarkup), 
                         bodyMarkup
                     )
@@ -70,14 +73,17 @@ var EditArticle = React.createClass({displayName: "EditArticle",
         Superagent('get', '/api/article/' + id).end(function(err, response) {
             console.log('response: ', response);
             //TODO: try doing this.setState(response.body); instead. If not, then perhaps a clone method.
-            this.setState({
+            var state = {
                 _id: response.body._id,
                 title: response.body.title,
                 subtitle: response.body.subtitle,
                 image: response.body.image,
                 header: response.body.header,
                 body: response.body.body,
-            });
+            };
+            if(response.body.created_at)
+                state.created_at = response.body.created_at;
+            this.setState(state);
         }.bind(this));
     },
 
