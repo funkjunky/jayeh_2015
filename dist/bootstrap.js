@@ -46629,7 +46629,7 @@ if(typeof window !== 'undefined') {
     }
 }
 
-},{"./routes":427,"react":405}],416:[function(require,module,exports){
+},{"./routes":428,"react":405}],416:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
@@ -46688,7 +46688,7 @@ var AddComment = React.createClass({displayName: "AddComment",
 
 module.exports = AddComment;
 
-},{"../helpers/serializeform":424,"../helpers/user":425,"../routes/login":431,"react":405,"superagent":407}],417:[function(require,module,exports){
+},{"../helpers/serializeform":424,"../helpers/user":425,"../routes/login":432,"react":405,"superagent":407}],417:[function(require,module,exports){
 var React = require('react');
 
 var ArticleHeader = React.createClass({displayName: "ArticleHeader",
@@ -46744,7 +46744,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
 
 module.exports = BasicSummary;
 
-},{"../helpers/format-date":422,"../mixins/stateshortcuts":426,"react":405}],419:[function(require,module,exports){
+},{"../helpers/format-date":422,"../mixins/stateshortcuts":427,"react":405}],419:[function(require,module,exports){
 var React = require('react');
 
 var Comment = React.createClass({displayName: "Comment",
@@ -46835,6 +46835,7 @@ var MdVariables = require('mdvariables');
 var MdFigCaption = require('mdfigcaption');
 var MdReact = require('mdreact');
 var React = require('react');
+var HeaderName = require('../md-plugins/header-name');
 
 var Jayehmd = function(variables) {
             var md = new MarkdownIt();
@@ -46844,13 +46845,14 @@ var Jayehmd = function(variables) {
                 return variables;
             }));
             md.use(MdFigCaption);
+            md.use(HeaderName);
 
             return md;
 };
 
 module.exports = Jayehmd;
 
-},{"markdown-it":164,"markdown-it-highlightjs":9,"markdown-it-regexp":161,"mdfigcaption":217,"mdreact":218,"mdvariables":224,"react":405}],424:[function(require,module,exports){
+},{"../md-plugins/header-name":426,"markdown-it":164,"markdown-it-highlightjs":9,"markdown-it-regexp":161,"mdfigcaption":217,"mdreact":218,"mdvariables":224,"react":405}],424:[function(require,module,exports){
 module.exports = function serializeForm(form) {
     if (!form || form.nodeName !== "FORM") {
             return;
@@ -46969,6 +46971,30 @@ var User = {
 module.exports = User;
 
 },{"superagent":407}],426:[function(require,module,exports){
+var React = require('react');
+
+var HeaderName = function(md, options) {
+    var defaultRender = md.renderer.rules.heading_open || function(tokens, idx, options, env, self) {
+        return self.renderToken(tokens, idx, options);
+    };
+
+    md.renderer.rules.heading_open = function(tokens, idx, options, env, self) {
+        var aIndex = tokens[idx].attrIndex('name');
+
+        var name = tokens[idx + 1].content.replace(/[^a-zA-Z0-9]*/, '');
+
+        if(aIndex < 0)
+            tokens[idx].attrPush(['name', name]); // add new attribute
+        else
+            tokens[idx].attrs[aIndex][0] = name; // replace old name
+
+        return defaultRender(tokens, idx, options, env, self);
+    };
+};
+
+module.exports = HeaderName;
+
+},{"react":405}],427:[function(require,module,exports){
 var stateShortcuts = {
     getInitialState: function() {
         return {};
@@ -47024,7 +47050,7 @@ var stateShortcuts = {
 
 module.exports = stateShortcuts;
 
-},{}],427:[function(require,module,exports){
+},{}],428:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router-component');
 var Locations = Router.Locations;
@@ -47080,7 +47106,7 @@ var Routes = React.createClass({displayName: "Routes",
 
 module.exports = Routes;
 
-},{"./components/header":421,"./helpers/user":425,"./routes/article/edit":428,"./routes/article/full":429,"./routes/blog":430,"./routes/login":431,"./routes/user-panel":432,"react":405,"react-router-component":228}],428:[function(require,module,exports){
+},{"./components/header":421,"./helpers/user":425,"./routes/article/edit":429,"./routes/article/full":430,"./routes/blog":431,"./routes/login":432,"./routes/user-panel":433,"react":405,"react-router-component":228}],429:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 var Filedrop = require('react-filedrop')({
@@ -47228,7 +47254,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
 
 module.exports = EditArticle;
 
-},{"../../components/article-header":417,"../../components/article-summary":418,"../../helpers/jayehmd":423,"../../helpers/serializeform":424,"../../mixins/stateshortcuts":426,"react":405,"react-filedrop":227,"superagent":407}],429:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/article-summary":418,"../../helpers/jayehmd":423,"../../helpers/serializeform":424,"../../mixins/stateshortcuts":427,"react":405,"react-filedrop":227,"superagent":407}],430:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
@@ -47272,7 +47298,7 @@ var FullArticle = React.createClass({displayName: "FullArticle",
 
 module.exports = FullArticle;
 
-},{"../../components/article-header":417,"../../components/comments":420,"../../helpers/format-date":422,"../../helpers/jayehmd":423,"react":405,"superagent":407}],430:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/comments":420,"../../helpers/format-date":422,"../../helpers/jayehmd":423,"react":405,"superagent":407}],431:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
@@ -47306,7 +47332,7 @@ var Blog = React.createClass({displayName: "Blog",
 
 module.exports = Blog;
 
-},{"../components/article-summary":418,"react":405,"superagent":407}],431:[function(require,module,exports){
+},{"../components/article-summary":418,"react":405,"superagent":407}],432:[function(require,module,exports){
 var React = require('react');
 
 var User = require('../helpers/user');
@@ -47342,7 +47368,7 @@ var Login = React.createClass({displayName: "Login",
 
 module.exports = Login;
 
-},{"../components/article-header":417,"../helpers/serializeform":424,"../helpers/user":425,"react":405}],432:[function(require,module,exports){
+},{"../components/article-header":417,"../helpers/serializeform":424,"../helpers/user":425,"react":405}],433:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
