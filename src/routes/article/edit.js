@@ -55,7 +55,9 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                             React.createElement(ArticleSummary, {article: this.state})
                         ), 
                         React.createElement(ArticleHeader, {image: this.state.image}, headerMarkup), 
-                        bodyMarkup
+                        React.createElement("div", {id: "blog-body", style: {fontSize: 14, maxWidth: '50em', margin: 'auto', lineHeight: '200%'}}, 
+                            bodyMarkup
+                        )
                     )
                 )
             )

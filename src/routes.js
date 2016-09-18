@@ -44,6 +44,9 @@ var Routes = React.createClass({displayName: "Routes",
                             React.createElement(Location, {path: "/login", handler: React.createElement(Login, null)})
                         )
                     ), 
+                    React.createElement("p", {style: {marginTop: 100, textAlign: 'right'}}, 
+                        "jayeh.ca (Jason McCarrell)"
+                    ), 
                     React.createElement("script", {src: "/dist/bootstrap.js"})
                 )
             )

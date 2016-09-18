@@ -44,6 +44,9 @@ var Routes = React.createClass({
                             <Location path="/login" handler={<Login />} />
                         </Locations>
                     </div>
+                    <p style={{marginTop: 100, textAlign: 'right'}}>
+                        jayeh.ca (Jason McCarrell)
+                    </p>
                     <script src="/dist/bootstrap.js"></script>
                 </body>
             </html>

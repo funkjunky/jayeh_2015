@@ -46731,6 +46731,9 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
             backgroundImage: 'url(\'' + this.props.article.image + '\')',
             backgroundSize: '100%',
             fontFamily: 'Open Sans',
+            border: '1px dashed maroon',
+            marginTop: '5px',
+            marginBottom: '5px',
         };
         return (
             React.createElement("a", {href: "/article/t/" + this.props.article.title, className: "blackReadable"}, React.createElement("div", {style: style}, 
@@ -47097,6 +47100,9 @@ var Routes = React.createClass({displayName: "Routes",
                             React.createElement(Location, {path: "/login", handler: React.createElement(Login, null)})
                         )
                     ), 
+                    React.createElement("p", {style: {marginTop: 100, textAlign: 'right'}}, 
+                        "jayeh.ca (Jason McCarrell)"
+                    ), 
                     React.createElement("script", {src: "/dist/bootstrap.js"})
                 )
             )
@@ -47164,7 +47170,9 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                             React.createElement(ArticleSummary, {article: this.state})
                         ), 
                         React.createElement(ArticleHeader, {image: this.state.image}, headerMarkup), 
-                        bodyMarkup
+                        React.createElement("div", {id: "blog-body", style: {fontSize: 14, maxWidth: '50em', margin: 'auto', lineHeight: '200%'}}, 
+                            bodyMarkup
+                        )
                     )
                 )
             )
@@ -47280,7 +47288,6 @@ var FullArticle = React.createClass({displayName: "FullArticle",
         }.bind(this));
     },
     render: function() {
-        console.log('this.state.article: ', this.state.article);
         var md = Jayehmd(this.state.article);
         var headerMarkup = md.renderTokens(this.state.article.header);
         var bodyMarkup = md.renderTokens(this.state.article.body);
@@ -47288,7 +47295,9 @@ var FullArticle = React.createClass({displayName: "FullArticle",
         return (
             React.createElement("div", null, 
                 React.createElement(ArticleHeader, {image: this.state.article.image}, headerMarkup), 
-                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '200%'}}, bodyMarkup), 
+                React.createElement("div", {id: "blog-body", style: {fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%'}}, 
+                    bodyMarkup
+                ), 
                 React.createElement("p", null, "Created On: ", FormatDate(this.state.article.created_at), " - Edited On: ", FormatDate(this.state.article.edited_at)), 
                 React.createElement(Comments, {article: this.state.article})
             )
