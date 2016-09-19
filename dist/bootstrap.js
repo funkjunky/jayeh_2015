@@ -46629,7 +46629,7 @@ if(typeof window !== 'undefined') {
     }
 }
 
-},{"./routes":428,"react":405}],416:[function(require,module,exports){
+},{"./routes":430,"react":405}],416:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
@@ -46688,7 +46688,7 @@ var AddComment = React.createClass({displayName: "AddComment",
 
 module.exports = AddComment;
 
-},{"../helpers/serializeform":424,"../helpers/user":425,"../routes/login":432,"react":405,"superagent":407}],417:[function(require,module,exports){
+},{"../helpers/serializeform":425,"../helpers/user":426,"../routes/login":434,"react":405,"superagent":407}],417:[function(require,module,exports){
 var React = require('react');
 
 var ArticleHeader = React.createClass({displayName: "ArticleHeader",
@@ -46747,7 +46747,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
 
 module.exports = BasicSummary;
 
-},{"../helpers/format-date":422,"../mixins/stateshortcuts":427,"react":405}],419:[function(require,module,exports){
+},{"../helpers/format-date":423,"../mixins/stateshortcuts":429,"react":405}],419:[function(require,module,exports){
 var React = require('react');
 
 var Comment = React.createClass({displayName: "Comment",
@@ -46822,6 +46822,182 @@ var Header = React.createClass({displayName: "Header",
 module.exports = Header;
 
 },{"react":405}],422:[function(require,module,exports){
+var React = require('react');
+
+var ReduxGameHeader = React.createClass({displayName: "ReduxGameHeader",
+    render: function() {
+        return (
+            React.createElement("canvas", {style: {border: 'solid 1px black'}, className: "reduxgameheader", tabIndex: "0"})
+        );
+    },
+    componentDidMount: function() {
+        var canvas = this.getDOMNode();
+        var ctx = canvas.getContext('2d');
+
+        //pause play controls (space plays and pauses)
+        var paused = false;
+        var lastTime = 0;
+        canvas.addEventListener('keyup', function(event) {
+            if(event.which === 32)
+                if(!(paused = !paused))
+                    window.requestAnimationFrame(function(timePassed) {
+                        drawLoop(timePassed, true)  
+                    });
+        });
+
+        //somehow spawn a ball every
+        window.addEventListener('scroll', function(event) {
+        });
+
+        //draw loop
+        //Note: resetTime is necessary because of the shitty timePassed that raf sends
+        var spawnInterval = 500;
+        var spawnCountdown = spawnInterval;
+        var posInterval = 200;
+        var posCountdown = posInterval;
+        var drawLoop = function(timePassed, resetTime) {
+            if(resetTime)
+                lastTime = timePassed;
+
+            var dt = timePassed - lastTime;
+
+            if((spawnCountdown -= dt) < 0) {
+    var doc = document.documentElement;
+    var scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+                spawnCountdown = spawnInterval;
+                if(Math.random() >= 0.5)
+                    circles.push({
+                        pos: { x: Math.random() * ctx.canvas.width / 2, y: 0 },
+                        size: 10,
+                        vel: { x: 20 + rand(20), y: 40 + rand(40) }, 
+                        color: { r: rand(255), g: rand(255), b: rand(255), a: 1 },
+                        prevPos: [],
+                    });
+            }
+
+            if((posCountdown -= dt) < 0) {
+                posCountdown = posInterval;
+
+                circles.forEach(function(circle) {
+                    if(circle.prevPos.length >= 5)
+                        circle.prevPos.shift();
+                    circle.prevPos.push({
+                        x: circle.pos.x,
+                        y: circle.pos.y,
+                    });
+                });
+            }
+
+            draw(ctx, dt);
+            lastTime = timePassed;
+            if(!paused)
+                window.requestAnimationFrame(drawLoop);
+        };
+        window.requestAnimationFrame(drawLoop);
+    },
+});
+
+var rand = function(max) {
+    return Math.floor(Math.random() * max);
+}
+
+var circles = [];
+
+var draw = function(ctx, dt) {
+    var minHeight = 80;
+    var doc = document.documentElement;
+    var scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+
+    ctx.canvas.width  = window.innerWidth;
+    var potentialHeight = window.innerHeight - 200 - scrollTop;
+    ctx.canvas.style.position = 'absolute';
+    var top;
+    if(potentialHeight > minHeight) {
+        ctx.canvas.height = potentialHeight;
+        top = 200 + scrollTop;
+    } else {
+        ctx.canvas.height = minHeight
+        top = window.innerHeight - minHeight;
+    }
+    ctx.canvas.style.top = top + 'px';
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    circles.forEach(function(circle) {
+        updatePosition(circle, dt, ctx.canvas.height);
+        fullDrawCircle(ctx, circle);
+    });
+    //remove circles that have passed
+    circles = circles.filter(function(circle) {
+        return circle.pos.x < (ctx.canvas.width + circle.size);
+    });
+
+    //write in Asteredux on bottom with effects
+    var text = "ASTEREDUX";
+    var size = 48;
+    var font = size + "px serif";
+    var x = (ctx.canvas.width / 2) - 80;
+    //bottom, 
+    var y = ctx.canvas.height - ((minHeight - size) / 2);
+    var alpha = 1 - (ctx.canvas.height / (window.innerHeight - 200));
+    ctx.textBaseline = "bottom";
+    for(var i=0; i!= 4; ++i)
+        drawShadowText(ctx, text, x, y, size, alpha);
+    drawText(ctx, text, x, y, {r: 0, g: 0, b: 0, a: alpha}, font);
+};
+
+var drawShadowText = function(ctx, text, x, y, size, alpha) {
+    var c = { r: rand(255), g: rand(255), b: rand(255), a: alpha / 4 };
+    size *= 1.05;
+    x += -5 - Math.random() * 5;
+    y += 8 - Math.random() * 5;
+
+    var font = size + "px serif";
+    drawText(ctx, text, x, y, c, font);
+};
+
+var drawText = function(ctx, text, x, y, c, font) {
+    ctx.beginPath();
+    ctx.font = font;
+    ctx.fillStyle = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
+    ctx.fillText(text, x, y);
+    ctx.closePath();
+};
+
+var updatePosition = function(circle, dt, height) {
+    deltaX = circle.vel.x * dt / 1000;
+    deltaY = circle.vel.y * dt / 1000;
+    circle.pos.x += deltaX;
+    if((circle.pos.y += deltaY) > height)
+        circle.pos.y -= height;
+}
+
+var fullDrawCircle = function(ctx, circle) {
+    circle.prevPos.forEach(function(pos, i) {
+        drawCircle(ctx, pos, circle.size, {
+            r: circle.color.r,
+            g: circle.color.g,
+            b: circle.color.b,
+            a: circle.color.a * (i + 1) / (circle.prevPos.length + 1),
+        });
+    });
+    drawCircle(ctx, circle.pos, circle.size, circle.color);
+}
+
+var drawCircle = function(ctx, pos, size, color) {
+    ctx.beginPath();
+
+    var c = color;
+    ctx.fillStyle = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
+    ctx.arc(pos.x, pos.y, size, 0, Math.PI*2);
+    ctx.fill();
+
+    ctx.closePath();
+};
+
+module.exports = ReduxGameHeader;
+
+},{"react":405}],423:[function(require,module,exports){
 var FormatDate = function(timestamp) {
     var date = new Date(parseInt(timestamp));
     return date.toDateString();
@@ -46829,7 +47005,7 @@ var FormatDate = function(timestamp) {
 
 module.exports = FormatDate;
 
-},{}],423:[function(require,module,exports){
+},{}],424:[function(require,module,exports){
 var MarkdownIt = require('markdown-it');
 
 var MarkdownRegexp = require('markdown-it-regexp');
@@ -46839,6 +47015,7 @@ var MdFigCaption = require('mdfigcaption');
 var MdReact = require('mdreact');
 var React = require('react');
 var HeaderName = require('../md-plugins/header-name');
+var mdReduxGameHeader = require('../md-plugins/redux-game-header');
 
 var Jayehmd = function(variables) {
             var md = new MarkdownIt();
@@ -46849,13 +47026,14 @@ var Jayehmd = function(variables) {
             }));
             md.use(MdFigCaption);
             md.use(HeaderName);
+            md.use(mdReduxGameHeader);
 
             return md;
 };
 
 module.exports = Jayehmd;
 
-},{"../md-plugins/header-name":426,"markdown-it":164,"markdown-it-highlightjs":9,"markdown-it-regexp":161,"mdfigcaption":217,"mdreact":218,"mdvariables":224,"react":405}],424:[function(require,module,exports){
+},{"../md-plugins/header-name":427,"../md-plugins/redux-game-header":428,"markdown-it":164,"markdown-it-highlightjs":9,"markdown-it-regexp":161,"mdfigcaption":217,"mdreact":218,"mdvariables":224,"react":405}],425:[function(require,module,exports){
 module.exports = function serializeForm(form) {
     if (!form || form.nodeName !== "FORM") {
             return;
@@ -46914,7 +47092,7 @@ module.exports = function serializeForm(form) {
     return q;
 };
 
-},{}],425:[function(require,module,exports){
+},{}],426:[function(require,module,exports){
 var Superagent = require('superagent');
 
 var User = {
@@ -46973,7 +47151,7 @@ var User = {
 
 module.exports = User;
 
-},{"superagent":407}],426:[function(require,module,exports){
+},{"superagent":407}],427:[function(require,module,exports){
 var React = require('react');
 
 var HeaderName = function(md, options) {
@@ -46997,7 +47175,21 @@ var HeaderName = function(md, options) {
 
 module.exports = HeaderName;
 
-},{"react":405}],427:[function(require,module,exports){
+},{"react":405}],428:[function(require,module,exports){
+var RghComponent = '../components/one-offs/redux-game-header.jsx';
+var React = require('react');
+var Plugin = require('markdown-it-regexp');
+
+var mdReduxGameHeader = Plugin(
+    /%reduxgameheader%/g,
+    function(match, utils) {
+        return React.createElement(RghComponent, null);
+    }
+);
+
+module.exports = mdReduxGameHeader;
+
+},{"markdown-it-regexp":161,"react":405}],429:[function(require,module,exports){
 var stateShortcuts = {
     getInitialState: function() {
         return {};
@@ -47053,7 +47245,7 @@ var stateShortcuts = {
 
 module.exports = stateShortcuts;
 
-},{}],428:[function(require,module,exports){
+},{}],430:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router-component');
 var Locations = Router.Locations;
@@ -47066,6 +47258,9 @@ var FullArticle = require('./routes/article/full');
 var Login = require('./routes/login');
 var UserPanel = require('./routes/user-panel');
 var User = require('./helpers/user');
+
+//TODO: remove after testing
+var ReduxGameHeader = require('./components/one-offs/redux-game-header');
 
 var Routes = React.createClass({displayName: "Routes",
     render: function() {
@@ -47097,9 +47292,111 @@ var Routes = React.createClass({displayName: "Routes",
                             React.createElement(Location, {path: "/article/t/:title", handler: React.createElement(FullArticle, null)}), 
                             React.createElement(Location, {path: "/user/:username", handler: React.createElement(UserPanel, null)}), 
 
+                            React.createElement(Location, {path: "/reduxgameheader", handler: React.createElement(ReduxGameHeader, null)}), 
+
                             React.createElement(Location, {path: "/login", handler: React.createElement(Login, null)})
                         )
                     ), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
                     React.createElement("p", {style: {marginTop: 100, textAlign: 'right'}}, 
                         "jayeh.ca (Jason McCarrell)"
                     ), 
@@ -47112,7 +47409,7 @@ var Routes = React.createClass({displayName: "Routes",
 
 module.exports = Routes;
 
-},{"./components/header":421,"./helpers/user":425,"./routes/article/edit":429,"./routes/article/full":430,"./routes/blog":431,"./routes/login":432,"./routes/user-panel":433,"react":405,"react-router-component":228}],429:[function(require,module,exports){
+},{"./components/header":421,"./components/one-offs/redux-game-header":422,"./helpers/user":426,"./routes/article/edit":431,"./routes/article/full":432,"./routes/blog":433,"./routes/login":434,"./routes/user-panel":435,"react":405,"react-router-component":228}],431:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 var Filedrop = require('react-filedrop')({
@@ -47262,7 +47559,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
 
 module.exports = EditArticle;
 
-},{"../../components/article-header":417,"../../components/article-summary":418,"../../helpers/jayehmd":423,"../../helpers/serializeform":424,"../../mixins/stateshortcuts":427,"react":405,"react-filedrop":227,"superagent":407}],430:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/article-summary":418,"../../helpers/jayehmd":424,"../../helpers/serializeform":425,"../../mixins/stateshortcuts":429,"react":405,"react-filedrop":227,"superagent":407}],432:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
@@ -47307,7 +47604,7 @@ var FullArticle = React.createClass({displayName: "FullArticle",
 
 module.exports = FullArticle;
 
-},{"../../components/article-header":417,"../../components/comments":420,"../../helpers/format-date":422,"../../helpers/jayehmd":423,"react":405,"superagent":407}],431:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/comments":420,"../../helpers/format-date":423,"../../helpers/jayehmd":424,"react":405,"superagent":407}],433:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
@@ -47341,7 +47638,7 @@ var Blog = React.createClass({displayName: "Blog",
 
 module.exports = Blog;
 
-},{"../components/article-summary":418,"react":405,"superagent":407}],432:[function(require,module,exports){
+},{"../components/article-summary":418,"react":405,"superagent":407}],434:[function(require,module,exports){
 var React = require('react');
 
 var User = require('../helpers/user');
@@ -47377,7 +47674,7 @@ var Login = React.createClass({displayName: "Login",
 
 module.exports = Login;
 
-},{"../components/article-header":417,"../helpers/serializeform":424,"../helpers/user":425,"react":405}],433:[function(require,module,exports){
+},{"../components/article-header":417,"../helpers/serializeform":425,"../helpers/user":426,"react":405}],435:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
@@ -47407,4 +47704,4 @@ var UserPanel = React.createClass({displayName: "UserPanel",
 
 module.exports = UserPanel;
 
-},{"../helpers/user":425,"react":405,"superagent":407}]},{},[415]);
+},{"../helpers/user":426,"react":405,"superagent":407}]},{},[415]);

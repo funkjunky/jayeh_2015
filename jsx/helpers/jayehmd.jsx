@@ -7,6 +7,7 @@ var MdFigCaption = require('mdfigcaption');
 var MdReact = require('mdreact');
 var React = require('react');
 var HeaderName = require('../md-plugins/header-name');
+var mdReduxGameHeader = require('../md-plugins/redux-game-header');
 
 var Jayehmd = function(variables) {
             var md = new MarkdownIt();
@@ -17,6 +18,7 @@ var Jayehmd = function(variables) {
             }));
             md.use(MdFigCaption);
             md.use(HeaderName);
+            md.use(mdReduxGameHeader);
 
             return md;
 };
