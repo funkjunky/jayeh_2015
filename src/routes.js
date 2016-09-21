@@ -50,7 +50,7 @@ var Routes = React.createClass({displayName: "Routes",
                         )
                     ), 
                     React.createElement("p", {style: {marginTop: 100, textAlign: 'right'}}, 
-                        "jayeh.ca (Jason McCarrell)"
+                        "jayeh.ca © 2016 (Jason McCarrell)"
                     ), 
                     React.createElement("script", {src: "/dist/bootstrap.js"})
                 )
