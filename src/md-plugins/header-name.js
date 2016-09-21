@@ -8,10 +8,10 @@ var HeaderName = function(md, options) {
     md.renderer.rules.heading_open = function(tokens, idx, options, env, self) {
         var aIndex = tokens[idx].attrIndex('name');
 
-        var name = tokens[idx + 1].content.replace(/[^a-zA-Z0-9]*/, '');
+        var name = tokens[idx + 1].content.replace(/[^a-zA-Z0-9]*/g, '');
 
         if(aIndex < 0)
-            tokens[idx].attrPush(['name', name]); // add new attribute
+            tokens[idx].attrPush(['id', name]); // add new attribute
         else
             tokens[idx].attrs[aIndex][0] = name; // replace old name
 

@@ -50,7 +50,7 @@ var Routes = React.createClass({
                         </Locations>
                     </div>
                     <p style={{marginTop: 100, textAlign: 'right'}}>
-                        jayeh.ca (Jason McCarrell)
+                        jayeh.ca © 2016 (Jason McCarrell)
                     </p>
                     <script src="/dist/bootstrap.js"></script>
                 </body>
