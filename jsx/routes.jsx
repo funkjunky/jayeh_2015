@@ -11,6 +11,9 @@ var Login = require('./routes/login');
 var UserPanel = require('./routes/user-panel');
 var User = require('./helpers/user');
 
+//TODO: remove after testing
+var ReduxGameHeader = require('./components/one-offs/redux-game-header');
+
 var Routes = React.createClass({
     render: function() {
         if(this.props.path) {
@@ -41,9 +44,114 @@ var Routes = React.createClass({
                             <Location path="/article/t/:title" handler={<FullArticle />} />
                             <Location path="/user/:username" handler={<UserPanel />} />
 
+                            <Location path="/reduxgameheader" handler={<ReduxGameHeader />} />
+
                             <Location path="/login" handler={<Login />} />
                         </Locations>
                     </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <p style={{marginTop: 100, textAlign: 'right'}}>
+                        jayeh.ca (Jason McCarrell)
+                    </p>
                     <script src="/dist/bootstrap.js"></script>
                 </body>
             </html>

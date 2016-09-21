@@ -19,16 +19,9 @@ TODO www.jayeh.ca
 		*- add before hook to creation and editing articles with date
 		*- add before hook for comments for creation
 
-	- make a new blog post celebrating my new blog
-		- use an intro text… poppying text that is simple
-		- write it out in a nice format, throw in lots of images
-		- create a custom react element to show off the power i have
-
 	- link jayeh.com and jayeh.ca to heroku jayeh
 
 	- test out oauth on jayeh.ca and jayeh.com
-
-	*free to program other stuff*
 
 	- try creating a worm, then a me in pixel art, to use with oauth icon and favicon. [oauth icon is 120x120]
 

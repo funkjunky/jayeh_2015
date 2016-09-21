@@ -23,7 +23,6 @@ var FullArticle = React.createClass({
         }.bind(this));
     },
     render: function() {
-        console.log('this.state.article: ', this.state.article);
         var md = Jayehmd(this.state.article);
         var headerMarkup = md.renderTokens(this.state.article.header);
         var bodyMarkup = md.renderTokens(this.state.article.body);
@@ -31,7 +30,9 @@ var FullArticle = React.createClass({
         return (
             <div>
                 <ArticleHeader image={this.state.article.image}>{headerMarkup}</ArticleHeader>
-                <p style={{fontSize: 14, margin: 20, lineHeight: '200%'}}>{bodyMarkup}</p>
+                <div id="blog-body" style={{fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%'}}>
+                    {bodyMarkup}
+                </div>
                 <p>Created On: {FormatDate(this.state.article.created_at)} - Edited On: {FormatDate(this.state.article.edited_at)}</p>
                 <Comments article={this.state.article} />
             </div>

@@ -7,10 +7,10 @@ else
     handler = ChildProcess.exec('node server.js');
 
 handler.stdout.on('data', function(data) {
-    console.log(data);
+    console.log(data.toString('utf8'));
 });
 handler.stderr.on('data', function(data) {
-    console.error(data);
+    console.error(data.toString('utf8'));
 });
 handler.on('close', function(code) {
     console.log('Exiting. Code: ', code);

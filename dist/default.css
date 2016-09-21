@@ -1,25 +1,33 @@
 h1 {
-    padding: 0.25em;
     font-size: 4em;
     margin-left: 0.5em;
 }
 h2 {
-    font-size: 2em;
-    margin-left: 2em;
+    font-size: 2.15em;
 }
 h3 {
-    font-size: 1.5em;
-    margin-left: 1em;
+    font-size: 1.15em;
+    margin-top: 0.1em;
     font-weight: bold;
 }
 
+#blog-body h2 {
+    margin-top: 4em;
+}
+
 p {
-    margin: 0.25em;
+    margin: 0.5em;
+}
+
+ul {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 100px;
 }
 
 a:visited {
-    border-bottom: 1px dashed #444;
-    color: #444;
+    border-bottom: 1px dashed #424;
+    color: #424;
 }
 
 a:hover {
@@ -68,6 +76,9 @@ code, pre {
 }
 
 figure {
+    border-top: 1px solid #ddd;
+    display: table;
+    margin: auto;
 }
 
 figcaption {

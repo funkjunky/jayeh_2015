@@ -55,7 +55,9 @@ var EditArticle = React.createClass({
                             <ArticleSummary article={this.state} />
                         </div>
                         <ArticleHeader image={this.state.image}>{headerMarkup}</ArticleHeader>
-                        {bodyMarkup}
+                        <div id="blog-body" style={{fontSize: 14, maxWidth: '50em', margin: 'auto', lineHeight: '200%'}}>
+                            {bodyMarkup}
+                        </div>
                     </form>
                 </div>
             </div>

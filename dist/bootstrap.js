@@ -1278,7 +1278,7 @@ function isRegExp(obj) { return _class(obj) === '[object RegExp]'; }
 function isFunction(obj) { return _class(obj) === '[object Function]'; }
 
 
-function escapeRE (str) { return str.replace(/[.?*+^$[\]\\(){}|-]/g, '\\$&'); }
+function escapeRE(str) { return str.replace(/[.?*+^$[\]\\(){}|-]/g, '\\$&'); }
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1321,15 +1321,25 @@ var defaultSchemas = {
       var tail = text.slice(pos);
 
       if (!self.re.no_http) {
-      // compile lazily, becayse "host"-containing variables can change on tlds update.
+      // compile lazily, because "host"-containing variables can change on tlds update.
         self.re.no_http =  new RegExp(
-          '^' + self.re.src_auth + self.re.src_host_port_strict + self.re.src_path, 'i'
+          '^' +
+          self.re.src_auth +
+          // Don't allow single-level domains, because of false positives like '//test'
+          // with code comments
+          '(?:localhost|(?:(?:' + self.re.src_domain + ')\\.)+' + self.re.src_domain_root + ')' +
+          self.re.src_port +
+          self.re.src_host_terminator +
+          self.re.src_path,
+
+          'i'
         );
       }
 
       if (self.re.no_http.test(tail)) {
-        // should not be `://`, that protects from errors in protocol name
+        // should not be `://` & `///`, that protects from errors in protocol name
         if (pos >= 3 && text[pos - 3] === ':') { return 0; }
+        if (pos >= 3 && text[pos - 3] === '/') { return 0; }
         return tail.match(self.re.no_http)[0].length;
       }
       return 0;
@@ -1486,15 +1496,15 @@ function compile(self) {
   // Build schema condition
   //
   var slist = Object.keys(self.__compiled__)
-                      .filter(function(name) {
+                      .filter(function (name) {
                         // Filter disabled & fake schemas
                         return name.length > 0 && self.__compiled__[name];
                       })
                       .map(escapeRE)
                       .join('|');
   // (?!_) cause 1.5x slowdown
-  self.re.schema_test   = RegExp('(^|(?!_)(?:>|' + re.src_ZPCc + '))(' + slist + ')', 'i');
-  self.re.schema_search = RegExp('(^|(?!_)(?:>|' + re.src_ZPCc + '))(' + slist + ')', 'ig');
+  self.re.schema_test   = RegExp('(^|(?!_)(?:[><]|' + re.src_ZPCc + '))(' + slist + ')', 'i');
+  self.re.schema_search = RegExp('(^|(?!_)(?:[><]|' + re.src_ZPCc + '))(' + slist + ')', 'ig');
 
   self.re.pretest       = RegExp(
                             '(' + self.re.schema_test.source + ')|' +
@@ -1770,7 +1780,7 @@ LinkifyIt.prototype.testSchemaAt = function testSchemaAt(text, schema, pos) {
  * LinkifyIt#match(text) -> Array|null
  *
  * Returns array of found link descriptions or `null` on fail. We strongly
- * to use [[LinkifyIt#test]] first, for best speed.
+ * recommend to use [[LinkifyIt#test]] first, for best speed.
  *
  * ##### Result match description
  *
@@ -1837,7 +1847,7 @@ LinkifyIt.prototype.tlds = function tlds(list, keepOld) {
 
   this.__tlds__ = this.__tlds__.concat(list)
                                   .sort()
-                                  .filter(function(el, idx, arr) {
+                                  .filter(function (el, idx, arr) {
                                     return el !== arr[idx - 1];
                                   })
                                   .reverse();
@@ -1884,9 +1894,9 @@ var src_ZCc = exports.src_ZCc = [ src_Z, src_Cc ].join('|');
 // All possible word characters (everything without punctuation, spaces & controls)
 // Defined via punctuation & spaces to save space
 // Should be something like \p{\L\N\S\M} (\w but without `_`)
-var src_pseudo_letter       = '(?:(?!' + src_ZPCc + ')' + src_Any + ')';
+var src_pseudo_letter       = '(?:(?!>|<|' + src_ZPCc + ')' + src_Any + ')';
 // The same as abothe but without [0-9]
-var src_pseudo_letter_non_d = '(?:(?![0-9]|' + src_ZPCc + ')' + src_Any + ')';
+// var src_pseudo_letter_non_d = '(?:(?![0-9]|' + src_ZPCc + ')' + src_Any + ')';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1894,7 +1904,8 @@ var src_ip4 = exports.src_ip4 =
 
   '(?:(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)';
 
-exports.src_auth    = '(?:(?:(?!' + src_ZCc + ').)+@)?';
+// Prohibit [@/] in user/pass to avoid wrong domain fetch.
+exports.src_auth    = '(?:(?:(?!' + src_ZCc + '|[@/]).)+@)?';
 
 var src_port = exports.src_port =
 
@@ -1902,14 +1913,14 @@ var src_port = exports.src_port =
 
 var src_host_terminator = exports.src_host_terminator =
 
-  '(?=$|' + src_ZPCc + ')(?!-|_|:\\d|\\.-|\\.(?!$|' + src_ZPCc + '))';
+  '(?=$|>|<|' + src_ZPCc + ')(?!-|_|:\\d|\\.-|\\.(?!$|' + src_ZPCc + '))';
 
 var src_path = exports.src_path =
 
   '(?:' +
     '[/?#]' +
       '(?:' +
-        '(?!' + src_ZCc + '|[()[\\]{}.,"\'?!\\-]).|' +
+        '(?!' + src_ZCc + '|[()[\\]{}.,"\'?!\\-<>]).|' +
         '\\[(?:(?!' + src_ZCc + '|\\]).)*\\]|' +
         '\\((?:(?!' + src_ZCc + '|[)]).)*\\)|' +
         '\\{(?:(?!' + src_ZCc + '|[}]).)*\\}|' +
@@ -1943,11 +1954,11 @@ var src_xn = exports.src_xn =
 
 var src_domain_root = exports.src_domain_root =
 
-  // Can't have digits and dashes
+  // Allow letters & digits (http://test1)
   '(?:' +
     src_xn +
     '|' +
-    src_pseudo_letter_non_d + '{1,63}' +
+    src_pseudo_letter + '{1,63}' +
   ')';
 
 var src_domain = exports.src_domain =
@@ -1966,8 +1977,9 @@ var src_domain = exports.src_domain =
 var src_host = exports.src_host =
 
   '(?:' +
-    src_ip4 +
-  '|' +
+  // Don't need IP check, because digits are already allowed in normal domain names
+  //   src_ip4 +
+  // '|' +
     '(?:(?:(?:' + src_domain + ')\\.)*' + src_domain_root + ')' +
   ')';
 
@@ -2010,11 +2022,11 @@ var tpl_host_port_no_ip_fuzzy_strict = exports.tpl_host_port_no_ip_fuzzy_strict 
 // Rude test fuzzy links by host, for quick deny
 exports.tpl_host_fuzzy_test =
 
-  'localhost|\\.\\d{1,3}\\.|(?:\\.(?:%TLDS%)(?:' + src_ZPCc + '|$))';
+  'localhost|www\\.|\\.\\d{1,3}\\.|(?:\\.(?:%TLDS%)(?:' + src_ZPCc + '|>|$))';
 
 exports.tpl_email_fuzzy =
 
-    '(^|>|' + src_ZCc + ')(' + src_email_name + '@' + tpl_host_fuzzy_strict + ')';
+    '(^|<|>|\\(|' + src_ZCc + ')(' + src_email_name + '@' + tpl_host_fuzzy_strict + ')';
 
 exports.tpl_link_fuzzy =
     // Fuzzy link can't be prepended with .:/\- and non punctuation.
@@ -23014,7 +23026,6 @@ var MdReact = function(md, options) {
     md.renderTokens = function(src, env) {
         env = env || {};
 
-        console.log('src: ', src);
         return this.renderer.renderTokens(this.parse(src, env), this.options, env);
     };
     md.renderer.renderTokens = function(tokens, options, env) {
@@ -23023,6 +23034,7 @@ var MdReact = function(md, options) {
             rules = this.rules;
 
         return tokens.reduce(function(collector, token, i) {
+            //console.log('type: ', token.type, token);
             var result;
             if (typeof rules[token.type] !== 'undefined')
                 result = rules[token.type](tokens, i, options, env, this);
@@ -23032,6 +23044,7 @@ var MdReact = function(md, options) {
                 else
                     result = this.renderToken(tokens, i, options);
             }
+            //console.log('result: ', result);
 
             function getCollector(collector, tokens, i) {
                 tokens.forEach(function(result) {
@@ -23048,6 +23061,7 @@ var MdReact = function(md, options) {
                         return;
                     }
 
+                    //console.log('result isnt a string: ', result, collector.length);
                     if(!collector.length || !collector[collector.length - 1].length)
                         collector.push([]);
 
@@ -46604,21 +46618,22 @@ Emitter.prototype.hasListeners = function(event){
 },{}],409:[function(require,module,exports){
 module.exports=/[\0-\x1F\x7F-\x9F]/
 },{}],410:[function(require,module,exports){
-module.exports=/[\xAD\u0600-\u0605\u061C\u06DD\u070F\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF\uFFF9-\uFFFB]|\uD804\uDCBD|\uD82F[\uDCA0-\uDCA3]|\uD834[\uDD73-\uDD7A]|\uDB40[\uDC01\uDC20-\uDC7F]/
+module.exports=/[\xAD\u0600-\u0605\u061C\u06DD\u070F\u08E2\u180E\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF\uFFF9-\uFFFB]|\uD804\uDCBD|\uD82F[\uDCA0-\uDCA3]|\uD834[\uDD73-\uDD7A]|\uDB40[\uDC01\uDC20-\uDC7F]/
 },{}],411:[function(require,module,exports){
-module.exports=/[!-#%-\*,-/:;\?@\[-\]_\{\}\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E42\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC8\uDDCD\uDE38-\uDE3D]|\uD805[\uDCC6\uDDC1-\uDDC9\uDE41-\uDE43]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F/
+module.exports=/[!-#%-\*,-/:;\?@\[-\]_\{\}\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E44\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDC4B-\uDC4F\uDC5B\uDC5D\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDE60-\uDE6C\uDF3C-\uDF3E]|\uD807[\uDC41-\uDC45\uDC70\uDC71]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]|\uD83A[\uDD5E\uDD5F]/
 },{}],412:[function(require,module,exports){
-module.exports=/[ \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/
+module.exports=/[ \xA0\u1680\u2000-\u200A\u202F\u205F\u3000]/
 },{}],413:[function(require,module,exports){
+'use strict';
 
-module.exports.Any = require('./properties/Any/regex');
-module.exports.Cc  = require('./categories/Cc/regex');
-module.exports.Cf  = require('./categories/Cf/regex');
-module.exports.P   = require('./categories/P/regex');
-module.exports.Z   = require('./categories/Z/regex');
+exports.Any = require('./properties/Any/regex');
+exports.Cc  = require('./categories/Cc/regex');
+exports.Cf  = require('./categories/Cf/regex');
+exports.P   = require('./categories/P/regex');
+exports.Z   = require('./categories/Z/regex');
 
 },{"./categories/Cc/regex":409,"./categories/Cf/regex":410,"./categories/P/regex":411,"./categories/Z/regex":412,"./properties/Any/regex":414}],414:[function(require,module,exports){
-module.exports=/[\0-\uD7FF\uDC00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF]/
+module.exports=/[\0-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/
 },{}],415:[function(require,module,exports){
 var React = require('react');
 var Routes = React.createFactory(require('./routes'));
@@ -46629,7 +46644,7 @@ if(typeof window !== 'undefined') {
     }
 }
 
-},{"./routes":427,"react":405}],416:[function(require,module,exports){
+},{"./routes":430,"react":405}],416:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
@@ -46688,7 +46703,7 @@ var AddComment = React.createClass({displayName: "AddComment",
 
 module.exports = AddComment;
 
-},{"../helpers/serializeform":424,"../helpers/user":425,"../routes/login":431,"react":405,"superagent":407}],417:[function(require,module,exports){
+},{"../helpers/serializeform":425,"../helpers/user":426,"../routes/login":434,"react":405,"superagent":407}],417:[function(require,module,exports){
 var React = require('react');
 
 var ArticleHeader = React.createClass({displayName: "ArticleHeader",
@@ -46731,6 +46746,9 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
             backgroundImage: 'url(\'' + this.props.article.image + '\')',
             backgroundSize: '100%',
             fontFamily: 'Open Sans',
+            border: '1px dashed maroon',
+            marginTop: '5px',
+            marginBottom: '5px',
         };
         return (
             React.createElement("a", {href: "/article/t/" + this.props.article.title, className: "blackReadable"}, React.createElement("div", {style: style}, 
@@ -46744,7 +46762,7 @@ var BasicSummary = React.createClass({displayName: "BasicSummary",
 
 module.exports = BasicSummary;
 
-},{"../helpers/format-date":422,"../mixins/stateshortcuts":426,"react":405}],419:[function(require,module,exports){
+},{"../helpers/format-date":423,"../mixins/stateshortcuts":429,"react":405}],419:[function(require,module,exports){
 var React = require('react');
 
 var Comment = React.createClass({displayName: "Comment",
@@ -46819,6 +46837,187 @@ var Header = React.createClass({displayName: "Header",
 module.exports = Header;
 
 },{"react":405}],422:[function(require,module,exports){
+var React = require('react');
+
+var ReduxGameHeader = React.createClass({displayName: "ReduxGameHeader",
+    render: function() {
+        return (
+            React.createElement("canvas", {style: {position: 'absolute', left: 0, border: 'solid 1px black'}, className: "reduxgameheader", tabIndex: "0"})
+        );
+    },
+    componentDidMount: function() {
+        var canvas = this.getDOMNode();
+        var ctx = canvas.getContext('2d');
+
+        //pause play controls (space plays and pauses)
+        var paused = false;
+        var lastTime = 0;
+        canvas.addEventListener('keyup', function(event) {
+            if(event.which === 32)
+                if(!(paused = !paused))
+                    window.requestAnimationFrame(function(timePassed) {
+                        drawLoop(timePassed, true)  
+                    });
+        });
+
+        //somehow spawn a ball every
+        window.addEventListener('scroll', function(event) {
+        });
+
+        //draw loop
+        //Note: resetTime is necessary because of the shitty timePassed that raf sends
+        var spawnInterval = 500;
+        var spawnCountdown = spawnInterval;
+        var posInterval = 200;
+        var posCountdown = posInterval;
+        var drawLoop = function(timePassed, resetTime) {
+            if(resetTime)
+                lastTime = timePassed;
+
+            var dt = timePassed - lastTime;
+
+            if((spawnCountdown -= dt) < 0) {
+    var doc = document.documentElement;
+    var scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+                spawnCountdown = spawnInterval;
+                var darkness = rand(200);
+                if(Math.random() >= 0.5)
+                    circles.push({
+                        pos: { x: Math.random() * ctx.canvas.width / 2, y: 0 },
+                        size: 10,
+                        vel: { x: 20 + rand(20), y: 40 + rand(40) }, 
+                        //color: { r: rand(255), g: rand(255), b: rand(255), a: 1 },
+                        color: { r: darkness, g: darkness, b: darkness, a: 1 },
+                        prevPos: [],
+                    });
+            }
+
+            if((posCountdown -= dt) < 0) {
+                posCountdown = posInterval;
+
+                circles.forEach(function(circle) {
+                    if(circle.prevPos.length >= 5)
+                        circle.prevPos.shift();
+                    circle.prevPos.push({
+                        x: circle.pos.x,
+                        y: circle.pos.y,
+                    });
+                });
+            }
+
+            draw(ctx, dt);
+            lastTime = timePassed;
+            if(!paused)
+                window.requestAnimationFrame(drawLoop);
+        };
+        window.requestAnimationFrame(drawLoop);
+    },
+});
+
+var rand = function(max) {
+    return Math.floor(Math.random() * max);
+}
+
+var circles = [];
+
+var draw = function(ctx, dt) {
+    var minHeight = 80;
+    var doc = document.documentElement;
+    var scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+
+    ctx.canvas.width  = window.innerWidth;
+    var potentialHeight = window.innerHeight - 200 - scrollTop;
+    var top;
+    if(potentialHeight > minHeight) {
+        ctx.canvas.height = potentialHeight;
+        top = 200 + scrollTop;
+    } else {
+        ctx.canvas.height = minHeight
+        top = window.innerHeight - minHeight;
+    }
+    ctx.canvas.style.top = top + 'px';
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(255,255,255,0.5)";
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.closePath();
+
+    circles.forEach(function(circle) {
+        updatePosition(circle, dt, ctx.canvas.height);
+        fullDrawCircle(ctx, circle);
+    });
+    //remove circles that have passed
+    circles = circles.filter(function(circle) {
+        return circle.pos.x < (ctx.canvas.width + circle.size);
+    });
+
+    //write in Asteredux on bottom with effects
+    var text = "ASTEREDUX";
+    var size = 48;
+    var font = size + "px serif";
+    var x = (ctx.canvas.width / 2) - 80;
+    //bottom, 
+    var y = ctx.canvas.height - ((minHeight - size) / 2);
+    var alpha = 1 - (ctx.canvas.height / (window.innerHeight - 200));
+    ctx.textBaseline = "bottom";
+    for(var i=0; i!= 4; ++i)
+        drawShadowText(ctx, text, x, y, size, alpha);
+    drawText(ctx, text, x, y, {r: 0, g: 0, b: 0, a: alpha}, font);
+};
+
+var drawShadowText = function(ctx, text, x, y, size, alpha) {
+    var c = { r: rand(255), g: rand(255), b: rand(255), a: alpha / 4 };
+    size *= 1.05;
+    x += -5 - Math.random() * 5;
+    y += 8 - Math.random() * 5;
+
+    var font = size + "px serif";
+    drawText(ctx, text, x, y, c, font);
+};
+
+var drawText = function(ctx, text, x, y, c, font) {
+    ctx.beginPath();
+    ctx.font = font;
+    ctx.fillStyle = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
+    ctx.fillText(text, x, y);
+    ctx.closePath();
+};
+
+var updatePosition = function(circle, dt, height) {
+    deltaX = circle.vel.x * dt / 1000;
+    deltaY = circle.vel.y * dt / 1000;
+    circle.pos.x += deltaX;
+    if((circle.pos.y += deltaY) > height)
+        circle.pos.y -= height;
+}
+
+var fullDrawCircle = function(ctx, circle) {
+    circle.prevPos.forEach(function(pos, i) {
+        drawCircle(ctx, pos, circle.size, {
+            r: circle.color.r,
+            g: circle.color.g,
+            b: circle.color.b,
+            a: circle.color.a * (i + 1) / (circle.prevPos.length + 1),
+        });
+    });
+    drawCircle(ctx, circle.pos, circle.size, circle.color);
+}
+
+var drawCircle = function(ctx, pos, size, color) {
+    ctx.beginPath();
+
+    var c = color;
+    ctx.fillStyle = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
+    ctx.arc(pos.x, pos.y, size, 0, Math.PI*2);
+    ctx.fill();
+
+    ctx.closePath();
+};
+
+module.exports = ReduxGameHeader;
+
+},{"react":405}],423:[function(require,module,exports){
 var FormatDate = function(timestamp) {
     var date = new Date(parseInt(timestamp));
     return date.toDateString();
@@ -46826,7 +47025,7 @@ var FormatDate = function(timestamp) {
 
 module.exports = FormatDate;
 
-},{}],423:[function(require,module,exports){
+},{}],424:[function(require,module,exports){
 var MarkdownIt = require('markdown-it');
 
 var MarkdownRegexp = require('markdown-it-regexp');
@@ -46835,6 +47034,8 @@ var MdVariables = require('mdvariables');
 var MdFigCaption = require('mdfigcaption');
 var MdReact = require('mdreact');
 var React = require('react');
+var HeaderName = require('../md-plugins/header-name');
+var mdReduxGameHeader = require('../md-plugins/redux-game-header');
 
 var Jayehmd = function(variables) {
             var md = new MarkdownIt();
@@ -46844,13 +47045,15 @@ var Jayehmd = function(variables) {
                 return variables;
             }));
             md.use(MdFigCaption);
+            md.use(HeaderName);
+            md.use(mdReduxGameHeader);
 
             return md;
 };
 
 module.exports = Jayehmd;
 
-},{"markdown-it":164,"markdown-it-highlightjs":9,"markdown-it-regexp":161,"mdfigcaption":217,"mdreact":218,"mdvariables":224,"react":405}],424:[function(require,module,exports){
+},{"../md-plugins/header-name":427,"../md-plugins/redux-game-header":428,"markdown-it":164,"markdown-it-highlightjs":9,"markdown-it-regexp":161,"mdfigcaption":217,"mdreact":218,"mdvariables":224,"react":405}],425:[function(require,module,exports){
 module.exports = function serializeForm(form) {
     if (!form || form.nodeName !== "FORM") {
             return;
@@ -46909,7 +47112,7 @@ module.exports = function serializeForm(form) {
     return q;
 };
 
-},{}],425:[function(require,module,exports){
+},{}],426:[function(require,module,exports){
 var Superagent = require('superagent');
 
 var User = {
@@ -46968,7 +47171,45 @@ var User = {
 
 module.exports = User;
 
-},{"superagent":407}],426:[function(require,module,exports){
+},{"superagent":407}],427:[function(require,module,exports){
+var React = require('react');
+
+var HeaderName = function(md, options) {
+    var defaultRender = md.renderer.rules.heading_open || function(tokens, idx, options, env, self) {
+        return self.renderToken(tokens, idx, options);
+    };
+
+    md.renderer.rules.heading_open = function(tokens, idx, options, env, self) {
+        var aIndex = tokens[idx].attrIndex('name');
+
+        var name = tokens[idx + 1].content.replace(/[^a-zA-Z0-9]*/, '');
+
+        if(aIndex < 0)
+            tokens[idx].attrPush(['name', name]); // add new attribute
+        else
+            tokens[idx].attrs[aIndex][0] = name; // replace old name
+
+        return defaultRender(tokens, idx, options, env, self);
+    };
+};
+
+module.exports = HeaderName;
+
+},{"react":405}],428:[function(require,module,exports){
+var RghComponent = require('../components/one-offs/redux-game-header');
+var React = require('react');
+var Plugin = require('markdown-it-regexp');
+
+var mdReduxGameHeader = Plugin(
+    /%reduxgameheader%/g,
+    function(match, utils) {
+        return React.createElement(RghComponent, null);
+    }
+);
+
+module.exports = mdReduxGameHeader;
+
+},{"../components/one-offs/redux-game-header":422,"markdown-it-regexp":161,"react":405}],429:[function(require,module,exports){
 var stateShortcuts = {
     getInitialState: function() {
         return {};
@@ -47024,7 +47265,7 @@ var stateShortcuts = {
 
 module.exports = stateShortcuts;
 
-},{}],427:[function(require,module,exports){
+},{}],430:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router-component');
 var Locations = Router.Locations;
@@ -47037,6 +47278,9 @@ var FullArticle = require('./routes/article/full');
 var Login = require('./routes/login');
 var UserPanel = require('./routes/user-panel');
 var User = require('./helpers/user');
+
+//TODO: remove after testing
+var ReduxGameHeader = require('./components/one-offs/redux-game-header');
 
 var Routes = React.createClass({displayName: "Routes",
     render: function() {
@@ -47068,8 +47312,113 @@ var Routes = React.createClass({displayName: "Routes",
                             React.createElement(Location, {path: "/article/t/:title", handler: React.createElement(FullArticle, null)}), 
                             React.createElement(Location, {path: "/user/:username", handler: React.createElement(UserPanel, null)}), 
 
+                            React.createElement(Location, {path: "/reduxgameheader", handler: React.createElement(ReduxGameHeader, null)}), 
+
                             React.createElement(Location, {path: "/login", handler: React.createElement(Login, null)})
                         )
+                    ), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("br", null), 
+                    React.createElement("p", {style: {marginTop: 100, textAlign: 'right'}}, 
+                        "jayeh.ca (Jason McCarrell)"
                     ), 
                     React.createElement("script", {src: "/dist/bootstrap.js"})
                 )
@@ -47080,7 +47429,7 @@ var Routes = React.createClass({displayName: "Routes",
 
 module.exports = Routes;
 
-},{"./components/header":421,"./helpers/user":425,"./routes/article/edit":428,"./routes/article/full":429,"./routes/blog":430,"./routes/login":431,"./routes/user-panel":432,"react":405,"react-router-component":228}],428:[function(require,module,exports){
+},{"./components/header":421,"./components/one-offs/redux-game-header":422,"./helpers/user":426,"./routes/article/edit":431,"./routes/article/full":432,"./routes/blog":433,"./routes/login":434,"./routes/user-panel":435,"react":405,"react-router-component":228}],431:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 var Filedrop = require('react-filedrop')({
@@ -47138,7 +47487,9 @@ var EditArticle = React.createClass({displayName: "EditArticle",
                             React.createElement(ArticleSummary, {article: this.state})
                         ), 
                         React.createElement(ArticleHeader, {image: this.state.image}, headerMarkup), 
-                        bodyMarkup
+                        React.createElement("div", {id: "blog-body", style: {fontSize: 14, maxWidth: '50em', margin: 'auto', lineHeight: '200%'}}, 
+                            bodyMarkup
+                        )
                     )
                 )
             )
@@ -47228,7 +47579,7 @@ var EditArticle = React.createClass({displayName: "EditArticle",
 
 module.exports = EditArticle;
 
-},{"../../components/article-header":417,"../../components/article-summary":418,"../../helpers/jayehmd":423,"../../helpers/serializeform":424,"../../mixins/stateshortcuts":426,"react":405,"react-filedrop":227,"superagent":407}],429:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/article-summary":418,"../../helpers/jayehmd":424,"../../helpers/serializeform":425,"../../mixins/stateshortcuts":429,"react":405,"react-filedrop":227,"superagent":407}],432:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
@@ -47254,7 +47605,6 @@ var FullArticle = React.createClass({displayName: "FullArticle",
         }.bind(this));
     },
     render: function() {
-        console.log('this.state.article: ', this.state.article);
         var md = Jayehmd(this.state.article);
         var headerMarkup = md.renderTokens(this.state.article.header);
         var bodyMarkup = md.renderTokens(this.state.article.body);
@@ -47262,7 +47612,9 @@ var FullArticle = React.createClass({displayName: "FullArticle",
         return (
             React.createElement("div", null, 
                 React.createElement(ArticleHeader, {image: this.state.article.image}, headerMarkup), 
-                React.createElement("p", {style: {fontSize: 14, margin: 20, lineHeight: '200%'}}, bodyMarkup), 
+                React.createElement("div", {id: "blog-body", style: {fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%'}}, 
+                    bodyMarkup
+                ), 
                 React.createElement("p", null, "Created On: ", FormatDate(this.state.article.created_at), " - Edited On: ", FormatDate(this.state.article.edited_at)), 
                 React.createElement(Comments, {article: this.state.article})
             )
@@ -47272,7 +47624,7 @@ var FullArticle = React.createClass({displayName: "FullArticle",
 
 module.exports = FullArticle;
 
-},{"../../components/article-header":417,"../../components/comments":420,"../../helpers/format-date":422,"../../helpers/jayehmd":423,"react":405,"superagent":407}],430:[function(require,module,exports){
+},{"../../components/article-header":417,"../../components/comments":420,"../../helpers/format-date":423,"../../helpers/jayehmd":424,"react":405,"superagent":407}],433:[function(require,module,exports){
 var React = require('react');
 var Request = require('superagent');
 
@@ -47306,7 +47658,7 @@ var Blog = React.createClass({displayName: "Blog",
 
 module.exports = Blog;
 
-},{"../components/article-summary":418,"react":405,"superagent":407}],431:[function(require,module,exports){
+},{"../components/article-summary":418,"react":405,"superagent":407}],434:[function(require,module,exports){
 var React = require('react');
 
 var User = require('../helpers/user');
@@ -47342,7 +47694,7 @@ var Login = React.createClass({displayName: "Login",
 
 module.exports = Login;
 
-},{"../components/article-header":417,"../helpers/serializeform":424,"../helpers/user":425,"react":405}],432:[function(require,module,exports){
+},{"../components/article-header":417,"../helpers/serializeform":425,"../helpers/user":426,"react":405}],435:[function(require,module,exports){
 var React = require('react');
 var Superagent = require('superagent');
 
@@ -47372,4 +47724,4 @@ var UserPanel = React.createClass({displayName: "UserPanel",
 
 module.exports = UserPanel;
 
-},{"../helpers/user":425,"react":405,"superagent":407}]},{},[415]);
+},{"../helpers/user":426,"react":405,"superagent":407}]},{},[415]);
