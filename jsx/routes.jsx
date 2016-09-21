@@ -25,12 +25,12 @@ var Routes = React.createClass({
             <html>
                 <head>
                     <title>Jayeh - Jasons tech and opinions</title>
+                    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
                     <link rel="stylesheet" href="/dist/base.css" />
                     <link rel="stylesheet" href="/dist/default.css" />
                     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
                     <link rel="stylesheet" href="/dist/styles/codepen-embed.css" />
                     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
-
                 </head>
                 <body>
                     {(excludeHeader) ? '' : <Header />}

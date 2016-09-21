@@ -47293,12 +47293,12 @@ var Routes = React.createClass({displayName: "Routes",
             React.createElement("html", null, 
                 React.createElement("head", null, 
                     React.createElement("title", null, "Jayeh - Jasons tech and opinions"), 
+                    React.createElement("meta", {name: "viewport", content: "user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/base.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/default.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/node_modules/font-awesome/css/font-awesome.min.css"}), 
                     React.createElement("link", {rel: "stylesheet", href: "/dist/styles/codepen-embed.css"}), 
                     React.createElement("link", {rel: "stylesheet", type: "text/css", href: "https://fonts.googleapis.com/css?family=Open+Sans"})
-
                 ), 
                 React.createElement("body", null, 
                     (excludeHeader) ? '' : React.createElement(Header, null), 
