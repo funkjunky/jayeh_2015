@@ -1,6 +1,6 @@
-var FormatDate = function(timestamp) {
+var formatDate = function(timestamp) {
     var date = new Date(parseInt(timestamp));
     return date.toDateString();
 };
 
-export default FormatDate;
+export default formatDate;

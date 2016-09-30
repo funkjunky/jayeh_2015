@@ -3,7 +3,7 @@ import React from 'react';
 import Plugin from 'markdown-it-regexp';
 import ArticleHeader from '../components/article-header.jsx';
 
-var MdArticleHeader = Plugin(
+var mdArticleHeader = Plugin(
     /\[ArticleHeader image=\“(.*?)\”\](.*?)\[\/ArticleHeader\]/g,
     function(match, utils) {
         return (
@@ -14,4 +14,4 @@ var MdArticleHeader = Plugin(
     }
 );
 
-export default MdArticleHeader;
+export default mdArticleHeader;

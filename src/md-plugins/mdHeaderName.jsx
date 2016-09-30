@@ -1,6 +1,6 @@
 import React from 'react';
 
-var HeaderName = function(md, options) {
+var mdHeaderName = function(md, options) {
     var defaultRender = md.renderer.rules.heading_open || function(tokens, idx, options, env, self) {
         return self.renderToken(tokens, idx, options);
     };
@@ -19,4 +19,4 @@ var HeaderName = function(md, options) {
     };
 };
 
-export default HeaderName;
+export default mdHeaderName;

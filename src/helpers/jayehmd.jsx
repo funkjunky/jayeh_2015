@@ -9,7 +9,7 @@ import React from 'react';
 import HeaderName from '../md-plugins/header-name.jsx';
 import mdReduxGameHeader from '../md-plugins/redux-game-header.jsx';
 
-var Jayehmd = function(variables) {
+var jayehmd = function(variables) {
             var md = new MarkdownIt();
             md.use(MdReact);
             md.use(MdHighlight);
@@ -23,4 +23,4 @@ var Jayehmd = function(variables) {
             return md;
 };
 
-export default Jayehmd;
+export default jayehmd;
