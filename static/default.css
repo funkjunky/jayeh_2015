@@ -1,0 +1,104 @@
+* {
+    font-family: tahoma;
+}
+
+h1 {
+    font-size: 4em;
+    margin-left: 0.5em;
+}
+h2 {
+    font-size: 2.15em;
+}
+h3 {
+    font-size: 1.15em;
+    margin-top: 0.1em;
+    font-weight: bold;
+}
+
+#blog-body h2 {
+    margin-top: 4em;
+}
+
+p {
+    margin: 0.5em;
+}
+
+ul {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 100px;
+}
+
+a:visited {
+    border-bottom: 1px dashed #424;
+    color: #424;
+}
+
+a:hover {
+    border-bottom: 1px solid #888;
+    color: #888;
+}
+
+blockquote {
+    font-family: "Times New Roman";
+    background-color: #EEE;
+    padding: 1em;
+    border-left: 5px solid #888;
+}
+
+a:link {
+    border-bottom: 1px dotted gray;
+}
+
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+hr {
+    border: 0px;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+pre {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5em;
+}
+
+code, pre {
+    color: #333;
+    background-color: #f8f8ff;
+}
+
+figure {
+    border-top: 1px solid #ddd;
+    display: table;
+    margin: auto;
+}
+
+figcaption {
+    padding: 7px 0;
+    border-bottom: 1px solid #ddd;
+    color: #4f525a;
+    text-align: left;
+}
+
+/* a small set of classes that are handy. Don't let this get out of control */
+.blackReadable {
+    color: black;
+    text-shadow: 1px 1px 5px white, -1px -1px 5px white;
+}
+
+.whiteReadable {
+    color: black;
+    text-shadow: 1px 1px 5px white, -1px -1px 5px white;
+}
