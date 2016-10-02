@@ -1,4 +1,4 @@
-import RghComponent from '../components/one-offs/redux-game-header.jsx';
+import RghComponent from '../components/one-offs/ReduxGameHeader.jsx';
 import React from 'react';
 import Plugin from 'markdown-it-regexp';
 

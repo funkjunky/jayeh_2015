@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Request from 'superagent';
 
-import UserPanel from '../../routes/user-panel.jsx';
+import UserPanel from '../UserPanel.jsx';
 import User from '../helpers/user.jsx';
 
-class Data_UserPanel extends React.Component {
+class UserPanelContainer extends React.Component {
     componentWillMount() {
         User.getUser(this.props.params.username).end((err, response) => {
             this.props.dispatch({
@@ -20,4 +20,4 @@ class Data_UserPanel extends React.Component {
     }
 }
 
-export default connect(data)(Data_UserPanel);
+export default connect(data)(UserPanelContainer);

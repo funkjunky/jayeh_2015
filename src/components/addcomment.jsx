@@ -3,7 +3,7 @@ import Superagent from 'superagent';
 
 import User from '../helpers/user.jsx';
 import SerializeForm from '../helpers/serializeform.jsx';
-import Login from '../routes/login.jsx';
+import Login from './Login.jsx';
 
 var AddComment = React.createClass({
     initialize: false, //TODO: so hacky...

@@ -1,6 +1,6 @@
 import _ from 'underscore';
 
-import Palette from './palette.jsx';
+import Palette from './Palette.jsx';
 
 
 var Styles = {};

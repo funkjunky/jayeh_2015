@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Request from 'superagent';
 
-import Blog from '../../routes/blog.jsx';
+import Blog from '../full-page/Blog.jsx';
 
-class Data_Blog extends React.Component {
+class BlogContainer extends React.Component {
     componentWillMount() {
         Request('get', '/api/article').end((err, response) => {
             console.log('response: ', response);
@@ -20,4 +20,4 @@ class Data_Blog extends React.Component {
     }
 };
 
-export default connect()(Data_Blog);
+export default connect()(BlogContainer);

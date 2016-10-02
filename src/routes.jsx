@@ -1,13 +1,13 @@
 import React from 'react';
 import { Router, Route, hashHistory } from 'react-router';
 
-import Header from './components/header.jsx';
-import Blog from './components/data-wrappers/blog.jsx';
-import EditArticle from './components/data-wrappers/edit-article.jsx';
-import NewArticle from './routes/article/edit.jsx';
-import FullArticle from './components/data-wrappers/full-article.jsx';
-import Login from './routes/login.jsx';
-import UserPanel from './components/data-wrappers/user-panel.jsx';
+import Header from './components/Header.jsx';
+import Blog from './components/fetching-containers/BlogContainer.jsx';
+import EditArticle from './components/fetching-containers/EditArticleContainer.jsx';
+import NewArticle from './components/full-page/EditArticle.jsx';
+import FullArticle from './components/fetching-containers/FullArticleContainer.jsx';
+import Login from './routes/Login.jsx';
+import UserPanel from './components/fetching-containers/UserPanelContainer.jsx';
 import User from './helpers/user.jsx';
 
 var Routes = (

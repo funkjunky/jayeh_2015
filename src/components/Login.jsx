@@ -2,7 +2,7 @@ import React from 'react';
 
 import User from '../helpers/user.jsx';
 import SerializeForm from '../helpers/serializeform.jsx';
-import ArticleHeader from '../components/article-header.jsx';
+import ArticleHeader from './ArticleHeader.jsx';
 
 var Login = React.createClass({
     render: function() {

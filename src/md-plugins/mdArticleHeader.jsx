@@ -1,7 +1,7 @@
 //TODO: KEEP THIS: as an example.
 import React from 'react';
 import Plugin from 'markdown-it-regexp';
-import ArticleHeader from '../components/article-header.jsx';
+import ArticleHeader from '../components/ArticleHeader.jsx';
 
 var mdArticleHeader = Plugin(
     /\[ArticleHeader image=\“(.*?)\”\](.*?)\[\/ArticleHeader\]/g,

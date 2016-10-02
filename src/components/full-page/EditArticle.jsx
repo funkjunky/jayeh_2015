@@ -10,8 +10,8 @@ import Jayehmd from '../../helpers/jayehmd.jsx';
 import SerializeForm from '../../helpers/serializeform.jsx';
 import StateShortcuts from '../../mixins/stateshortcuts.jsx';
 
-import ArticleSummary from '../../components/article-summary.jsx';
-import ArticleHeader from '../../components/article-header.jsx';
+import ArticleSummary from '../ArticleSummary.jsx';
+import ArticleHeader from '../ArticleHeader.jsx';
 
 var EditArticle = React.createClass({
     mixins: [StateShortcuts],

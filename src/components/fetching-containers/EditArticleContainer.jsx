@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import Request from 'superagent';
 
 import { data } from '../../helpers/destructurer.jsx';
-import EditArticle from '../../routes/article/edit.jsx';
+import EditArticle from '../full-page/EditArticle.jsx';
 
-class Data_EditArticle extends React.Component {
+class EditArticleContainer extends React.Component {
     componentWillMount() {
         Request('get', '/api/article/' + this.props.params.id).end((err, response) => {
             console.log('article response: ', response);
@@ -23,4 +23,4 @@ class Data_EditArticle extends React.Component {
     }
 };
 
-export default connect(data)(Data_EditArticle);
+export default connect(data)(EditArticleContainer);

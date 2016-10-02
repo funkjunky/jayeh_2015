@@ -1,8 +1,8 @@
 import React from 'react';
 import Superagent from 'superagent';
 
-import Comment from './comment.jsx';
-import AddComment from './addcomment.jsx';
+import Comment from './Comment.jsx';
+import AddComment from './AddComment.jsx';
 
 var Comments = React.createClass({
     getInitialState: function() {
