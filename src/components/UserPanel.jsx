@@ -1,14 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import User from '../helpers/user.jsx';
+import { logout } from '../actions/User.jsx';
 
+//TODO: I may need to wrap logout with a function that calls event.preventDefault... hopefully I won't need to bother... Delete if i dont.
 var UserPanel = ({ user }) => (
     <div>
         <pre>{user}</pre>
         <br />
-        {(user.username == User.currentUser().username)
-        ? <a href="/api/auth/logout" onClick={User.logout}>Logout</a> : ''}
+        {(user.username == currentUser.username)
+        ? <a href="/api/auth/logout" onClick={logout}>Logout</a> : ''}
     </div>
 );
 
-export default UserPanel;
+export default connect(({ app }) => ({ currentUser: app.user }), { logout })(UserPanel);

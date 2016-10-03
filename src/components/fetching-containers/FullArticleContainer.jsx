@@ -9,20 +9,20 @@ import { loadComments } from '../../actions/Comment.jsx';
 
 class FullArticleContainer extends React.Component {
     componentWillMount() {
-        if(!this.props.params.id && !this.props.params.title)
+        const { _id, title } = this.props.params;
+        if(!_id && !title)
             throw 'Neither title nor id were given to Data_FullArtile';
 
-        if(this.props.params._id)
-            loadArticleById(this.props.params._id);
+        if(_id)
+            loadArticleById(_id);
         else
-            loadArticleByTitle(this.props.params.title);
+            loadArticleByTitle(title);
 
-        loadComments(this.props.params._id);
-
-        User.initialize();
+        loadComments(_id);
     }
 
-    render({ article, comments }) {
+    render() {
+        const { article, comments } = this.props;
         if(article && comments)
             return <FullArticle article={article} comments={comments} />
         else

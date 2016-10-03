@@ -3,23 +3,25 @@ import { connect } from 'react-redux';
 import Request from 'superagent';
 
 import UserPanel from '../UserPanel.jsx';
-import User from '../helpers/user.jsx';
+import { loadUser } from '../../actions/User.jsx';
 
-class UserPanelContainer extends React.Component {
+class UserPanelContainer extends React.component {
     componentWillMount() {
-        User.getUser(this.props.params.username).end((err, response) => {
-            this.props.dispatch({
-                type: 'data_users',
-                users: [response.body[0]], //TODO: why [0]... different from grabbing an article
-            });
-        });
+        this.props.loadUser(this.props.params.username);
     }
-
-    render({ users }) {
-        const index = users.findIndex((user) => user.username === this.props.params.username);
-
-        return <UserPanel user={users[index]} />
+    
+    render() {
+        if(user)
+            return <UserPanel user={user} />
+        else
+            return <div>Loading...</div>
     }
 }
 
-export default connect(data)(UserPanelContainer);
+export default connect(({ data }, { params }) => {
+    const index = users.findIndex((user) => user.username === this.props.params.username);
+    
+    return {
+        user: data.users[index],
+    };
+}, { loadUser })(UserPanelContainer);

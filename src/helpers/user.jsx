@@ -1,5 +1,6 @@
 import Superagent from 'superagent';
 
+//TODO: DEPRECATED!!!!
 var User = {
     _user: {},
     _ready: false,

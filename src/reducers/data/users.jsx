@@ -1,6 +1,6 @@
 const users = (state = [], { type, users }) => {
     switch(type) {
-        case 'data_users':
+        case 'set_users':
             return state.concat(users);
         default:
             return state;
