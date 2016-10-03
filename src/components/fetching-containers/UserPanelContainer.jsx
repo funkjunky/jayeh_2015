@@ -9,14 +9,16 @@ class UserPanelContainer extends React.Component {
     componentWillMount() {
         User.getUser(this.props.params.username).end((err, response) => {
             this.props.dispatch({
-                type: 'data_user',
-                user: response.body[0], //TODO: why [0]... different from grabbing an article
+                type: 'data_users',
+                users: [response.body[0]], //TODO: why [0]... different from grabbing an article
             });
         });
     }
 
-    render({ user }) {
-        return <UserPanel user={user} />
+    render({ users }) {
+        const index = users.findIndex((user) => user.username === this.props.params.username);
+
+        return <UserPanel user={users[index]} />
     }
 }
 

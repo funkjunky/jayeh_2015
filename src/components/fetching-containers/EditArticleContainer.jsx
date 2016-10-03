@@ -10,14 +10,14 @@ class EditArticleContainer extends React.Component {
         Request('get', '/api/article/' + this.props.params.id).end((err, response) => {
             console.log('article response: ', response);
             this.props.dispatch({
-                type: 'data_article',
-                article: response.body,
+                type: 'data_articles',
+                articles: [response.body],
             });
         });
     }
 
     render({ articles }) {
-        const index = articles.findIndex((article) => article.id === this.props.params.id);
+        const index = articles.findIndex((article) => article._id === this.props.params._id);
 
         return <EditArticle article={articles[index]} />
     }

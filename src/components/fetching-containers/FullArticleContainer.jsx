@@ -4,34 +4,40 @@ import Request from 'superagent';
 
 import { data } from '../../helpers/destructurer.jsx';
 import FullArticle from '../full-page/FullArticle.jsx';
+import { loadArticleById, loadArticleByTitle } from '../../actions/Article.jsx';
+import { loadComments } from '../../actions/Comment.jsx';
 
 class FullArticleContainer extends React.Component {
     componentWillMount() {
         if(!this.props.params.id && !this.props.params.title)
             throw 'Neither title nor id were given to Data_FullArtile';
 
-        let url = '/api/article';
-        if(this.props.params.id)
-            url += '/' + this.props.params.id;
+        if(this.props.params._id)
+            loadArticleById(this.props.params._id);
         else
-            url += '?title=' + this.props.params.title;
+            loadArticleByTitle(this.props.params.title);
 
-        Request('get', '/api/article/' + this.props.params.id).end((err, response) => {
-            console.log('article response: ', response);
-            this.props.dispatch({
-                type: 'data_article',
-                article: response.body,
-            });
-        });
+        loadComments(this.props.params._id);
+
+        User.initialize();
     }
 
-    render({ articles }) {
-        const index = (this.props.params.id)
-            ? articles.findIndex((article) => article.id === this.props.params.id)
-            : articles.findIndex((article) => article.title === this.props.params.title);
-
-        return <FullArticle article={articles[index]} />
+    render({ article, comments }) {
+        if(article && comments)
+            return <FullArticle article={article} comments={comments} />
+        else
+            return <div>Loading...</div>
     }
 };
 
-export default connect(data)(FullArticleContainer);
+//We have to connect the correct article to the articleContainer
+export default connect(({ data }, { params }) => {
+    const index = (params._id)
+        ? data.articles.findIndex((article) => article.id === params._id)
+        : data.articles.findIndex((article) => article.title === params.title);
+
+    return {
+        article: data.articles[index],
+        comments: data.comments[params._id]
+    };
+})(FullArticleContainer);

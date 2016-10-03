@@ -4,8 +4,9 @@ import Jayehmd from '../../helpers/jayehmd.jsx';
 import Comments from '../Comments.jsx';
 import ArticleHeader from '../ArticleHeader.jsx';
 import formatDate from '../../helpers/formatDate.jsx';
+import AddComment from './AddComment.jsx';
 
-var FullArticle = ({ article }) => {
+var FullArticle = ({ article, comments, user }) => {
     var md = Jayehmd(article);
     var headerMarkup = md.renderTokens(article.header);
     var bodyMarkup = md.renderTokens(article.body);
@@ -17,7 +18,8 @@ var FullArticle = ({ article }) => {
                 {bodyMarkup}
             </div>
             <p>Created On: {formatDate(article.created_at)} - Edited On: {formatDate(article.edited_at)}</p>
-            <Comments article={article} />
+            <Comments comments={comments} />
+            <AddComment articleId={article._id} />
         </div>
     )
 };

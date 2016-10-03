@@ -3,21 +3,11 @@ import { connect } from 'react-redux';
 import Request from 'superagent';
 
 import Blog from '../full-page/Blog.jsx';
+import { loadArticles } from '../../actions/Article.jsx';
 
-class BlogContainer extends React.Component {
-    componentWillMount() {
-        Request('get', '/api/article').end((err, response) => {
-            console.log('response: ', response);
-            this.props.dispatch({
-                type: 'data_articles',
-                articles: response.body,
-            });
-        });
-    }
-
-    render() {
-        return <Blog /> 
-    }
+const BlogContainer = ({ loadArticles }) => {
+        loadArticles();
+        return <Blog />;
 };
 
-export default connect()(BlogContainer);
+export default connect(null, { loadArticles })(BlogContainer);

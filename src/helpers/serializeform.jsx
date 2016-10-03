@@ -1,4 +1,4 @@
-export default function serializeForm(form) {
+const serializeForm = (form) => {
     if (!form || form.nodeName !== "FORM") {
             return;
     }
@@ -55,3 +55,5 @@ export default function serializeForm(form) {
     }
     return q;
 };
+
+export default serializeForm;
