@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Request from 'superagent';
 
-import { data } from '../../helpers/destructurer.jsx';
 import FullArticle from '../full-page/FullArticle.jsx';
 import { loadArticleById, loadArticleByTitle } from '../../actions/Article.jsx';
 import { loadComments } from '../../actions/Comment.jsx';

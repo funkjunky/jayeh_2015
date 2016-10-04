@@ -14,6 +14,15 @@ import Login from './routes/Login.jsx';
 import UserPanel from './components/fetching-containers/UserPanelContainer.jsx';
 import User from './helpers/user.jsx';
 
+//A global function to preventDefault and return false. super convinient for onSubmit for forms.
+globals = globals || {};
+//usage: onSubmit={ pd((event) => login(event.target)) }
+pd = globals.pd = (fnc) => (event) => {
+    event.preventDefault();
+    fnc(event);
+    return false;
+};
+
 let store = createStore(combineReducers({
     ...reducers,
     routing: routerReducer,

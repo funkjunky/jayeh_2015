@@ -9,7 +9,8 @@ export const reconnect = () => (dispatch) => {
             dispatch({
                 type: 'set_user',
                 user,
-            })
+            });
+            return user;
         });
 };
 
@@ -20,10 +21,11 @@ export const login = (formData) => (dispatch) => {
     })
         .then((response) => response.json)
         .then((user) =>
-            return dispatch({
+            dispatch({
                 type: 'set_user',
                 user
             });
+            return user;
         );
 };
 

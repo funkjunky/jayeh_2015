@@ -2,25 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Request from 'superagent';
 
-import { data } from '../../helpers/destructurer.jsx';
+import { loadArticleById } from '../../actions/Article.jsx';
 import EditArticle from '../full-page/EditArticle.jsx';
 
 class EditArticleContainer extends React.Component {
     componentWillMount() {
-        Request('get', '/api/article/' + this.props.params.id).end((err, response) => {
-            console.log('article response: ', response);
-            this.props.dispatch({
-                type: 'data_articles',
-                articles: [response.body],
-            });
-        });
+        this.props.loadArticlesById(this.props.params.id);
     }
 
-    render({ articles }) {
-        const index = articles.findIndex((article) => article._id === this.props.params._id);
-
-        return <EditArticle article={articles[index]} />
+    render({ article }) {
+        return <EditArticle article={articles} />
     }
 };
 
-export default connect(data)(EditArticleContainer);
+//We have to connect the correct article to the articleContainer
+export default connect(({ data }, { params }) => {
+    const index = data.articles.findIndex((article) => article.id === params._id);
+
+    return {
+        article: data.articles[index],
+    };
+}, { loadArticleById })(EditArticleContainer);

@@ -20,7 +20,7 @@ var AddComment = ({ article_id, user, saveComment, addComment }) => {
 
     return (
         <div style={{margin: 20}}>
-            <form method="post" action="/api/comment" onSubmit={onSubmit(saveComment, addComment, article_id)}>
+            <form method="post" action="/api/comment" onSubmit={pd(onSubmit(saveComment, addComment, article_id))}>
                 <textarea name="body" placeholder={placeholder} style={{width: 800, height: 150}} />
                 <input type="hidden" name="user_id" value={user._id} />
                 <input type="hidden" name="article_id" value={article_id} /><br />

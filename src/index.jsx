@@ -11,10 +11,10 @@ const Index = ({ children }) => (
             <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
         </head>
         <body>
+            { children }
             <p style={{marginTop: 100, textAlign: 'right'}}>
                 jayeh.ca © 2016 (Jason McCarrell)
             </p>
-            { children }
             {process.env.NODE_ENV === 'production'
                 ? <script src="/build/bundle.js" defer></script>
                 : <script src="http://localhost:8008/build/bundle.js" defer></script>
