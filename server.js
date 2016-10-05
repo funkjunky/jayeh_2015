@@ -36,7 +36,13 @@ app.use(function (req, res) {
         }
         else if(renderProps) {
             let store = getStore();
-            res.status(200).send(renderToString(<Index><StoreProvider store={store}><RouterContext {...renderProps} /></StoreProvider></Index>));
+            let jsxPage = <Index><StoreProvider store={store}><RouterContext {...renderProps} /></StoreProvider></Index>;
+            //Wait till everything has been loaded
+            //See: actions/dispatchFetch and reducers/app/loading
+            store.subscribe(() => {
+                if(!store.getState().app.loading.length)
+                    res.status(200).send(renderToString(jsxPage));
+            });
         }
         else
             res.status(404).send('Not Found');

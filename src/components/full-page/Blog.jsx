@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { data } from '../../helpers/destructurer.jsx';
 import ArticleSummary from '../ArticleSummary.jsx';
 
 const Blog = ({ articles }) => (
@@ -17,4 +16,4 @@ const Blog = ({ articles }) => (
     </div>
 );
 
-export default connect(data)(Blog);
+export default connect(({data}) => ({ articles: data.articles }))(Blog);

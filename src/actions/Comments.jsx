@@ -1,8 +1,8 @@
-import fetch from 'isomorphic-fetch'
+import actionFetch from './actionFetch.jsx';
 
 export const loadComments = (articleId) => (dispatch) => {
     //TODO: dispatch that we are fetching...
-    return fetch('/api/comment?article_id=' + articleId)
+    return dispatch(actionFetch('/api/comment?article_id=' + articleId))
         .then((response) => response.json)
         .then((comments) => {
             dispatch(addComments(comments, articleId))
@@ -11,10 +11,10 @@ export const loadComments = (articleId) => (dispatch) => {
 };
 
 export const saveComment = (formData) => (dispatch) => {
-    return fetch('/api/comment/', {
+    return dispatch(actionFetch('/api/comment/', {
         method: 'post',
         body: formData,
-    })
+    }))
         .then((response) => response.json)
         .then((comment) => {
             dispatch(addComment(comment, articleId))

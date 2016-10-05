@@ -1,10 +1,8 @@
-import fetch from 'isomorphic-fetch'
-
+import actionFetch from './actionFetch.jsx';
 import serializeForm from '../helpers/serializeForm.jsx';
 
 export const loadArticles = () => (dispatch) => {
-    //TODO: dispatch that we are fetching...
-    return fetch('/api/article')
+    return dispatch(actionFetch('/api/article'))
         .then((response) => response.json)
         .then((articles) => {
             dispatch(addArticles(articles))
@@ -13,8 +11,7 @@ export const loadArticles = () => (dispatch) => {
 };
 
 export const loadArticleById = (_id) => (dispatch) => {
-    //TODO: dispatch that we are fetching...
-    return fetch('/api/article/' + _id)
+    return dispatch(actionFetch('/api/article/' + _id))
         .then((response) => response.json)
         .then((article) => {
             dispatch(addArticles([article]))
@@ -23,8 +20,7 @@ export const loadArticleById = (_id) => (dispatch) => {
 };
 
 export const loadArticleByTitle = (title) => (dispatch) => {
-    //TODO: dispatch that we are fetching...
-    return fetch('/api/article?title=' + title)
+    return dispatch(actionFetch('/api/article?title=' + title))
         .then((response) => response.json)
         .then((article) => {
             dispatch(addArticles([article]))
@@ -38,10 +34,10 @@ export const saveArticle = (formData) => (dispatch) =>
         :   putOldArticle(serializeForm(article))(dispatch);
 
 export const postNewArticle = (formArticle) => (dispatch) => {
-    return fetch('/api/article/', {
+    return dispatch(actionFetch('/api/article/', {
         method: 'post',
         body: formArticle,
-    })
+    }))
         .then((response) => response.json)
         .then((article) => {
             dispatch(addArticles([article]))
@@ -50,10 +46,10 @@ export const postNewArticle = (formArticle) => (dispatch) => {
 };
 
 export const putOldArticle = (article) => (dispatch) => {
-    return fetch('/api/article/', {
+    return dispatch(actionFetch('/api/article/', {
         method: 'put',
         body: JSON.stringify(article),
-    })
+    }))
         .then((response) => response.json)
         .then((article) => {
             dispatch(addArticles([article]))
