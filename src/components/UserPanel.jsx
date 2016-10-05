@@ -10,7 +10,7 @@ var UserPanel = ({ user, logout }) => (
         <pre>{user}</pre>
         <br />
         {(user.username == currentUser.username)
-        ? <Link to="/api/auth/logout" onClick={logout}>Logout</a> : ''}
+        ? <Link to="/api/auth/logout" onClick={logout}>Logout</Link> : ''}
     </div>
 );
 

@@ -4,7 +4,7 @@ const mergeArrays = (a, b) => {
     a.forEach((av) => {
         if(newArr.some((bv) => bv._id === av._id))
             newArr.push(av);
-    };
+    });
     return newArr;
 };
 

@@ -20,13 +20,13 @@ export const login = (formData) => (dispatch) => {
         body: formData,
     })
         .then((response) => response.json)
-        .then((user) =>
+        .then((user) => {
             dispatch({
                 type: 'set_user',
                 user
             });
             return user;
-        );
+        });
 };
 
 export const logout = () => (dispatch) => {
@@ -34,7 +34,7 @@ export const logout = () => (dispatch) => {
         .then(() => dispatch({
             type: 'set_user',
             user: {},
-        });
+        }));
 };
 
 //This is for data.users, not app.user

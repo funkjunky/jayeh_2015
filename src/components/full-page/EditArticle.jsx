@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Superagent from 'superagent';
-import Filedrop from 'react-filedrop';
-let Filedrop = Filedrop({
+import _Filedrop from 'react-filedrop';
+const Filedrop = _Filedrop({
     dragStartStyle: {border: 'dashed 1px #00DD00', backgroundColor: '#AAFFAA'},
     dragHoverStyle: {border: 'dashed 2px #0000DD', backgroundColor: '#AAAAFF'},
 });
@@ -15,7 +16,7 @@ import { saveArticle } from '../../actions/Article.jsx';
 import { uploadFile } from '../../actions/Upload.jsx';
 
 class EditArticle extends React.Component {
-    getInitialState: function() {
+    getInitialState() {
         if(this.props.article)
             return {...this.props.article};
         else
@@ -28,8 +29,9 @@ class EditArticle extends React.Component {
                 header: ' ',
                 body: ' ',
             };
-    },
-    render: function() {
+    }
+
+    render() {
         var md = Jayehmd(this.state);
 
         console.log('header: ', this.state.header);
@@ -68,17 +70,17 @@ class EditArticle extends React.Component {
                 </div>
             </div>
         );
-    },
+    }
 
-    handleDrop: function(event) {
+    handleDrop(event) {
         this.props.uploadFile(event.dataTransfer.files[0])
             .then((response) => {
                 console.log('successfull uploaded file?', url);
                 this.setState({image: url});
             });
-    },
+    }
     
-    dropTextFnc: function(stateKey) {
+    dropTextFnc(stateKey) {
         return (event) => {
             function splice(text, splice, pos) {  return text.slice(0, pos) + splice + text.slice(pos); }
 
@@ -92,7 +94,7 @@ class EditArticle extends React.Component {
                     this.setState(stateObj);
                 });
         };
-    },
-});
+    }
+};
 
 export default connect(null, { saveArticle, uploadFile })(EditArticle);

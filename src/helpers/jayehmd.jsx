@@ -6,9 +6,9 @@ import MdVariables from 'mdvariables';
 import MdFigCaption from 'mdfigcaption';
 import MdReact from 'mdreact';
 import React from 'react';
-import HeaderName from '../md-plugins/HeaderName.jsx';
+import HeaderName from '../md-plugins/mdHeaderName.jsx';
 //TODO: ReduxGameHeader and all one-offs should be loaded dynamically eventually
-import mdReduxGameHeader from '../md-plugins/ReduxGameHeader.jsx';
+import mdReduxGameHeader from '../md-plugins/mdReduxGameHeader.jsx';
 
 var jayehmd = function(variables) {
             var md = new MarkdownIt();

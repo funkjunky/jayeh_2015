@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { data } from '../helpers/destructurer.jsx';
-import ArticleSummary from '../components/ArticleSummary.jsx';
+import { data } from '../../helpers/destructurer.jsx';
+import ArticleSummary from '../ArticleSummary.jsx';
 
 const Blog = ({ articles }) => (
     <div>

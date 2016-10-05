@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import serializeForm from '../helpers/serializeform.jsx';
 import Login from './Login.jsx';
-import { saveComment } from '../actions/Comments.jsx';
+import { saveComment, addComment } from '../actions/Comments.jsx';
 
 var AddComment = ({ article_id, user, saveComment, addComment }) => {
     var placeholders = [

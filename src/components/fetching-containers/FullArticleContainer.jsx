@@ -4,7 +4,7 @@ import Request from 'superagent';
 
 import FullArticle from '../full-page/FullArticle.jsx';
 import { loadArticleById, loadArticleByTitle } from '../../actions/Article.jsx';
-import { loadComments } from '../../actions/Comment.jsx';
+import { loadComments } from '../../actions/Comments.jsx';
 
 class FullArticleContainer extends React.Component {
     componentWillMount() {

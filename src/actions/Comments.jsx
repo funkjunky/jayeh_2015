@@ -4,10 +4,10 @@ export const loadComments = (articleId) => (dispatch) => {
     //TODO: dispatch that we are fetching...
     return fetch('/api/comment?article_id=' + articleId)
         .then((response) => response.json)
-        .then((comments) =>
+        .then((comments) => {
             dispatch(addComments(comments, articleId))
             return comments;
-        );
+        });
 };
 
 export const saveComment = (formData) => (dispatch) => {
@@ -16,10 +16,10 @@ export const saveComment = (formData) => (dispatch) => {
         body: formData,
     })
         .then((response) => response.json)
-        .then((comment) =>
+        .then((comment) => {
             dispatch(addComment(comment, articleId))
             return comment;
-        );
+        });
 };
 
 export const addComments = (comments, articleId) => ({

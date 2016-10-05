@@ -7,4 +7,4 @@ const users = (state = [], { type, users }) => {
     }
 }
 
-export default articles;
+export default users;

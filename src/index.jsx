@@ -15,12 +15,14 @@ const Index = ({ children }) => (
             <p style={{marginTop: 100, textAlign: 'right'}}>
                 jayeh.ca © 2016 (Jason McCarrell)
             </p>
+        </body>
+    </html>
+);
+/* taking out until server side works.
             {process.env.NODE_ENV === 'production'
                 ? <script src="/build/bundle.js" defer></script>
                 : <script src="http://localhost:8008/build/bundle.js" defer></script>
             }
-        </body>
-    </html>
-);
+ */
 
 export default Index;

@@ -5,7 +5,7 @@ import Request from 'superagent';
 import UserPanel from '../UserPanel.jsx';
 import { loadUser } from '../../actions/User.jsx';
 
-class UserPanelContainer extends React.component {
+class UserPanelContainer extends React.Component {
     componentWillMount() {
         this.props.loadUser(this.props.params.username);
     }

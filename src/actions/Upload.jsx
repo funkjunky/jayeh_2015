@@ -10,7 +10,7 @@ export const uploadFile = (file) => (dispatch) => {
                 body: formData,
                 headers: {
                     'x-amz-acl': 'public-read',
-                    'Content-Type', file.type,
+                    'Content-Type': file.type,
                 },
             })
                 .then((response) => response.json);

@@ -4,7 +4,7 @@ import Jayehmd from '../../helpers/jayehmd.jsx';
 import Comments from '../Comments.jsx';
 import ArticleHeader from '../ArticleHeader.jsx';
 import formatDate from '../../helpers/formatDate.jsx';
-import AddComment from './AddComment.jsx';
+import AddComment from '../AddComment.jsx';
 
 var FullArticle = ({ article, comments, user }) => {
     var md = Jayehmd(article);
