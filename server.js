@@ -6,7 +6,9 @@ import path from 'path';
 import Favicon from 'serve-favicon';
 import compression from 'compression';
 
-import Routes from './src/routes.jsx';
+import getStore from './src/helpers/getStore.jsx';
+import StoreProvider from './src/StoreProvider.jsx';
+import routes from './src/Routes.jsx';
 import Index from './src/Index.jsx';
 
 var port = process.env.PORT || 9002;
@@ -27,12 +29,14 @@ app.use('/static', express.static(path.join(__dirname, '/static')));
 
 app.use(function (req, res) {
     console.log('url: ', req.url);
-    match({ Routes, location: req.url }, (error, redirectLocation, renderProps) => {
+    //TODO: can I put the store back in the StoreProvider?
+    match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
         if (error) {
             res.status(500).send(error.message);
         }
         else if(renderProps) {
-            res.status(200).send(renderToString(<Index><RouterContext {...renderProps} /></Index>));
+            let store = getStore();
+            res.status(200).send(renderToString(<Index><StoreProvider store={store}><RouterContext {...renderProps} /></StoreProvider></Index>));
         }
         else
             res.status(404).send('Not Found');
