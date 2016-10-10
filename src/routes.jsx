@@ -1,28 +1,30 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import Header from './components/Header.jsx';
-import Blog from './components/fetching-containers/BlogContainer.jsx';
-import EditArticle from './components/fetching-containers/EditArticleContainer.jsx';
+import fetchBlog from './component-fetchers/fetchBlog.jsx';
+import fetchEditArticle from './component-fetchers/fetchEditArticle.jsx';
 import NewArticle from './components/full-page/EditArticle.jsx';
-import FullArticle from './components/fetching-containers/FullArticleContainer.jsx';
+import fetchFullArticle from './component-fetchers/fetchFullArticle.jsx';
 import Login from './components/Login.jsx';
-import UserPanel from './components/fetching-containers/UserPanelContainer.jsx';
+import fetchUserPanel from './component-fetchers/fetchUserPanel.jsx';
 import User from './helpers/user.jsx';
 
-//TODO: I'd prefer to remove App and not have the component
-var Routes = (
+//TODO: it'd be nice to dispatch to get the user info on the root route, but then id need to return a component.
+//TODO: dont pass null, pass the nextState, just in case I nest later.
+var Routes = (dispatch) => {
+    return (
     <Route path="/">
-        <IndexRoute component={Blog} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/article/create" component={NewArticle} />
-        <Route path="/article/edit(/:_id)" component={EditArticle} />
-        <Route path="/article/id/:_id" component={FullArticle} />
-        <Route path="/article/t/:title" component={FullArticle} />
-        <Route path="/user/:username" component={UserPanel} />
+        <IndexRoute getComponent={ (nextState, cb) => cb(null, fetchBlog(dispatch)) } />
+        <Route path="/blog" getComponent={ (nextState, cb) => cb(null, fetchBlog(dispatch)) } />
+        <Route path="/article/create" component={ NewArticle } />
+        <Route path="/article/edit(/:_id)" getComponent={ ({ params }, cb) => cb(null, fetchEditArticle(dispatch, params._id)) } />
+        <Route path="/article/id/:_id" getComponents={ ({ params }, cb) => cb(null, fetchFullArticle(dispatch, params)) } />
+        <Route path="/article/t/:title" getComponent={ ({ params }, cb) => cb(null, fetchFullArticle(dispatch, params)) } />
+        <Route path="/user/:username" getComponents={ ({ params }, cb) => cb(null, fetchUserPanel(dispatch, params.username)) } />
 
-        <Route path="/login" component={Login} />
+        <Route path="/login" component={ Login } />
     </Route>
 );
+};
 
 export default Routes;

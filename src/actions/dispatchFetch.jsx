@@ -1,21 +1,22 @@
 import fetch from 'isomorphic-fetch';
+import { host } from '../constants/server.jsx';
 
-const actionFetch = (url, options) => (dispatch) => {
-    dispatch(fetchingAction(url));
+const dispatchFetch = (url, options) => (dispatch) => {
+    if(url.substring(0, 4) !== 'http')
+        url = host + url;
+    dispatch(fetchAction(url));
     return fetch(url, options)
+/*
         .then((r) => {
-            dispatch(fetchCompleteAction(url));
+            console.log('r: ', r.status);
             return r;
         });
+*/
+        //.catch((err) => console.log('dispatchFetch error: ', err) );
 };
 
 const fetchAction = (url) => ({
     type: 'fetching',
-    url
-});
-
-const fetchCompleteAction = (url) => ({
-    type: 'fetchingComplete',
     url
 });
 

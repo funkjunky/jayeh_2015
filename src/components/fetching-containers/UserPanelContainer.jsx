@@ -1,21 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Request from 'superagent';
 
 import UserPanel from '../UserPanel.jsx';
-import { loadUser } from '../../actions/User.jsx';
 
-class UserPanelContainer extends React.Component {
-    componentWillMount() {
-        this.props.loadUser(this.props.params.username);
-    }
-    
-    render() {
+const UserPanelContainer = ({ user }) =>  {
         if(user)
             return <UserPanel user={user} />
         else
             return <div>Loading...</div>
-    }
 }
 
 export default connect(({ data }, { params }) => {
@@ -24,4 +16,4 @@ export default connect(({ data }, { params }) => {
     return {
         user: data.users[index],
     };
-}, { loadUser })(UserPanelContainer);
+})(UserPanelContainer);

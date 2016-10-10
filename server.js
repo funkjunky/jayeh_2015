@@ -1,47 +1,69 @@
 import { match, RouterContext } from 'react-router'
 import { renderToString } from 'react-dom/server';
 import React from 'react';
-import express from 'express';
+import Express from 'express';
 import path from 'path';
 import Favicon from 'serve-favicon';
 import compression from 'compression';
+import  httpProxy from 'http-proxy';
 
 import getStore from './src/helpers/getStore.jsx';
 import StoreProvider from './src/StoreProvider.jsx';
-import routes from './src/Routes.jsx';
+import Routes from './src/Routes.jsx';
 import Index from './src/Index.jsx';
 
 var port = process.env.PORT || 9002;
 var host = 'localhost';
 
 // Setup the express server
-var app = express();
+var app = Express();
 
 app.use(compression());
 app.use(Favicon(__dirname + '/favicon.ico'));
 
-if (process.env.NODE_ENV === "production") { app.use('/build', express.static(path.join(__dirname, '/build'))); }
+if (process.env.NODE_ENV === "production") { app.use('/build', Express.static(path.join(__dirname, '/build'))); }
 
-app.use('/static', express.static(path.join(__dirname, '/static')));
+//TODO: Check each of these...
+app.use('/node_modules', Express.static(__dirname + '/node_modules'));
+app.use('/static', Express.static(path.join(__dirname, '/static')));
+app.use('/dist', Express.static(path.join(__dirname, '/static')));
+
+//this well be called if /dist or node_modules doesn't match a file... it's likea  404
+//TODO: handle this better...
+let error = (err, req, res) => { console.log('STATIC 404'); res.status(404).send('error couldnt find'); }
+app.use('/dist', error.bind(app, {type: '404', message: 'resource for dist not found'}));
+app.use('/static', error.bind(app, {type: '404', message: 'resource for dist not found'}));
+app.use('/node_modules', error.bind(app, {type: '404', message: 'resource for node_modules not found'}));
 
 //TODO: double check this... maybe security issue?
 //app.use(cors());
+var proxyUrl = process.env.PROXYURL; //TODO: put this with the configs
+var apiPath = 'api/';
+var proxy = httpProxy.createProxyServer({ ws: true, target: proxyUrl, changeOrigin: true });
+app.all('/' + apiPath + '*', function(req, res) { proxy.web(req, res); } );
+proxy.on('error', function(e) {
+    console.log('proxy error: ', e);
+});
+proxy.on('proxyRes', function(proxyRes, req, res, options) {
+    //console.log('RAW RESPONSE: ', res.body, JSON.stringify(proxyRes.headers, true, 2));
+});
 
 app.use(function (req, res) {
     console.log('url: ', req.url);
-    //TODO: can I put the store back in the StoreProvider?
-    match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+    let store = getStore();
+    match({ routes: Routes(store.dispatch), location: req.url }, (error, redirectLocation, renderProps) => {
         if (error) {
             res.status(500).send(error.message);
         }
         else if(renderProps) {
-            let store = getStore();
-            let jsxPage = <Index><StoreProvider store={store}><RouterContext {...renderProps} /></StoreProvider></Index>;
             //Wait till everything has been loaded
             //See: actions/dispatchFetch and reducers/app/loading
-            store.subscribe(() => {
-                if(!store.getState().app.loading.length)
+            const unsubscribe = store.subscribe(() => {
+                if(store.getState().app.loading.length === 0) {
+                    let jsxPage = <Index><StoreProvider store={store}><RouterContext {...renderProps} /></StoreProvider></Index>;
                     res.status(200).send(renderToString(jsxPage));
+                    unsubscribe();
+                }
             });
         }
         else
@@ -49,7 +71,22 @@ app.use(function (req, res) {
     });
 });
 
-app.listen(port);
+app.use((err, req, res, next) => {
+    console.log('ERROR: ', err);
+    res.status(500).send('error');;
+});
+
+process.on('unhandledRejection', (reason, p) => {
+    console.log('unhandled promise rejection: ', reason);
+    process.exit(1);
+});
+
+let server = app.listen(port);
+
+//TODO: figure out what this is used for?
+server.on('upgrade', function (req, socket, head) {
+  proxy.ws(req, socket, head);
+})
 
 //if (process.env.NODE_ENV === "development") {
     console.log('server.js is listening on port ' + port);

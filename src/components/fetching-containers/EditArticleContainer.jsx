@@ -1,18 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Request from 'superagent';
 
-import { loadArticleById } from '../../actions/Article.jsx';
 import EditArticle from '../full-page/EditArticle.jsx';
 
-class EditArticleContainer extends React.Component {
-    componentWillMount() {
-        this.props.loadArticlesById(this.props.params.id);
-    }
-
-    render({ article }) {
+const EditArticleContainer = ({ article }) => {
+    if(article)
         return <EditArticle article={articles} />
-    }
+    else
+        return <div>Loading...</div>
 };
 
 //We have to connect the correct article to the articleContainer
@@ -22,4 +17,4 @@ export default connect(({ data }, { params }) => {
     return {
         article: data.articles[index],
     };
-}, { loadArticleById })(EditArticleContainer);
+})(EditArticleContainer);

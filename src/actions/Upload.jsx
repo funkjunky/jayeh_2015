@@ -1,13 +1,13 @@
-import actionFetch from './actionFetch.jsx';
+import fetch from './dispatchFetch.jsx';
 
 export const uploadFile = (file) => (dispatch) => {
     //TODO: dispatch that we are fetching...
-    return dispatch(actionFetch('/api/sign_s3?file_name='+encodeURIComponent(file.name)+'&file_type='+encodeURIComponent(file.type)))
+    return dispatch(fetch('/api/sign_s3?file_name='+encodeURIComponent(file.name)+'&file_type='+encodeURIComponent(file.type)))
         .then((response) => response.json)
         .then((uploadInstance) => {
             let formData = new FormData();
             formData.append('file', file);
-            return dispatch(actionFetch(uploadInstance.signed_request, {
+            return dispatch(fetch(uploadInstance.signed_request, {
                 method: 'put',
                 body: formData,
                 headers: {

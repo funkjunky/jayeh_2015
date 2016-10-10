@@ -1,10 +1,10 @@
-import actionFetch from './actionFetch.jsx';
+import fetch from './dispatchFetch.jsx';
 
 import objToFormData from '../helpers/objToFormData.jsx';
 
 export const reconnect = () => (dispatch) => {
-    return dispatch(actionFetch('/api/user'))
-        .then((response) => response.json)
+    return dispatch(fetch('/api/user'))
+        .then((response) => response.json())
         .then((user = {}) => {
             dispatch({
                 type: 'set_user',
@@ -15,7 +15,7 @@ export const reconnect = () => (dispatch) => {
 };
 
 export const login = (formData) => (dispatch) => {
-    return dispatch(actionFetch('/api/auth/login', {
+    return dispatch(fetch('/api/auth/login', {
         method: 'post',
         body: formData,
     }))
@@ -30,7 +30,7 @@ export const login = (formData) => (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-    return dispatch(actionFetch('/api/auth/logout'))
+    return dispatch(fetch('/api/auth/logout'))
         .then(() => dispatch({
             type: 'set_user',
             user: {},
@@ -39,8 +39,8 @@ export const logout = () => (dispatch) => {
 
 //This is for data.users, not app.user
 export const loadUser = (username) => (dispatch) => {
-    return dispatch(actionFetch('/api/users?username='+username))
-        .then((response) => response.json)
+    return dispatch(fetch('/api/users?username='+username))
+        .then((response) => response.json())
         .then((user) =>  dispatch({
             type: 'set_users',
             users: [user]

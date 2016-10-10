@@ -11,7 +11,7 @@ var FullArticle = ({ article, comments, user }) => {
     var headerMarkup = md.renderTokens(article.header);
     var bodyMarkup = md.renderTokens(article.body);
 
-    return (
+    let ret = (
         <div>
             <ArticleHeader image={article.image}>{headerMarkup}</ArticleHeader>
             <div id="blog-body" style={{fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%'}}>
@@ -21,7 +21,8 @@ var FullArticle = ({ article, comments, user }) => {
             <Comments comments={comments} />
             <AddComment articleId={article._id} />
         </div>
-    )
+    );
+    return ret;
 };
 
 export default FullArticle;

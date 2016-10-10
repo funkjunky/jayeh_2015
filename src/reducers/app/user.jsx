@@ -1,4 +1,4 @@
-const user = (state = {}, { type, user }) {
+const user = (state = {}, { type, user }) => {
     switch(type) {
         case 'set_user':
             return user;

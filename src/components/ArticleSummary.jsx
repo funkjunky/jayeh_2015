@@ -1,10 +1,10 @@
 import React from 'react';
 import formatDate from '../helpers/formatDate.jsx';
 
-import Link from 'react-router';
+import { Link } from 'react-router';
 
 const ArticleSummary = ({article}) => (
-    <Link to={"/article/t/${this.props.article.title"} className="blackReadable"><div style={{
+    <Link to={"/article/t/" + article.title} className="blackReadable"><div style={{
         position: 'relative',
         width: '100%',
         height: '100%',

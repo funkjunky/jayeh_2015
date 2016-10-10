@@ -13,7 +13,7 @@ setInterval(function() {
 var Comments = ({ comments }) => (
     <div>
         {comments.map(function(comment) {
-            return <Comment comment={comment} />
+            return <Comment key={comment._id} comment={comment} />
         })}
     </div>
 );

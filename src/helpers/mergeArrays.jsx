@@ -1,9 +1,9 @@
 const mergeArrays = (a, b) => {
     let newArr = [];
     a.forEach((av) => newArr.push(b.find((bv) => bv._id === av._id) || av));
-    a.forEach((av) => {
-        if(newArr.some((bv) => bv._id === av._id))
-            newArr.push(av);
+    b.forEach((bv) => {
+        if(newArr.indexOf(bv) === -1)
+            newArr.push(bv);
     });
     return newArr;
 };

@@ -1,23 +1,24 @@
-import actionFetch from './actionFetch.jsx';
+import fetch from './dispatchFetch.jsx';
 
 export const loadComments = (articleId) => (dispatch) => {
-    //TODO: dispatch that we are fetching...
-    return dispatch(actionFetch('/api/comment?article_id=' + articleId))
-        .then((response) => response.json)
+    const url = '/api/comment?article_id='+articleId;
+    return dispatch(fetch(url))
+        .then((response) => response.json())
         .then((comments) => {
-            dispatch(addComments(comments, articleId))
+            dispatch({ ...addComments(comments, articleId), finishedFetch: url });
             return comments;
         });
 };
 
 export const saveComment = (formData) => (dispatch) => {
-    return dispatch(actionFetch('/api/comment/', {
+    const url = '/api/comment/';
+    return dispatch(fetch(url, {
         method: 'post',
         body: formData,
     }))
-        .then((response) => response.json)
+        .then((response) => response.json())
         .then((comment) => {
-            dispatch(addComment(comment, articleId))
+            dispatch({ ...addComment(comment, articleId), finishedFetch: url })
             return comment;
         });
 };

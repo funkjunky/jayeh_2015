@@ -7,7 +7,7 @@ import ArticleHeader from './ArticleHeader.jsx';
 import { login } from '../actions/User.jsx';
 
 var Login = ({ login, push }) => (
-    <form onSubmit={ pd(({ target }) => login(target).then((user) => push('/user/'+user.username))) }>
+    <form onSubmit={ ({ target }) => login(target).then((user) => push('/user/'+user.username)) }>
         <input type="text" name="username" />
         <input type="password" name="password" />
         <input type="submit" value="Login" />
