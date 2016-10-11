@@ -1,11 +1,13 @@
 const loading = (state = [], { type, url, finishedFetch }) => {
-    if(type === 'fetching')
-        return [...state, url];
-    else if(finishedFetch) {
-        state.splice(state.indexOf(finishedFetch), 1); //url is stored in finishedFetch
-        return [...state];
-    } else
-        return state;
+    switch(type) {
+        case 'fetching':
+            return [...state, url];
+        case 'finished_fetching':
+            state.splice(state.indexOf(url), 1);
+            return state;
+        default:
+            return state;
+    }
 };
 
 export default loading;

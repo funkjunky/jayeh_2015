@@ -20,7 +20,7 @@ var AddComment = ({ article_id, user, saveComment, addComment }) => {
 
     return (
         <div style={{margin: 20}}>
-            <form method="post" action="/api/comment" onSubmit={pd(onSubmit(saveComment, addComment, article_id))}>
+            <form method="post" action="/api/comment" onSubmit={onSubmit(saveComment, addComment, article_id)}>
                 <textarea name="body" placeholder={placeholder} style={{width: 800, height: 150}} />
                 <input type="hidden" name="user_id" value={user._id} />
                 <input type="hidden" name="article_id" value={article_id} /><br />
@@ -31,6 +31,7 @@ var AddComment = ({ article_id, user, saveComment, addComment }) => {
 };
 
 const onSubmit = (saveComment, addComment, article_id) => (event) => {
+    event.preventDefault();
     var form = event.target;
 
     var preComment = SerializeForm(form);
@@ -40,8 +41,6 @@ const onSubmit = (saveComment, addComment, article_id) => (event) => {
     //TODO: add UI for when errors occur
     saveComment(new FormData(form))
         .then(() => form.reset())
-
-    event.preventDefault();
 };
 
 export default connect(({ app }) => ({ user: app.user }), { saveComment, addComment })(AddComment);

@@ -1,37 +1,40 @@
-import fetch from './dispatchFetch.jsx';
+import { dispatchFetch, finishedFetching } from './dispatchFetch.jsx';
 import serializeForm from '../helpers/serializeForm.jsx';
 import { loadComments } from './Comments.jsx';
+import { ARTICLE } from '../constants/api.jsx';
 
 export const loadArticles = () => (dispatch) => {
-    const url = '/api/article';
-    return dispatch(fetch(url))
+    return dispatch(dispatchFetch(ARTICLE))
         .then((response) => response.json())
         .then((articles) => {
             //console.log('finished fetching articles...', articles.length);
-            dispatch({ ...addArticles(articles), finishedFetch: url });
+            dispatch(addArticles(articles));
+            dispatch(finishedFetching(ARTICLE));
             return articles;
         });
 };
 
 export const loadArticleById = (_id) => (dispatch) => {
-    const url = '/api/article/' + _id;
+    const url = ARTICLE + '/' + _id;
     dispatch(loadComments(_id));
-    return dispatch(fetch(url))
+    return dispatch(dispatchFetch(url))
         .then((response) => response.json())
         .then((article) => {
-            dispatch({ ...addArticles([article]), finishedFetch: url });
+            dispatch(addArticles([article]));
+            dispatch(finishedFetching(url));
             return article;
         });
 };
 
 //IMPORTANT: This has to handle the comment loading after getting the article.
 export const loadArticleByTitle = (title) => (dispatch) => {
-    const url = '/api/article?title=' + title;
-    return dispatch(fetch(encodeURI(url)))
+    const url = encodeURI(ARTICLE + '?title=' + title);
+    return dispatch(dispatchFetch(url))
         .then((response) => response.json())
         .then((articles) => {
             dispatch(loadComments(articles[0]._id));
-            dispatch({ ...addArticles(articles), finishedFetch: url })
+            dispatch(addArticles(articles));
+            dispatch(finishedFetching(url));
             return articles[0];
         });
 };
@@ -42,27 +45,27 @@ export const saveArticle = (formData) => (dispatch) =>
         :   putOldArticle(serializeForm(article))(dispatch);
 
 export const postNewArticle = (formArticle) => (dispatch) => {
-    const url = '/api/article/';
-    return dispatch(fetch(url, {
+    return dispatch(dispatchFetch(ARTICLE, {
         method: 'post',
         body: formArticle,
     }))
         .then((response) => response.json)
         .then((article) => {
-            dispatch({ ...addArticles([article]), finishedFetch: url })
+            dispatch(addArticles([article]));
+            dispatch(finishedFetching(ARTICLE));
             return article;
         });
 };
 
 export const putOldArticle = (article) => (dispatch) => {
-    const url = '/api/article/';
-    return dispatch(fetch(url, {
+    return dispatch(dispatchFetch(ARTICLE, {
         method: 'put',
         body: JSON.stringify(article),
     }))
         .then((response) => response.json)
         .then((article) => {
-            dispatch({ ...addArticles([article]), finishedFetch: url })
+            dispatch(addArticles([article]));
+            dispatch(finishedFetching(ARTICLE));
             return article;
         });
 };

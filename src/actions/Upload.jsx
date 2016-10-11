@@ -1,12 +1,15 @@
-import fetch from './dispatchFetch.jsx';
+import { dispatchFetch, finishedFetching } from './dispatchFetch.jsx';
+
+import { SIGN_S3 } from '../constants/api.jsx';
 
 export const uploadFile = (file) => (dispatch) => {
     //TODO: dispatch that we are fetching...
-    return dispatch(fetch('/api/sign_s3?file_name='+encodeURIComponent(file.name)+'&file_type='+encodeURIComponent(file.type)))
+    return dispatch(fetch(SIGN_S3 + '?file_name='+encodeURIComponent(file.name)+'&file_type='+encodeURIComponent(file.type)))
         .then((response) => response.json)
         .then((uploadInstance) => {
             let formData = new FormData();
             formData.append('file', file);
+            dispatch(finishedFetching(SIGN_S3));
             return dispatch(fetch(uploadInstance.signed_request, {
                 method: 'put',
                 body: formData,
@@ -15,6 +18,10 @@ export const uploadFile = (file) => (dispatch) => {
                     'Content-Type': file.type,
                 },
             }))
-                .then((response) => response.json);
+                .then((response) => response.json)
+                .then((response) => {
+                    dispatch(finishedFetching(uploadInstance.signed_request));
+                    return response;
+                });
         });
 };

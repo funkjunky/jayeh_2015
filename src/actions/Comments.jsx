@@ -1,24 +1,26 @@
-import fetch from './dispatchFetch.jsx';
+import { dispatchFetch, finishedFetching } from './dispatchFetch.jsx';
+import { COMMENT } from '../constants/api.jsx';
 
 export const loadComments = (articleId) => (dispatch) => {
-    const url = '/api/comment?article_id='+articleId;
-    return dispatch(fetch(url))
+    const url = COMMENT + '?article_id='+articleId;
+    return dispatch(dispatchFetch(url))
         .then((response) => response.json())
         .then((comments) => {
-            dispatch({ ...addComments(comments, articleId), finishedFetch: url });
+            dispatch(addComments(comments, articleId));
+            dispatch(finishedFetching(url));
             return comments;
         });
 };
 
 export const saveComment = (formData) => (dispatch) => {
-    const url = '/api/comment/';
-    return dispatch(fetch(url, {
+    return dispatch(dispatchFetch(COMMENT, {
         method: 'post',
         body: formData,
     }))
         .then((response) => response.json())
         .then((comment) => {
-            dispatch({ ...addComment(comment, articleId), finishedFetch: url })
+            dispatch(addComment(comment, articleId));
+            dispatch(finishedFetching(url));
             return comment;
         });
 };

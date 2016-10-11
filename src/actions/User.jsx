@@ -1,48 +1,57 @@
-import fetch from './dispatchFetch.jsx';
+import { dispatchFetch, finishedFetching } from './dispatchFetch.jsx';
 
 import objToFormData from '../helpers/objToFormData.jsx';
+import { USER, LOGIN, LOGOUT } from '../constants/api.jsx';
 
 export const reconnect = () => (dispatch) => {
-    return dispatch(fetch('/api/user'))
+    return dispatch(dispatchFetch(USER))
         .then((response) => response.json())
         .then((user = {}) => {
             dispatch({
                 type: 'set_user',
                 user,
             });
+            finishedFetching(USER);
             return user;
         });
 };
 
 export const login = (formData) => (dispatch) => {
-    return dispatch(fetch('/api/auth/login', {
+    return dispatch(dispatchFetch(LOGIN, {
         method: 'post',
         body: formData,
     }))
-        .then((response) => response.json)
+        .then((response) => response.json())
         .then((user) => {
             dispatch({
                 type: 'set_user',
                 user
             });
+            finishedFetching(LOGIN);
             return user;
         });
 };
 
 export const logout = () => (dispatch) => {
-    return dispatch(fetch('/api/auth/logout'))
-        .then(() => dispatch({
-            type: 'set_user',
-            user: {},
-        }));
+    return dispatch(dispatchFetch(LOGOUT))
+        .then(() => {
+            dispatch({
+                type: 'set_user',
+                user: {},
+            });
+            finishedFetching(LOGIN);
+        });
 };
 
 //This is for data.users, not app.user
 export const loadUser = (username) => (dispatch) => {
-    return dispatch(fetch('/api/users?username='+username))
+    return dispatch(dispatchFetch(USER + '?username='+username))
         .then((response) => response.json())
-        .then((user) =>  dispatch({
-            type: 'set_users',
-            users: [user]
-        }));
+        .then((user) =>  {
+            dispatch({
+                type: 'set_users',
+                users: [user]
+            })
+            finishedFetching(LOGIN);
+        });
 };

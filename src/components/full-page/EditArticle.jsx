@@ -41,11 +41,12 @@ class EditArticle extends React.Component {
         const setStateAsInput = (key) => ({ target }) => this.setState({ [key]: target.value });
 
         //TODO: inputs should use a component that gets rid of hte massive redundency, if possible... i just hate writing subtitle 3 times
+        //TODO: watch for preventDefault. In case it uses this...
         return (
             <div>
                 <h2>Edit Article</h2>
                 <div>
-                    <form onSubmit={pd(({ target }) => this.props.saveArticle(new FormDate(target)))} ref="myform">
+                    <form onSubmit={({ target, preventDefault }) => { this.props.saveArticle(new FormDate(target)); preventDefault(); }} ref="myform">
                         <div>
                             {(this.state.created_at) ? <input type="hidden" name="created_at" value={this.state.created_at} /> : ''}
                             <input type="text" name="title" value={this.state.title} onChange={this.setStateAsInput('title')} /><br />

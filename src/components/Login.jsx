@@ -6,8 +6,9 @@ import SerializeForm from '../helpers/serializeform.jsx';
 import ArticleHeader from './ArticleHeader.jsx';
 import { login } from '../actions/User.jsx';
 
+//TODO: Watch for preventDefault here... because it isn't event.preventDefault... im not sure of this matters.
 var Login = ({ login, push }) => (
-    <form onSubmit={ ({ target }) => login(target).then((user) => push('/user/'+user.username)) }>
+    <form onSubmit={ ({ target, preventDefault }) => { login(target).then((user) => push('/user/'+user.username)); preventDefault(); }}>
         <input type="text" name="username" />
         <input type="password" name="password" />
         <input type="submit" value="Login" />
