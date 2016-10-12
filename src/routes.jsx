@@ -11,20 +11,21 @@ import User from './helpers/user.jsx';
 
 //TODO: it'd be nice to dispatch to get the user info on the root route, but then id need to return a component.
 //TODO: dont pass null, pass the nextState, just in case I nest later.
-var Routes = (dispatch) => {
+var Routes = (store) => {
+    //const history = syncHistoryWithStore(browserHistory, store);
     return (
-    <Route path="/">
-        <IndexRoute getComponent={ (nextState, cb) => cb(null, fetchBlog(dispatch)) } />
-        <Route path="/blog" getComponent={ (nextState, cb) => cb(null, fetchBlog(dispatch)) } />
-        <Route path="/article/create" component={ NewArticle } />
-        <Route path="/article/edit(/:_id)" getComponent={ ({ params }, cb) => cb(null, fetchEditArticle(dispatch, params._id)) } />
-        <Route path="/article/id/:_id" getComponents={ ({ params }, cb) => cb(null, fetchFullArticle(dispatch, params)) } />
-        <Route path="/article/t/:title" getComponent={ ({ params }, cb) => cb(null, fetchFullArticle(dispatch, params)) } />
-        <Route path="/user/:username" getComponents={ ({ params }, cb) => cb(null, fetchUserPanel(dispatch, params.username)) } />
+        <Route path="/">
+            <IndexRoute getComponent={ (nextState, cb) => cb(null, fetchBlog(store.dispatch, store.getState().app.loaded)) } />
+            <Route path="/blog" getComponent={ (nextState, cb) => cb(null, fetchBlog(store.dispatch, store.getState().app.loaded)) } />
+            <Route path="/article/create" component={ NewArticle } />
+            <Route path="/article/edit(/:_id)" getComponent={ ({ params }, cb) => cb(null, fetchEditArticle(store.dispatch, params._id, store.getState().app.loaded)) } />
+            <Route path="/article/id/:_id" getComponents={ ({ params }, cb) => cb(null, fetchFullArticle(store.dispatch, params, store.getState().app.loaded)) } />
+            <Route path="/article/t/:title" getComponent={ ({ params }, cb) => cb(null, fetchFullArticle(store.dispatch, params, store.getState().app.loaded)) } />
+            <Route path="/user/:username" getComponents={ ({ params }, cb) => cb(null, fetchUserPanel(store.dispatch, params.username, store.getState().app.loaded)) } />
 
-        <Route path="/login" component={ Login } />
-    </Route>
-);
+            <Route path="/login" component={ Login } />
+        </Route>
+    );
 };
 
 export default Routes;

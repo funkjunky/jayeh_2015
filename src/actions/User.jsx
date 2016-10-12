@@ -6,20 +6,28 @@ import { USER, LOGIN, LOGOUT } from '../constants/api.jsx';
 export const reconnect = () => (dispatch) => {
     return dispatch(dispatchFetch(USER))
         .then((response) => response.json())
-        .then((user = {}) => {
+        .then((users) => {
+            const user = users[0] || {};
             dispatch({
                 type: 'set_user',
                 user,
             });
-            finishedFetching(USER);
+            dispatch(finishedFetching(USER));
             return user;
         });
 };
 
-export const login = (formData) => (dispatch) => {
+export const login = ({ username, password }) => (dispatch) => {
     return dispatch(dispatchFetch(LOGIN, {
         method: 'post',
-        body: formData,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+        })
     }))
         .then((response) => response.json())
         .then((user) => {
@@ -27,7 +35,7 @@ export const login = (formData) => (dispatch) => {
                 type: 'set_user',
                 user
             });
-            finishedFetching(LOGIN);
+            dispatch(finishedFetching(LOGIN));
             return user;
         });
 };
@@ -39,7 +47,7 @@ export const logout = () => (dispatch) => {
                 type: 'set_user',
                 user: {},
             });
-            finishedFetching(LOGIN);
+            dispatch(finishedFetching(LOGIN));
         });
 };
 
@@ -47,11 +55,13 @@ export const logout = () => (dispatch) => {
 export const loadUser = (username) => (dispatch) => {
     return dispatch(dispatchFetch(USER + '?username='+username))
         .then((response) => response.json())
-        .then((user) =>  {
+        .then((users) =>  {
             dispatch({
                 type: 'set_users',
-                users: [user]
+                users: users
             })
-            finishedFetching(LOGIN);
+            console.log('done loading user...');
+            dispatch(finishedFetching(USER + '?username='+username));
+            console.log('done sending finished fetch');
         });
 };

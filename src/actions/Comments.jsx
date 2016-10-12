@@ -8,6 +8,7 @@ export const loadComments = (articleId) => (dispatch) => {
         .then((comments) => {
             dispatch(addComments(comments, articleId));
             dispatch(finishedFetching(url));
+            console.log('comments loaded...');
             return comments;
         });
 };

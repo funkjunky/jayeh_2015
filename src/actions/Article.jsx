@@ -1,13 +1,11 @@
 import { dispatchFetch, finishedFetching } from './dispatchFetch.jsx';
 import serializeForm from '../helpers/serializeForm.jsx';
-import { loadComments } from './Comments.jsx';
 import { ARTICLE } from '../constants/api.jsx';
 
 export const loadArticles = () => (dispatch) => {
     return dispatch(dispatchFetch(ARTICLE))
         .then((response) => response.json())
         .then((articles) => {
-            //console.log('finished fetching articles...', articles.length);
             dispatch(addArticles(articles));
             dispatch(finishedFetching(ARTICLE));
             return articles;
@@ -16,7 +14,6 @@ export const loadArticles = () => (dispatch) => {
 
 export const loadArticleById = (_id) => (dispatch) => {
     const url = ARTICLE + '/' + _id;
-    dispatch(loadComments(_id));
     return dispatch(dispatchFetch(url))
         .then((response) => response.json())
         .then((article) => {
@@ -26,13 +23,11 @@ export const loadArticleById = (_id) => (dispatch) => {
         });
 };
 
-//IMPORTANT: This has to handle the comment loading after getting the article.
 export const loadArticleByTitle = (title) => (dispatch) => {
     const url = encodeURI(ARTICLE + '?title=' + title);
     return dispatch(dispatchFetch(url))
         .then((response) => response.json())
         .then((articles) => {
-            dispatch(loadComments(articles[0]._id));
             dispatch(addArticles(articles));
             dispatch(finishedFetching(url));
             return articles[0];

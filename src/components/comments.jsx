@@ -1,7 +1,8 @@
 import React from 'react';
-import Superagent from 'superagent';
+import { connect } from 'react-redux';
 
 import Comment from './Comment.jsx';
+import { loadComments } from '../actions/Comments.jsx';
 
 /*
 setInterval(function() {
@@ -10,12 +11,21 @@ setInterval(function() {
 */
 
 //TODO: dynamically manage comments live... perhaps using my generic rest server and sockets?
-var Comments = ({ comments }) => (
-    <div>
-        {comments.map(function(comment) {
-            return <Comment key={comment._id} comment={comment} />
-        })}
-    </div>
-);
+class Comments extends React.Component {
+    componentDidMount() {
+        this.props.loadComments(this.props.articleId);
+    }
 
-export default Comments;
+    render() {
+        let { comments = [] } = this.props;
+        return (
+            <div>
+                {comments.map(function(comment) {
+                    return <Comment key={comment._id} comment={comment} />
+                })}
+            </div>
+        );
+    }
+};
+
+export default connect(({ data }, { articleId }) => ({ comments: data.comments[articleId] }), { loadComments })(Comments);

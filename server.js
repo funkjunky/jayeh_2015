@@ -1,16 +1,16 @@
-import { match, RouterContext } from 'react-router'
+import { match, RouterContext, Router, hashHistory } from 'react-router'
+import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import React from 'react';
 import Express from 'express';
 import path from 'path';
 import Favicon from 'serve-favicon';
 import compression from 'compression';
-import  httpProxy from 'http-proxy';
+import httpProxy from 'http-proxy';
 
 import getStore from './src/helpers/getStore.jsx';
-import StoreProvider from './src/StoreProvider.jsx';
 import Routes from './src/Routes.jsx';
-import Index from './src/Index.jsx';
+import renderHtml from './src/renderHtml.jsx';
 
 var port = process.env.PORT || 9002;
 var host = 'localhost';
@@ -45,26 +45,35 @@ proxy.on('error', function(e) {
     console.log('proxy error: ', e);
 });
 proxy.on('proxyRes', function(proxyRes, req, res, options) {
-    //console.log('RAW RESPONSE: ', res.body, JSON.stringify(proxyRes.headers, true, 2));
-});
+    console.log('RAW RESPONSE HEADERS: ', JSON.stringify(proxyRes.headers, true, 2));
 
+    proxyRes.on('data' , function(dataBuffer){
+        var data = dataBuffer.toString('utf8');
+        console.log("This is the data from target server : "+ data);
+    });
+
+});
 app.use(function (req, res) {
     console.log('url: ', req.url);
     let store = getStore();
-    match({ routes: Routes(store.dispatch), location: req.url }, (error, redirectLocation, renderProps) => {
+    match({ routes: Routes(store), location: req.url }, (error, redirectLocation, renderProps) => {
         if (error) {
             res.status(500).send(error.message);
         }
         else if(renderProps) {
             //Wait till everything has been loaded
             //See: actions/dispatchFetch and reducers/app/loading
-            const unsubscribe = store.subscribe(() => {
-                if(store.getState().app.loading.length === 0) {
-                    let jsxPage = <Index><StoreProvider store={store}><RouterContext {...renderProps} /></StoreProvider></Index>;
-                    res.status(200).send(renderToString(jsxPage));
-                    unsubscribe();
-                }
-            });
+            let jsxPage = (store) => renderHtml(renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>), store.getState());
+            if(store.getState().app.loading.length === 0)
+                res.status(200).send(jsxPage(store));
+            else {
+                const unsubscribe = store.subscribe(() => {
+                    if(store.getState().app.loading.length === 0) {
+                        res.status(200).send(jsxPage(store));
+                        unsubscribe();
+                    }
+                });
+            }
         }
         else
             res.status(404).send('Not Found');

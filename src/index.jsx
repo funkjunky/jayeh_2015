@@ -1,6 +1,8 @@
 import React from 'react';
 
-const Index = ({ children }) => (
+import ___ from './bootstrap.jsx'; //import, just to have the code in bundle
+
+const Index = ({ state, children }) => (
     <html lang="en">
         <head>
             <title>Jayeh - Jasons tech and opinions</title>
@@ -15,14 +17,15 @@ const Index = ({ children }) => (
             <p style={{marginTop: 100, textAlign: 'right'}}>
                 jayeh.ca © 2016 (Jason McCarrell)
             </p>
-        </body>
-    </html>
-);
-/* taking out until server side works.
             {process.env.NODE_ENV === 'production'
                 ? <script src="/build/bundle.js" defer></script>
                 : <script src="http://localhost:8008/build/bundle.js" defer></script>
             }
- */
+            <script>
+                __serverStore = { JSON.stringify(state) }
+            </script>
+        </body>
+    </html>
+);
 
 export default Index;

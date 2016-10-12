@@ -5,8 +5,8 @@ export const dispatchFetch = (url, options) => (dispatch) => {
     if(url.substring(0, 4) !== 'http')
         url = host + url;
     dispatch(fetchAction(url));
-    return fetch(url, options);
-        //.catch((err) => console.log('dispatchFetch error: ', err) );
+    return fetch(url, options)
+        .catch((err) => console.log('dispatchFetch error: ', err) );
 };
 
 export const fetchAction = (url) => ({

@@ -2,7 +2,7 @@ import React from 'react';
 import Superagent from 'superagent';
 import { connect } from 'react-redux';
 
-import serializeForm from '../helpers/serializeform.jsx';
+import serializeForm from '../helpers/serializeForm.jsx';
 import Login from './Login.jsx';
 import { saveComment, addComment } from '../actions/Comments.jsx';
 

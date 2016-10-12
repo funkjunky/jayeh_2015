@@ -5,9 +5,9 @@ import { Link } from 'react-router';
 import { logout } from '../actions/User.jsx';
 
 //TODO: I may need to wrap logout with a function that calls event.preventDefault... hopefully I won't need to bother... Delete if i dont.
-var UserPanel = ({ user, logout }) => (
+var UserPanel = ({ user, currentUser, logout }) => (
     <div>
-        <pre>{user}</pre>
+        <pre>{JSON.stringify(user)}</pre>
         <br />
         {(user.username == currentUser.username)
         ? <Link to="/api/auth/logout" onClick={logout}>Logout</Link> : ''}

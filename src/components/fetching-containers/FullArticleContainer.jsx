@@ -3,12 +3,7 @@ import { connect } from 'react-redux';
 
 import FullArticle from '../full-page/FullArticle.jsx';
 
-const FullArticleContainer = ({ article, comments }) => {
-    if(article)
-        return <FullArticle article={article} comments={comments} />
-    else
-        return <div>Loading...</div>
-};
+const FullArticleContainer = ({ article, comments }) => <FullArticle article={article} comments={comments} />
 
 //We have to connect the correct article to the articleContainer
 export default connect(({ data }, { params }) => {
@@ -19,6 +14,5 @@ export default connect(({ data }, { params }) => {
 
     return {
         article: data.articles[index],
-        comments: data.comments[params._id]
     };
 })(FullArticleContainer);
