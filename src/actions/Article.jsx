@@ -35,9 +35,9 @@ export const loadArticleByTitle = (title) => (dispatch) => {
 };
 
 export const saveArticle = (formData) => (dispatch) =>
-    (article._id)
-        ?   postNewArticle(article)(dispatch)
-        :   putOldArticle(serializeForm(article))(dispatch);
+    (!formData.get('_id'))
+        ?   postNewArticle(formData)(dispatch)
+        :   putOldArticle(serializeForm(formData))(dispatch);
 
 export const postNewArticle = (formArticle) => (dispatch) => {
     return dispatch(dispatchFetch(ARTICLE, {

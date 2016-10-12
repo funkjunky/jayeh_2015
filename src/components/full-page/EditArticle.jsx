@@ -12,7 +12,7 @@ import Jayehmd from '../../helpers/jayehmd.jsx';
 import ArticleSummary from '../ArticleSummary.jsx';
 import ArticleHeader from '../ArticleHeader.jsx';
 
-import { saveArticle } from '../../actions/Article.jsx';
+import { saveArticle, loadArticleById } from '../../actions/Article.jsx';
 import { uploadFile } from '../../actions/Upload.jsx';
 
 class EditArticle extends React.Component {
@@ -32,6 +32,14 @@ class EditArticle extends React.Component {
             };
     }
 
+    componentDidMount() {
+        this.props.loadArticleById(this.props.params.id);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({...nextProps.article});
+    }
+
     render() {
         var md = Jayehmd(this.state);
 
@@ -46,9 +54,10 @@ class EditArticle extends React.Component {
             <div>
                 <h2>Edit Article</h2>
                 <div>
-                    <form onSubmit={({ target, preventDefault }) => { this.props.saveArticle(new FormDate(target)); preventDefault(); }} ref="myform">
+                    <form onSubmit={(event) => { event.preventDefault(); this.props.saveArticle(new FormData(event.target)); }} ref="myform">
                         <div>
                             {(this.state.created_at) ? <input type="hidden" name="created_at" value={this.state.created_at} /> : ''}
+                            {(this.state._id) ? <input type="hidden" name="_id" value={this.state._id} /> : ''}
                             <input type="text" name="title" value={this.state.title} onChange={setStateAsInput('title')} /><br />
                             <input type="text" name="subtitle" value={this.state.subtitle} onChange={setStateAsInput('subtitle')} /><br />
                             <Filedrop handleDrop={this.handleDrop}>
@@ -98,4 +107,7 @@ class EditArticle extends React.Component {
     }
 };
 
-export default connect(null, { saveArticle, uploadFile })(EditArticle);
+export default connect(
+    ({ data }, { params }) => ({ article: data.articles[data.articles.findIndex((a) => a._id === params.id)] }),
+    { saveArticle, uploadFile, loadArticleById }
+)(EditArticle);
