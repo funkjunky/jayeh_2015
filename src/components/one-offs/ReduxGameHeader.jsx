@@ -1,13 +1,14 @@
 import React from 'react';
 
-var ReduxGameHeader = React.createClass({
-    render: function() {
+class ReduxGameHeader extends React.Component {
+    render() {
         return (
-            <canvas style={{position: 'absolute', left: 0, border: 'solid 1px black'}} className="reduxgameheader" tabIndex="0" />
+            <canvas ref="gameCanvas" style={{position: 'absolute', left: 0, border: 'solid 1px black'}} className="reduxgameheader" tabIndex="0" />
         );
-    },
-    componentDidMount: function() {
-        var canvas = this.getDOMNode();
+    }
+
+    componentDidMount() {
+        var canvas = this.refs.gameCanvas;
         var ctx = canvas.getContext('2d');
 
         //pause play controls (space plays and pauses)
@@ -72,8 +73,8 @@ var ReduxGameHeader = React.createClass({
                 window.requestAnimationFrame(drawLoop);
         };
         window.requestAnimationFrame(drawLoop);
-    },
-});
+    }
+};
 
 var rand = function(max) {
     return Math.floor(Math.random() * max);
@@ -146,8 +147,8 @@ var drawText = function(ctx, text, x, y, c, font) {
 };
 
 var updatePosition = function(circle, dt, height) {
-    deltaX = circle.vel.x * dt / 1000;
-    deltaY = circle.vel.y * dt / 1000;
+    let deltaX = circle.vel.x * dt / 1000;
+    let deltaY = circle.vel.y * dt / 1000;
     circle.pos.x += deltaX;
     if((circle.pos.y += deltaY) > height)
         circle.pos.y -= height;

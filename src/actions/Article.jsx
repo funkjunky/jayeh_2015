@@ -1,5 +1,5 @@
 import { dispatchFetch, finishedFetching } from './dispatchFetch.jsx';
-import serializeForm from '../helpers/serializeForm.jsx';
+import serializeFormData from '../helpers/serializeFormData.jsx';
 import { ARTICLE } from '../constants/api.jsx';
 
 export const loadArticles = () => (dispatch) => {
@@ -37,7 +37,7 @@ export const loadArticleByTitle = (title) => (dispatch) => {
 export const saveArticle = (formData) => (dispatch) =>
     (!formData.get('_id'))
         ?   postNewArticle(formData)(dispatch)
-        :   putOldArticle(serializeForm(formData))(dispatch);
+        :   putOldArticle(serializeFormData(formData))(dispatch);
 
 export const postNewArticle = (formArticle) => (dispatch) => {
     return dispatch(dispatchFetch(ARTICLE, {
@@ -53,9 +53,13 @@ export const postNewArticle = (formArticle) => (dispatch) => {
 };
 
 export const putOldArticle = (article) => (dispatch) => {
-    return dispatch(dispatchFetch(ARTICLE, {
+//TODO: do i really need to delete the id?
+    const id = article._id;
+    delete article._id;
+    return dispatch(dispatchFetch(ARTICLE + '/' + id, {
         method: 'put',
         body: JSON.stringify(article),
+        credentials: 'same-origin', //gotchya: fetch doesn't send cookies by default
     }))
         .then((response) => response.json)
         .then((article) => {
