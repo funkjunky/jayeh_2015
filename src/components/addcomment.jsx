@@ -2,7 +2,7 @@ import React from 'react';
 import Superagent from 'superagent';
 import { connect } from 'react-redux';
 
-import serializeForm from '../helpers/serializeForm.jsx';
+import serializeFormData from '../helpers/serializeFormData.jsx';
 import Login from './Login.jsx';
 import { saveComment, addComment } from '../actions/Comments.jsx';
 
@@ -34,7 +34,7 @@ const onSubmit = (saveComment, addComment, article_id) => (event) => {
     event.preventDefault();
     var form = event.target;
 
-    var preComment = SerializeForm(form);
+    var preComment = SerializeFormData(new FormData(form));
     preComment.onlyLocal = true;
     addComment(preComment, article_id);
 

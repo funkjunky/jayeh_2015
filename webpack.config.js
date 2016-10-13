@@ -17,7 +17,7 @@ module.exports = {
     //'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:' + port,
     'webpack/hot/dev-server',
-    APP_DIR + '/index.jsx',
+    APP_DIR + '/bootstrap.jsx',
   ],
   // Output the bundled JS to dist/app.js
   output: {

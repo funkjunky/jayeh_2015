@@ -7,13 +7,10 @@ import NewArticle from './components/full-page/EditArticle.jsx';
 import fetchFullArticle from './component-fetchers/fetchFullArticle.jsx';
 import Login from './components/Login.jsx';
 import fetchUserPanel from './component-fetchers/fetchUserPanel.jsx';
-import User from './helpers/user.jsx';
 
-//<Route path="/article/edit(/:_id)" getComponent={ ({ params }, cb) => cb(null, fetchEditArticle(store.dispatch, params._id, store.getState().app.loaded)) } />
 //TODO: it'd be nice to dispatch to get the user info on the root route, but then id need to return a component.
 //TODO: dont pass null, pass the nextState, just in case I nest later.
 var Routes = (store) => {
-    //const history = syncHistoryWithStore(browserHistory, store);
     return (
         <Route path="/">
             <IndexRoute getComponent={ (nextState, cb) => cb(null, fetchBlog(store.dispatch, store.getState().app.loaded)) } />
