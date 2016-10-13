@@ -43,6 +43,7 @@ export const login = ({ username, password }) => (dispatch) => {
 export const logout = () => (dispatch) => {
     return dispatch(dispatchFetch(LOGOUT))
         .then(() => {
+            console.log('logged out...');
             dispatch({
                 type: 'set_user',
                 user: {},
