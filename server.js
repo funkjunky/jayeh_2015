@@ -1,33 +1,42 @@
-var Express = require('express');
-var Favicon = require('serve-favicon');
-var url = require('url');
-var React = require('react');
-var ReactAsync = require('react-async');
-var httpProxy = require('http-proxy');
+import { match, RouterContext, Router, hashHistory } from 'react-router'
+import { Provider } from 'react-redux';
+import { renderToString } from 'react-dom/server';
+import React from 'react';
+import Express from 'express';
+import path from 'path';
+import Favicon from 'serve-favicon';
+import compression from 'compression';
+import httpProxy from 'http-proxy';
 
-var Routes = React.createFactory(require('./src/routes'))
+import getStore from './src/helpers/getStore.jsx';
+import Routes from './src/Routes.jsx';
+import renderHtml from './src/renderHtml.jsx';
 
+var port = process.env.PORT || 9002;
+var host = 'localhost';
+
+// Setup the express server
 var app = Express();
+
+app.use(compression());
 app.use(Favicon(__dirname + '/favicon.ico'));
 
-app.use('/dist', Express.static(__dirname + '/dist'));
-app.use('/node_modules', Express.static(__dirname + '/node_modules'));
+if (process.env.NODE_ENV === "production") { app.use('/build', Express.static(path.join(__dirname, '/build'))); }
 
-function error(err, res) {
-    console.log('!!!SERVER ERROR!!!');
-    console.log('type: ', err.type);
-    console.log('message: ', err.message);
-    if(err.stack)
-        console.log('stack: ', err.stack);
-    else
-        console.trace();
-    res.send('ERROR: \n' + err.type + '\n' + err.message + '\n' + err.stack);
-}
+//TODO: Check each of these...
+app.use('/node_modules', Express.static(__dirname + '/node_modules'));
+app.use('/static', Express.static(path.join(__dirname, '/static')));
+app.use('/dist', Express.static(path.join(__dirname, '/static')));
 
 //this well be called if /dist or node_modules doesn't match a file... it's likea  404
-app.get('/dist', error.bind(app, {type: '404', message: 'resource for dist not found'}));
-app.get('/node_modules', error.bind(app, {type: '404', message: 'resource for node_modules not found'}));
+//TODO: handle this better...
+let error = (err, req, res) => { console.log('STATIC 404'); res.status(404).send('error couldnt find'); }
+app.use('/dist', error.bind(app, {type: '404', message: 'resource for dist not found'}));
+app.use('/static', error.bind(app, {type: '404', message: 'resource for dist not found'}));
+app.use('/node_modules', error.bind(app, {type: '404', message: 'resource for node_modules not found'}));
 
+//TODO: double check this... maybe security issue?
+//app.use(cors());
 var proxyUrl = process.env.PROXYURL; //TODO: put this with the configs
 var apiPath = 'api/';
 var proxy = httpProxy.createProxyServer({ ws: true, target: proxyUrl, changeOrigin: true });
@@ -36,27 +45,58 @@ proxy.on('error', function(e) {
     console.log('proxy error: ', e);
 });
 proxy.on('proxyRes', function(proxyRes, req, res, options) {
-    console.log('RAW RESPONSE: ', res.body, JSON.stringify(proxyRes.headers, true, 2));
-});
+    console.log('RAW RESPONSE HEADERS: ', JSON.stringify(proxyRes.headers, true, 2));
 
-// if using express it might look like this
-app.get('*', function (req, res) {
-    var path = url.parse(req.url).pathname;
-    ReactAsync.renderToStringAsync(Routes({path: path}), function(err, markup) {
-        if(err)
-            error(err, res);
+    proxyRes.on('data' , function(dataBuffer){
+        var data = dataBuffer.toString('utf8');
+        console.log("This is the data from target server : "+ data);
+    });
+
+});
+app.use(function (req, res) {
+    console.log('url: ', req.url);
+    let store = getStore();
+    match({ routes: Routes(store), location: req.url }, (error, redirectLocation, renderProps) => {
+        if (error) {
+            res.status(500).send(error.message);
+        }
+        else if(renderProps) {
+            //Wait till everything has been loaded
+            //See: actions/dispatchFetch and reducers/app/loading
+            let jsxPage = (store) => renderHtml(renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>), store.getState());
+            if(store.getState().app.loading.length === 0)
+                res.status(200).send(jsxPage(store));
+            else {
+                const unsubscribe = store.subscribe(() => {
+                    if(store.getState().app.loading.length === 0) {
+                        res.status(200).send(jsxPage(store));
+                        unsubscribe();
+                    }
+                });
+            }
+        }
         else
-            res.send('<!DOCTYPE html>'+markup);
+            res.status(404).send('Not Found');
     });
 });
 
-var port = process.env.PORT || 9002;
-var server = app.listen(port, function () {
-    var host = server.address().address;
-    var port = server.address().port;
-    console.log('REST/Socket proxy listening at ', proxyUrl + apiPath);
-    console.log('Example app listening at http://%s:%s', host, port);
-})
+app.use((err, req, res, next) => {
+    console.log('ERROR: ', err);
+    res.status(500).send('error');;
+});
+
+process.on('unhandledRejection', (reason, p) => {
+    console.log('unhandled promise rejection: ', reason);
+    process.exit(1);
+});
+
+let server = app.listen(port);
+
+//TODO: figure out what this is used for?
 server.on('upgrade', function (req, socket, head) {
   proxy.ws(req, socket, head);
 })
+
+//if (process.env.NODE_ENV === "development") {
+    console.log('server.js is listening on port ' + port);
+//}
