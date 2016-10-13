@@ -49,7 +49,6 @@ class EditArticle extends React.Component {
         const setStateAsInput = (key) => ({ target }) => this.setState({ [key]: target.value });
 
         //TODO: inputs should use a component that gets rid of hte massive redundency, if possible... i just hate writing subtitle 3 times
-        //TODO: watch for preventDefault. In case it uses this...
         return (
             <div>
                 <h2>Edit Article</h2>

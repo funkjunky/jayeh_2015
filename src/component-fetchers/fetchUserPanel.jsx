@@ -3,7 +3,7 @@ import { loadUser } from '../actions/User.jsx';
 import { USER } from '../constants/api.jsx';
 
 const fetchUserPanel = (dispatch, username, loaded) => {
-    if(!loaded[USER + '?username=' + username])   
+    if(username && !loaded[USER + '?username=' + username])   
         dispatch(loadUser(username));
     return UserPanelContainer;
 };

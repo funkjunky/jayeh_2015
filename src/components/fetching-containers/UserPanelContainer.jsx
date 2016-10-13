@@ -5,10 +5,9 @@ import UserPanel from '../UserPanel.jsx';
 
 const UserPanelContainer = ({ user }) =>    <UserPanel user={user} />
 
-export default connect(({ data }, { params }) => {
-    const index = data.users.findIndex((user) => user.username === params.username);
-    
-    return {
-        user: data.users[index],
-    };
+export default connect(({ data, app }, { params }) => {
+    if(params.username)
+        return {    user: data.users[data.users.findIndex((user) => user.username === params.username)]    };
+    else
+        return {    user: app.user  };
 })(UserPanelContainer);

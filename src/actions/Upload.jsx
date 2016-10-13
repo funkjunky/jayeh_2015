@@ -3,7 +3,6 @@ import { dispatchFetch, finishedFetching } from './dispatchFetch.jsx';
 import { SIGN_S3 } from '../constants/api.jsx';
 
 export const uploadFile = (file) => (dispatch) => {
-    //TODO: dispatch that we are fetching...
     return dispatch(fetch(SIGN_S3 + '?file_name='+encodeURIComponent(file.name)+'&file_type='+encodeURIComponent(file.type)))
         .then((response) => response.json)
         .then((uploadInstance) => {
