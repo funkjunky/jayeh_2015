@@ -36,13 +36,16 @@ export const loadArticleByTitle = (title) => (dispatch) => {
 
 export const saveArticle = (formData) => (dispatch) =>
     (!formData.get('_id'))
-        ?   postNewArticle(formData)(dispatch)
+        ?   postNewArticle(serializeFormData(formData))(dispatch)
         :   putOldArticle(serializeFormData(formData))(dispatch);
 
 export const postNewArticle = (formArticle) => (dispatch) => {
     return dispatch(dispatchFetch(ARTICLE, {
         method: 'post',
-        body: formArticle,
+        body: JSON.stringify(formArticle),
+        headers: {
+            'Content-Type': 'application/json',
+        },
     }))
         .then((response) => response.json)
         .then((article) => {
@@ -53,13 +56,14 @@ export const postNewArticle = (formArticle) => (dispatch) => {
 };
 
 export const putOldArticle = (article) => (dispatch) => {
-//TODO: do i really need to delete the id?
     const id = article._id;
     delete article._id;
     return dispatch(dispatchFetch(ARTICLE + '/' + id, {
         method: 'put',
         body: JSON.stringify(article),
-        credentials: 'same-origin', //gotchya: fetch doesn't send cookies by default
+        headers: {
+            'Content-Type': 'application/json',
+        },
     }))
         .then((response) => response.json)
         .then((article) => {

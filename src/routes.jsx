@@ -8,11 +8,13 @@ import fetchFullArticle from './component-fetchers/fetchFullArticle.jsx';
 import Login from './components/Login.jsx';
 import fetchUserPanel from './component-fetchers/fetchUserPanel.jsx';
 
+import { reconnect } from './actions/User.jsx';
+
 //TODO: it'd be nice to dispatch to get the user info on the root route, but then id need to return a component.
 //TODO: dont pass null, pass the nextState, just in case I nest later.
 var Routes = (store) => {
     return (
-        <Route path="/">
+        <Route path="/" onEnter={ (nextState, cb) => store.dispatch(reconnect()) }>
             <IndexRoute getComponent={ (nextState, cb) => cb(null, fetchBlog(store.dispatch, store.getState().app.loaded)) } />
             <Route path="/blog" getComponent={ (nextState, cb) => cb(null, fetchBlog(store.dispatch, store.getState().app.loaded)) } />
             <Route path="/article/create" component={ NewArticle } />

@@ -5,7 +5,10 @@ export const dispatchFetch = (url, options) => (dispatch) => {
     if(url.substring(0, 4) !== 'http')
         url = host + url;
     dispatch(fetchAction(url));
-    return fetch(url, options)
+    return fetch(url, {
+        credentials: 'same-origin', //gotchya: fetch doesn't send cookies by default
+        ...options
+    })
         .catch((err) => console.log('dispatchFetch error: ', err) );
 };
 

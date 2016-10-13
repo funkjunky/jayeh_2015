@@ -1,5 +1,6 @@
 import { dispatchFetch, finishedFetching } from './dispatchFetch.jsx';
 import { COMMENT } from '../constants/api.jsx';
+import serializeFormData from '../helpers/serializeFormData.jsx';
 
 export const loadComments = (articleId) => (dispatch) => {
     const url = COMMENT + '?article_id='+articleId;
@@ -8,7 +9,6 @@ export const loadComments = (articleId) => (dispatch) => {
         .then((comments) => {
             dispatch(addComments(comments, articleId));
             dispatch(finishedFetching(url));
-            console.log('comments loaded...');
             return comments;
         });
 };
@@ -16,12 +16,15 @@ export const loadComments = (articleId) => (dispatch) => {
 export const saveComment = (formData) => (dispatch) => {
     return dispatch(dispatchFetch(COMMENT, {
         method: 'post',
-        body: formData,
+        body: JSON.stringify(serializeFormData(formData)),
+        headers: {
+            'Content-Type': 'application/json',
+        },
     }))
         .then((response) => response.json())
         .then((comment) => {
-            dispatch(addComment(comment, articleId));
-            dispatch(finishedFetching(url));
+            dispatch(addComment(comment, formData.get('article_id')));
+            dispatch(finishedFetching(COMMENT));
             return comment;
         });
 };

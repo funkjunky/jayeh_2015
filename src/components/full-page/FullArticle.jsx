@@ -18,7 +18,7 @@ const FullArticle = ({ article, user }) => {
             <div id="blog-body" style={{fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%'}}>
                 {bodyMarkup}
             </div>
-            <p>Created On: {formatDate(article.created_at)} - Edited On: {formatDate(article.edited_at)}</p>
+            <p>Created On: {formatDate(article.created_at)} - Edited On: {formatDate(article.updated_at)}</p>
             <Comments articleId={article._id} />
             <AddComment articleId={article._id} />
         </div>
