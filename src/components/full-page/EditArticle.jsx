@@ -6,6 +6,7 @@ let Filedrop = _Filedrop({
     dragStartStyle: {border: 'dashed 1px #00DD00', backgroundColor: '#AAFFAA'},
     dragHoverStyle: {border: 'dashed 2px #0000DD', backgroundColor: '#AAAAFF'},
 });
+import Title from 'react-title-component';
 
 import Jayehmd from '../../helpers/jayehmd.jsx';
 
@@ -51,6 +52,7 @@ class EditArticle extends React.Component {
         //TODO: inputs should use a component that gets rid of hte massive redundency, if possible... i just hate writing subtitle 3 times
         return (
             <div>
+                <Title render={(prevTitle) => prevTitle + ' - Editing ' + this.state.title} />
                 <h2>Edit Article</h2>
                 <div>
                     <form onSubmit={(event) => { event.preventDefault(); this.props.saveArticle(new FormData(event.target)); }} ref="myform">

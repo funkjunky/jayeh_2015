@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Title from 'react-title-component';
 
 import Jayehmd from '../../helpers/jayehmd.jsx';
 import Comments from '../Comments.jsx';
@@ -14,6 +15,7 @@ const FullArticle = ({ article, user }) => {
 
     let ret = (
         <div>
+            <Title render={(prevTitle) => prevTitle + ' - ' + article.title} />
             <ArticleHeader image={article.image}>{headerMarkup}</ArticleHeader>
             <div id="blog-body" style={{fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%'}}>
                 {bodyMarkup}

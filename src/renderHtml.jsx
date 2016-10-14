@@ -12,9 +12,6 @@ const renderHtml = (html, state) => `
     </head>
     <body>
         <div id="app">${html}</div>
-        <p style="margin-top: 100; text-align: right">
-            jayeh.ca © 2016 (Jason McCarrell)
-        </p>
         ${process.env.NODE_ENV === 'production'
             ? '<script src="/build/bundle.js" defer></script>'
             : '<script src="http://localhost:8008/build/bundle.js" defer></script>'

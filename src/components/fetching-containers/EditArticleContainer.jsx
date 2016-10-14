@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 
 import EditArticle from '../full-page/EditArticle.jsx';
 
-const EditArticleContainer = ({ article }) => {
-    return <EditArticle article={article} />
-};
+const EditArticleContainer = ({ article }) => <EditArticle article={article} />
 
 //We have to connect the correct article to the articleContainer
 export default connect(({ data }, { params }) => {
