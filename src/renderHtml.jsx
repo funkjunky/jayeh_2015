@@ -13,7 +13,7 @@ const renderHtml = (html, state) => `
     <body>
         <div id="app">${html}</div>
         ${process.env.NODE_ENV === 'production'
-            ? '<script src="/build/bundle.js" defer></script>'
+            ? '<script src="/static/bundle.js" defer></script>'
             : '<script src="http://localhost:8008/build/bundle.js" defer></script>'
         }
         <script>
