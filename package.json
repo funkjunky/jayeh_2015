@@ -3,15 +3,22 @@
   "version": "0.2.2",
   "author": "Jason McCarrell <jason.abz@gmail.com>",
   "main": "start_here.js",
+  "scripts": {
+    "dev": "NODE_ENV=development supervisor --harmony --ignore build/ -e js server & NODE_ENV=development node hotLoadServer.js",
+    "build": "NODE_ENV=production webpack -p --progress --colors",
+    "start": "NODE_ENV=production node --harmony server"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/funkjunky/jayeh_2015"
   },
   "dependencies": {
     "express": "~4.9",
-    "fibers": "^1.0.6",
+    "fibers": "^1.0.14",
     "font-awesome": "~4.0",
+    "generic_rest_server": "~0.5.3",
     "highlight.js": "~8.0",
+    "history": "^4.3.0",
     "http-proxy": "~1.11.0",
     "jquery": "~2.1.4",
     "markdown-it": "~5.1",
@@ -21,26 +28,34 @@
     "mdfigcaption": "~0.1.0",
     "mdreact": "~0.1.0",
     "mdvariables": "~0.1.0",
-    "react": "~0.13.0",
-    "react-async": "~2.1.0",
-    "react-document-title": "~1.0.0",
-    "react-filedrop": "~0.2.0",
-    "react-router-component": "~0.24.0",
+    "mongodb": "^1.4.0",
+    "react": "^15.3.2",
     "react-animate": "~3.0.0",
+    "react-document-title": "~1.0.0",
+    "react-dom": "^15.3.2",
+    "react-filedrop": "^0.3.1",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.8.1",
+    "react-router-redux": "^4.0.6",
+    "react-title-component": "^1.0.1",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.1.0",
     "serve-favicon": "~2.2.0",
     "superagent": "~1.7",
-    "underscore": "~1.8.0",
-    "generic_rest_server": "~0.5.3",  
-    "mongodb": "^1.4.0"
+    "underscore": "~1.8.0"
   },
   "devDependencies": {
-    "browserify": "~9.0.0",
-    "grunt": "~0.4.0",
-    "grunt-browserify": "^3.5.0",
-    "grunt-concurrent": "^1.0.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-nodemon": "^0.4.0",
-    "grunt-react": "^0.10.0"
+    "babel-cli": "^6.16.0",
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "json-loader": "^0.5.4",
+    "react-hot-loader": "^3.0.0-beta.5",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.1",
+    "webpack-notifier": "^1.4.1"
   },
   "license": "GNU-3.0+"
 }
