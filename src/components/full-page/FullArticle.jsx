@@ -16,7 +16,7 @@ const FullArticle = ({ article, user }) => {
     let ret = (
         <div>
             <Title render={(prevTitle) => prevTitle + ' - ' + article.title} />
-            <ArticleHeader image={article.image}>{headerMarkup}</ArticleHeader>
+            <ArticleHeader image={article.image} video={article.video}>{headerMarkup}</ArticleHeader>
             <div id="blog-body" style={{fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%'}}>
                 {bodyMarkup}
             </div>

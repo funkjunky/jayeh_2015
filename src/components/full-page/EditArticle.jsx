@@ -28,6 +28,7 @@ class EditArticle extends React.Component {
                 subtitle: ' ',
                 header: ' ',
                 image: '/dist/header3.jpg',
+                video: false,
                 header: ' ',
                 body: ' ',
             };
@@ -61,8 +62,11 @@ class EditArticle extends React.Component {
                             {(this.state._id) ? <input type="hidden" name="_id" value={this.state._id} /> : ''}
                             <input type="text" name="title" value={this.state.title} onChange={setStateAsInput('title')} /><br />
                             <input type="text" name="subtitle" value={this.state.subtitle} onChange={setStateAsInput('subtitle')} /><br />
-                            <Filedrop handleDrop={this.handleDrop}>
+                            <Filedrop handleDrop={this.handleDrop('image')}>
                                 <input type="text" name="image" value={this.state.image} onChange={setStateAsInput('image')} />
+                            </Filedrop>
+                            <Filedrop handleDrop={this.handleDrop('video')}>
+                                <input type="text" name="video" value={this.state.video} onChange={setStateAsInput('video')} />
                             </Filedrop>
                         </div>
                         <Filedrop>
@@ -73,7 +77,7 @@ class EditArticle extends React.Component {
                         <div style={{marginLeft: '5%', maxWidth: 800, height: 120}}>
                             <ArticleSummary article={this.state} />
                         </div>
-                        <ArticleHeader image={this.state.image}>{headerMarkup}</ArticleHeader>
+                        <ArticleHeader image={this.state.image} video={this.state.video}>{headerMarkup}</ArticleHeader>
                         <div id="blog-body" style={{fontSize: 14, maxWidth: '50em', margin: 'auto', lineHeight: '200%'}}>
                             {bodyMarkup}
                         </div>
@@ -83,12 +87,14 @@ class EditArticle extends React.Component {
         );
     }
 
-    handleDrop(event) {
-        this.props.uploadFile(event.dataTransfer.files[0])
-            .then((response) => {
-                console.log('successfull uploaded file?', url);
-                this.setState({image: url});
-            });
+    handleDrop(key) {
+        return (event) => {
+            this.props.uploadFile(event.dataTransfer.files[0])
+                .then((response) => {
+                    console.log('successfull uploaded file?', response);
+                    this.setState({[key]: response});
+                });
+        }
     }
     
     dropTextFnc(stateKey) {

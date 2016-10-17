@@ -33,7 +33,7 @@
     "react-animate": "~3.0.0",
     "react-document-title": "~1.0.0",
     "react-dom": "^15.3.2",
-    "react-filedrop": "^0.3.0",
+    "react-filedrop": "^0.3.1",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
