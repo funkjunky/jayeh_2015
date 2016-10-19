@@ -28,7 +28,7 @@ class EditArticle extends React.Component {
                 subtitle: ' ',
                 header: ' ',
                 image: '/dist/header3.jpg',
-                video: false,
+                video: 'false',
                 header: ' ',
                 body: ' ',
             };
@@ -48,7 +48,7 @@ class EditArticle extends React.Component {
         var headerMarkup = md.renderTokens(this.state.header);
         var bodyMarkup = md.renderTokens(this.state.body);
 
-        const setStateAsInput = (key) => ({ target }) => this.setState({ [key]: target.value });
+        const setStateAsInput = (key) => ({ target }) => this.setState({ [key]: (target.value === 'false') ? false : target.value });
 
         //TODO: inputs should use a component that gets rid of hte massive redundency, if possible... i just hate writing subtitle 3 times
         return (
