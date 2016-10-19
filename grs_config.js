@@ -14,11 +14,13 @@ var config = {
     collections: {
         article: {
             create: {
-                auth: ['publisher'],
+                auth: false,
+                //auth: ['publisher'],
                 before: setTimestamps,
             },
             update:   {
-                auth: ['publisher'],
+                auth: false,
+                //auth: ['publisher'],
                 before: setTimestamps,
             },
             remove: {
