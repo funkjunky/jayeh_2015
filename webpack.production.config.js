@@ -1,16 +1,12 @@
 var webpack = require('webpack');
 var path = require('path');
 var WebpackNotifierPlugin = require('webpack-notifier');
-var config = require('./webpack.config');
 
 var BUILD_DIR = path.resolve(__dirname, 'static');
 var APP_DIR = path.resolve(__dirname, 'src');
 var DATA_DIR = path.resolve(__dirname, 'json');
 
-var port = process.env.HOT_LOAD_PORT || config.port || 8008;
-
 module.exports = {
-  port: port,
   devtool: 'source-map',
   // This will be our app's entry point (webpack will look for it in the 'src' directory due to the modulesDirectory setting below). Feel free to change as desired.
   entry: [
