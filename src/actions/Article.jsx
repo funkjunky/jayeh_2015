@@ -47,7 +47,7 @@ export const postNewArticle = (formArticle) => (dispatch) => {
             'Content-Type': 'application/json',
         },
     }))
-        .then((response) => response.json)
+        .then((response) => response.json())
         .then((article) => {
             dispatch(addArticles([article]));
             dispatch(finishedFetching(ARTICLE));
@@ -65,7 +65,7 @@ export const putOldArticle = (article) => (dispatch) => {
             'Content-Type': 'application/json',
         },
     }))
-        .then((response) => response.json)
+        .then((response) => response.json())
         .then((article) => {
             dispatch(addArticles([article]));
             dispatch(finishedFetching(ARTICLE));
