@@ -87,7 +87,8 @@ app.use((err, req, res, next) => {
 
 process.on('unhandledRejection', (reason, p) => {
     console.log('unhandled promise rejection: ', reason);
-    process.exit(1);
+    throw reason;
+    //process.exit(1);
 });
 
 let server = app.listen(port);
