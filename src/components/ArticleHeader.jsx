@@ -3,13 +3,15 @@ import React from 'react';
 class ArticleHeader extends React.Component {
     constructor(props) {
         super(props);
-        document.addEventListener('scroll', (e) => {
-            const rect = this.refs.articleHeader.getBoundingClientRect()
-            if(rect.top < rect.height && rect.top > -rect.height)
-                this.refs.bgvid.play();               
-            else
-                this.refs.bgvid.pause();               
-        });
+        if(typeof window !== 'undefined' && props.video) {
+            document.addEventListener('scroll', (e) => {
+                const rect = this.refs.articleHeader.getBoundingClientRect()
+                if(rect.top < rect.height && rect.top > -rect.height)
+                    this.refs.bgvid.play();               
+                else
+                    this.refs.bgvid.pause();               
+            });
+        }
     }
 
     render() {

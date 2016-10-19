@@ -4,8 +4,10 @@ import { ARTICLE } from '../constants/api.jsx';
 
 //deprecated: article is now loaded on the container.
 const fetchEditArticle = (dispatch, id, loaded) => {
-    if(!loaded[ARTICLE + '/' + id])   
+    if(!loaded[ARTICLE + '/' + id])    {
+        console.log('fetching article for edit...');
         dispatch(loadArticleById(id));
+    }
     return EditArticleContainer;
 };
 
