@@ -19,6 +19,7 @@ class ArticleHeader extends React.Component {
         var style = {
             position: 'relative',
             minHeight: '100vh', //this makes the image take the entire screen height, but allow scrolling past
+            overflow: 'hidden',
 
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
@@ -27,11 +28,11 @@ class ArticleHeader extends React.Component {
         };
         var videoStyle = {
             position: 'absolute',
-            top: 0,
+            top: '50%',
             zIndex: -1,
             minHeight: '100vh',
-            minWidth: '100vh',
-            transform: 'translateX(-50%)',
+            minWidth: '100vw',
+            transform: 'translateX(-50%) translateY(-50%)',
             backgroundImage: 'url(\'' + this.props.image + '\')',
             backgroundSize: 'cover',
         };
