@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "NODE_ENV=development supervisor --harmony --ignore build/ -e js server & NODE_ENV=development node hotLoadServer.js",
     "build": "NODE_ENV=production webpack -p --progress --colors",
-    "build-server": "NODE_ENV=production webpack -p --define process.env.NODE_ENV='"production"' --config webpack.server.config.js > output_webpack",
-    "build-client": "NODE_ENV=production webpack -p --define process.env.NODE_ENV='"production"' --config webpack.production.config.js > output_client_webpack",
+    "build-server": "NODE_ENV=production webpack -p --define process.env.NODE_ENV='\"production\"' --config webpack.server.config.js > output_webpack",
+    "build-client": "NODE_ENV=production webpack -p --define process.env.NODE_ENV='\"production\"' --config webpack.production.config.js > output_client_webpack",
     "start": "NODE_ENV=production node --harmony server"
   },
   "repository": {
