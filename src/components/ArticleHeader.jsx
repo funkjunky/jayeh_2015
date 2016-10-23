@@ -30,13 +30,14 @@ class ArticleHeader extends React.Component {
             top: 0,
             zIndex: -1,
             minHeight: '100vh',
+            minWidth: '100vh',
             transform: 'translateX(-50%)',
             backgroundImage: 'url(\'' + this.props.image + '\')',
             backgroundSize: 'cover',
         };
         if(this.props.video)
             return (
-                <div ref='articleHeader' style={style}>
+                <div ref='articleHeader' style={style} className="blackReadable">
                     { this.props.children } 
                     <video src={ this.props.video } style={ videoStyle } autoPlay muted loop poster={this.props.image} ref="bgvid" />
                 </div>
