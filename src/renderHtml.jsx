@@ -1,6 +1,6 @@
 import ___ from './bootstrap.jsx'; //import, just to have the code in bundle
 
-const renderHtml = (html, state) => `
+const renderHtml = (html, state, host) => `
 <html lang="en">
     <head>
         <title>Jayeh - Jasons tech and opinions</title>
@@ -17,7 +17,8 @@ const renderHtml = (html, state) => `
             : '<script src="http://localhost:8008/build/bundle.js" defer></script>'
         }
         <script>
-            __serverStore = ${JSON.stringify(state)}
+            __serverStore = ${JSON.stringify(state)};
+            __host = "${host}";
         </script>
     </body>
 </html>

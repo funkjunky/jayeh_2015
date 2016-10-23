@@ -2,8 +2,9 @@ import fetch from 'isomorphic-fetch';
 import { host } from '../constants/server.jsx';
 
 export const dispatchFetch = (url, options) => (dispatch) => {
-    if(url.substring(0, 4) !== 'http')
-        url = host + url;
+    let host = (__host) ? __host : global.__host;  
+    url = host + url;
+    console.log('host: ', host, url);
     dispatch(fetchAction(url));
     return fetch(url, {
         credentials: 'same-origin', //gotchya: fetch doesn't send cookies by default
