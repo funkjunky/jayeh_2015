@@ -87,7 +87,7 @@ app.use((err, req, res, next) => {
 });
 
 process.on('unhandledRejection', (reason, p) => {
-    console.trace('unhandled promise rejection: ', reason);
+    console.trace('unhandled promise rejection: ', JSON.stringify(reason), JSON.stringify(p));
     //throw reason;
     //process.exit(1);
 });
