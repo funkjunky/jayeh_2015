@@ -54,8 +54,12 @@ proxy.on('proxyRes', function(proxyRes, req, res, options) {
 
 });
 app.use(function (req, res) {
+    console.log('HELLO?!');
+    console.log('url: ', req.url, req.protocol, req.get('host'));
+console.log('prototocl:L ', req.protocol);
+console.log('host: ', req.host);
+    console.log('global: ', global);
     global.__host = req.protocol + '://' + req.get('host');
-    console.log('url: ', req.url);
     let store = getStore();
     match({ routes: Routes(store), location: req.url }, (error, redirectLocation, renderProps) => {
         if (error) {

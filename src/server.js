@@ -54,6 +54,7 @@ proxy.on('proxyRes', function(proxyRes, req, res, options) {
 
 });
 app.use(function (req, res) {
+    global.__host = req.protocol + '://' + req.get('host');
     console.log('url: ', req.url);
     let store = getStore();
     match({ routes: Routes(store), location: req.url }, (error, redirectLocation, renderProps) => {
@@ -63,7 +64,7 @@ app.use(function (req, res) {
         else if(renderProps) {
             //Wait till everything has been loaded
             //See: actions/dispatchFetch and reducers/app/loading
-            let jsxPage = (store) => renderHtml(renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>), store.getState());
+            let jsxPage = (store) => renderHtml(renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>), store.getState(), global.__host);
             if(store.getState().app.loading.length === 0)
                 res.status(200).send(jsxPage(store));
             else {
