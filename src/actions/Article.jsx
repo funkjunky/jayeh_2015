@@ -10,7 +10,7 @@ export const loadArticles = () => (dispatch) => {
             dispatch(finishedFetching(ARTICLE));
             return articles;
         });
-};
+}
 
 export const loadArticleById = (_id) => (dispatch) => {
     const url = ARTICLE + '/' + _id;
@@ -21,7 +21,7 @@ export const loadArticleById = (_id) => (dispatch) => {
             dispatch(finishedFetching(url));
             return article;
         });
-};
+}
 
 export const loadArticleByTitle = (title) => (dispatch) => {
     const url = encodeURI(ARTICLE + '?title=' + title);
@@ -32,12 +32,12 @@ export const loadArticleByTitle = (title) => (dispatch) => {
             dispatch(finishedFetching(url));
             return articles[0];
         });
-};
+}
 
 export const saveArticle = (formData) => (dispatch) =>
     (!formData.get('_id'))
         ?   postNewArticle(serializeFormData(formData))(dispatch)
-        :   putOldArticle(serializeFormData(formData))(dispatch);
+        :   putOldArticle(serializeFormData(formData))(dispatch)
 
 export const postNewArticle = (formArticle) => (dispatch) => {
     return dispatch(dispatchFetch(ARTICLE, {
@@ -53,7 +53,7 @@ export const postNewArticle = (formArticle) => (dispatch) => {
             dispatch(finishedFetching(ARTICLE));
             return article;
         });
-};
+}
 
 export const putOldArticle = (article) => (dispatch) => {
     const id = article._id;
@@ -71,10 +71,10 @@ export const putOldArticle = (article) => (dispatch) => {
             dispatch(finishedFetching(ARTICLE));
             return article;
         });
-};
+}
 
 
 export const addArticles = (articles) => ({
     articles: articles,
     type: 'add_articles',
-});
+})

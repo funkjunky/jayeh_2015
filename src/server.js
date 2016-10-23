@@ -9,7 +9,7 @@ import compression from 'compression';
 import httpProxy from 'http-proxy';
 
 import getStore from './helpers/getStore.jsx';
-import Routes from './Routes.jsx';
+import Routes from './routes.jsx';
 import renderHtml from './renderHtml.jsx';
 
 var port = process.env.PORT || 9002;
