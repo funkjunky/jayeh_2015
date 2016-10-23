@@ -6,9 +6,9 @@ class ArticleHeader extends React.Component {
         if(typeof window !== 'undefined' && props.video) {
             document.addEventListener('scroll', (e) => {
                 const rect = this.refs.articleHeader.getBoundingClientRect()
-                if(rect.top < rect.height && rect.top > -rect.height)
+                if(rect.top < rect.height && rect.top > -rect.height && this.refs.bgvid.paused)
                     this.refs.bgvid.play();               
-                else
+                else if(!this.refs.bgvid.paused)
                     this.refs.bgvid.pause();               
             });
         }
@@ -43,7 +43,7 @@ class ArticleHeader extends React.Component {
             );
         else
             return (
-                <div ref='articleHeader' style={{...style, backgroundImage: 'url(\'' + this.props.image + '\')'}}>
+                <div style={{...style, backgroundImage: 'url(\'' + this.props.image + '\')'}}>
                     { this.props.children } 
                 </div>
             );

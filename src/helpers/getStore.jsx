@@ -6,9 +6,12 @@ import { routerMiddleware } from 'react-router-redux';
 import reducers from '../reducers.jsx';
 
 const getStore = (data) => {
-    if(typeof window !== 'undefined')
-        return createStore(reducers, data, compose(applyMiddleware(thunkMiddleware, routerMiddleware(browserHistory)), window.devToolsExtension && window.devToolsExtension()));
-    else
+    if(typeof window !== 'undefined') {
+        const args = [applyMiddleware(thunkMiddleware, routerMiddleware(browserHistory))];
+        if(window.devToolsExtension)
+            args.push(window.devToolsExtension());
+        return createStore(reducers, data, compose(...args));
+    } else
         return createStore(reducers, data, applyMiddleware(thunkMiddleware));
 };
 
