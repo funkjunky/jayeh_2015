@@ -22,7 +22,7 @@ const ArticleSummary = ({article}) => {
             backgroundSize: '100%',
         }};
     return (
-        <Link to={"/article/t/" + article.title} className="blackReadable"><div style={style} onMouseEnter={e => videoRef.play()} onMouseLeave={e => videoRef.pause()}>
+        <Link to={"/article/t/" + article.title} className="blackReadable"><div style={style} onMouseEnter={e => (videoRef) ? videoRef.play() : true } onMouseLeave={e => (videoRef) ? videoRef.pause() : true }>
             <p style={{fontSize: '2em'}}>{article.title}</p>
             <p style={{fontSize: '1em', marginLeft: '4em'}}>{article.subtitle}</p>
             <p style={{position: 'absolute', right: 0, bottom: 0}}>Created On: {formatDate(article.created_at)}</p>
