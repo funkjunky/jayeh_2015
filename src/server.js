@@ -19,14 +19,14 @@ var host = 'localhost';
 var app = Express();
 
 app.use(compression());
-app.use(Favicon(__dirname + '/favicon.ico'));
+app.use(Favicon(__dirname + '/../static/favicon.ico'));
 
 if (process.env.NODE_ENV === "production") { app.use('/build', Express.static(path.join(__dirname, '/build'))); }
 
 //TODO: Check each of these...
 app.use('/node_modules', Express.static(__dirname + '/../node_modules'));
-app.use('/static', Express.static(path.join(__dirname)));
-app.use('/dist', Express.static(path.join(__dirname)));
+app.use('/static', Express.static(path.join(__dirname + '/../static')));
+app.use('/dist', Express.static(path.join(__dirname + '/../static')));
 
 //this well be called if /dist or node_modules doesn't match a file... it's likea  404
 //TODO: handle this better...
