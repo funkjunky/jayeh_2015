@@ -21121,7 +21121,7 @@
 	    var md = (0, _jayehmd2.default)(article);
 	    var headerMarkup = md.renderTokens(article.header);
 	    var bodyMarkup = md.renderTokens(article.body);
-	    return _react2.default.createElement('div', null);
+	    console.log('markups: ', headerMarkup, bodyMarkup);
 	
 	    var ret = _react2.default.createElement(
 	        'div',
@@ -21134,11 +21134,7 @@
 	            { image: article.image, video: article.video },
 	            headerMarkup
 	        ),
-	        _react2.default.createElement(
-	            'div',
-	            { id: 'blog-body', style: { fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%' } },
-	            bodyMarkup
-	        ),
+	        _react2.default.createElement('div', { id: 'blog-body', style: { fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%' } }),
 	        _react2.default.createElement(
 	            'p',
 	            null,
