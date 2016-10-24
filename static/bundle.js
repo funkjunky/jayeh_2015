@@ -58596,11 +58596,6 @@
 	        _react2.default.createElement(_reactTitleComponent2.default, { render: function render(prevTitle) {
 	                return prevTitle + ' - ' + article.title;
 	            } }),
-	        _react2.default.createElement(
-	            _ArticleHeader2.default,
-	            { image: article.image, video: article.video },
-	            headerMarkup
-	        ),
 	        _react2.default.createElement('div', { id: 'blog-body', style: { fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%' } }),
 	        _react2.default.createElement(
 	            'p',

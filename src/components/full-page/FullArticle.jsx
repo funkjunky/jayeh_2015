@@ -17,7 +17,6 @@ const FullArticle = ({ article, user }) => {
     let ret = (
         <div>
             <Title render={(prevTitle) => prevTitle + ' - ' + article.title} />
-            <ArticleHeader image={article.image} video={article.video}>{headerMarkup}</ArticleHeader>
             <div id="blog-body" style={{fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%'}}>
             </div>
             <p>Created On: {formatDate(article.created_at)} - Edited On: {formatDate(article.updated_at)}</p>
