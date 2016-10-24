@@ -58586,6 +58586,7 @@
 	    var user = _ref.user;
 	
 	    var md = (0, _jayehmd2.default)(article);
+	    return _react2.default.createElement('div', null);
 	    var headerMarkup = md.renderTokens(article.header);
 	    var bodyMarkup = md.renderTokens(article.body);
 	
