@@ -25,7 +25,7 @@ if(typeof window !== 'undefined') {
 
         const history = syncHistoryWithStore(browserHistory, store);
         match({ history, routes: Routes(store) }, (error, redirectLocation, renderProps) => {
-            render(<Provider store={store}><Router {...renderProps} /></Provider>, document.getElementById('app'));
+            render(<Provider store={store}><Router onUpdate={() => window.scrollTo(0, 0)} {...renderProps} /></Provider>, document.getElementById('app'));
         });
     });
 }
