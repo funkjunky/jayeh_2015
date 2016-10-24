@@ -10,9 +10,9 @@ import AddComment from '../AddComment.jsx';
 
 const FullArticle = ({ article, user }) => {
     var md = Jayehmd(article);
-    return <div />;
     var headerMarkup = md.renderTokens(article.header);
     var bodyMarkup = md.renderTokens(article.body);
+    return <div />;
 
     let ret = (
         <div>
