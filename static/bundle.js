@@ -30842,9 +30842,9 @@
 	
 	var _mdfigcaption2 = _interopRequireDefault(_mdfigcaption);
 	
-	var _mdreact = __webpack_require__(505);
+	var _MdReact = __webpack_require__(505);
 	
-	var _mdreact2 = _interopRequireDefault(_mdreact);
+	var _MdReact2 = _interopRequireDefault(_MdReact);
 	
 	var _react = __webpack_require__(2);
 	
@@ -30860,9 +30860,10 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	//import MdReact from 'mdreact';
 	var jayehmd = function jayehmd(variables) {
 	            var md = new _markdownIt2.default();
-	            md.use(_mdreact2.default);
+	            md.use(_MdReact2.default);
 	            md.use(_markdownItHighlightjs2.default);
 	            md.use((0, _mdvariables2.default)(function () {
 	                        return variables;
@@ -30874,8 +30875,6 @@
 	            return md;
 	};
 	//TODO: ReduxGameHeader and all one-offs should be loaded dynamically eventually
-	
-	//import MdReact from '../md-plugins/mdreact.jsx';
 	exports.default = jayehmd;
 
 /***/ },
@@ -57965,41 +57964,37 @@
 /* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
 	var React = __webpack_require__(2);
 	
-	var MdReact = function(md, options) {
-	    md.renderTokens = function(src, env) {
+	var MdReact = function MdReact(md, options) {
+	    md.renderTokens = function (src, env) {
 	        env = env || {};
 	
 	        return this.renderer.renderTokens(this.parse(src, env), this.options, env);
 	    };
-	    md.renderer.renderTokens = function(tokens, options, env) {
+	    md.renderer.renderTokens = function (tokens, options, env) {
 	        var type,
 	            result = '',
 	            rules = this.rules;
 	
-	        return tokens.reduce(function(collector, token, i) {
+	        return tokens.reduce(function (collector, token, i) {
 	            //console.log('type: ', token.type, token);
 	            var result;
-	            if (typeof rules[token.type] !== 'undefined')
-	                result = rules[token.type](tokens, i, options, env, this);
-	            else {
-	                if(token.type === 'inline')
-	                    result = this.renderInline(token.children, options, env);
-	                else
-	                    result = this.renderToken(tokens, i, options);
+	            if (typeof rules[token.type] !== 'undefined') result = rules[token.type](tokens, i, options, env, this);else {
+	                if (token.type === 'inline') result = this.renderInline(token.children, options, env);else result = this.renderToken(tokens, i, options);
 	            }
-	            //console.log('result: ', result);
+	            console.log('md result: ', result);
 	
 	            function getCollector(collector, tokens, i) {
-	                tokens.forEach(function(result) {
+	                tokens.forEach(function (result) {
 	                    //if it's not astring, then it's a react element.
 	                    //In this case, we split the paragraphs for the React element.
 	                    //If we don't split, then p tags surround the react element,
 	                    //and we can't render the p tags at the same time as the react element
-	                    if(typeof result != 'string') {
-	                        if(collector[collector.length - 1].length && collector[collector.length - 1][0] == '<p>')
-	                            collector[collector.length - 1].push('</p>\n');
+	                    if (typeof result != 'string') {
+	                        if (collector[collector.length - 1].length && collector[collector.length - 1][0] == '<p>') collector[collector.length - 1].push('</p>\n');
 	
 	                        collector.push(result);
 	                        collector.push(['<p>']); //add a new p tag for the one we left dangling.
@@ -58007,27 +58002,21 @@
 	                    }
 	
 	                    //console.log('result isnt a string: ', result, collector.length);
-	                    if(!collector.length || !collector[collector.length - 1].length)
-	                        collector.push([]);
+	                    if (!collector.length || !collector[collector.length - 1].length) collector.push([]);
 	
 	                    collector[collector.length - 1].push(result);
 	                });
 	                return collector;
 	            }
 	
-	            if(token.type === 'inline')
-	                return getCollector(collector, result, i);
-	            else
-	                return getCollector(collector, [result], i);
-	        }.bind(this), []).map(function(item, index) {
-	            //console.log('last step item: ', item);
-	            if(item.length) {
+	            if (token.type === 'inline') return getCollector(collector, result, i);else return getCollector(collector, [result], i);
+	        }.bind(this), []).map(function (item, index) {
+	            console.log('md last step item: ', item);
+	            if (item.length) {
 	                var html = item.join('');
 	                //console.log('html: ', html);
-	                return React.createElement("p", {key: index, dangerouslySetInnerHTML: {__html: html}})
-	            }
-	            else
-	                return item;
+	                return React.createElement('p', { key: index, dangerouslySetInnerHTML: { __html: html } });
+	            } else return item;
 	        });
 	    };
 	
@@ -58035,25 +58024,23 @@
 	        var type,
 	            rules = this.rules;
 	
-	        return tokens.map(function(token, i) {
+	        return tokens.map(function (token, i) {
 	            type = token.type;
 	
-	            if (typeof rules[type] !== 'undefined')
-	                return rules[type](tokens, i, options, env, this);
+	            if (typeof rules[type] !== 'undefined') return rules[type](tokens, i, options, env, this);
 	
 	            return this.renderToken(tokens, i, options);
 	        }, this);
 	    };
 	
 	    md.renderer.render = function (tokens, options, env) {
-	        return this.renderTokens(tokens, options, env).reduce(function(collector, token) {
+	        return this.renderTokens(tokens, options, env).reduce(function (collector, token) {
 	            return collector + token;
 	        }, '');
 	    };
 	};
 	
 	module.exports = MdReact;
-
 
 /***/ },
 /* 506 */
@@ -58588,7 +58575,6 @@
 	    var md = (0, _jayehmd2.default)(article);
 	    var headerMarkup = md.renderTokens(article.header);
 	    var bodyMarkup = md.renderTokens(article.body);
-	    console.log('markups: ', headerMarkup, bodyMarkup);
 	
 	    var ret = _react2.default.createElement(
 	        'div',
@@ -58596,7 +58582,16 @@
 	        _react2.default.createElement(_reactTitleComponent2.default, { render: function render(prevTitle) {
 	                return prevTitle + ' - ' + article.title;
 	            } }),
-	        _react2.default.createElement('div', { id: 'blog-body', style: { fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%' } }),
+	        _react2.default.createElement(
+	            _ArticleHeader2.default,
+	            { image: article.image, video: article.video },
+	            headerMarkup
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { id: 'blog-body', style: { fontSize: 14, maxWidth: '40em', margin: 'auto', lineHeight: '200%' } },
+	            bodyMarkup
+	        ),
 	        _react2.default.createElement(
 	            'p',
 	            null,

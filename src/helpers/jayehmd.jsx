@@ -4,8 +4,8 @@ import MarkdownRegexp from 'markdown-it-regexp';
 import MdHighlight from 'markdown-it-highlightjs';
 import MdVariables from 'mdvariables';
 import MdFigCaption from 'mdfigcaption';
-import MdReact from 'mdreact';
-//import MdReact from '../md-plugins/mdreact.jsx';
+//import MdReact from 'mdreact';
+import MdReact from '../md-plugins/MdReact.jsx';
 import React from 'react';
 import HeaderName from '../md-plugins/mdHeaderName.jsx';
 //TODO: ReduxGameHeader and all one-offs should be loaded dynamically eventually
