@@ -183,7 +183,7 @@
 	
 	process.on('unhandledRejection', function (reason, p) {
 	    console.trace('unhandled promise rejection: ', JSON.stringify(reason), JSON.stringify(p));
-	    //throw reason;
+	    throw reason;
 	    //process.exit(1);
 	});
 	
